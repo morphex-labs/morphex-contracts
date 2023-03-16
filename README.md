@@ -1,7 +1,7 @@
-# GMX Contracts
-Contracts for GMX.
+# Morphex Contracts
+Contracts for MPX.
 
-Docs at https://gmxio.gitbook.io/gmx/contracts.
+Docs at https://docs.morphex.trade/contracts.
 
 ## Install Dependencies
 If npx is not installed yet:
