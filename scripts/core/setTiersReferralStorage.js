@@ -2,30 +2,30 @@ const { contractAt , sendTxn } = require("../shared/helpers")
 const { expandDecimals } = require("../../test/shared/utilities")
 const { toUsd } = require("../../test/shared/units")
 
-const network = (process.env.HARDHAT_NETWORK || 'mainnet');
-const tokens = require('./tokens')[network];
+// const network = (process.env.HARDHAT_NETWORK || 'mainnet');
+// const tokens = require('./tokens')[network];
 
-async function getArbValues() {
-  const referralStorage = await contractAt("ReferralStorage", "0xe6fab3F0c7199b0d34d7FbE83394fc0e0D06e99d")
+// async function getArbValues() {
+//   const referralStorage = await contractAt("ReferralStorage", "0xe6fab3F0c7199b0d34d7FbE83394fc0e0D06e99d")
 
-  return { referralStorage }
-}
+//   return { referralStorage }
+// }
 
-async function getAvaxValues() {
-  const referralStorage = await contractAt("ReferralStorage", "0x827ED045002eCdAbEb6e2b0d1604cf5fC3d322F8")
+// async function getAvaxValues() {
+//   const referralStorage = await contractAt("ReferralStorage", "0x827ED045002eCdAbEb6e2b0d1604cf5fC3d322F8")
 
-  return { referralStorage }
-}
+//   return { referralStorage }
+// }
 
-async function getValues() {
-  if (network === "arbitrum") {
-    return getArbValues()
-  }
+// async function getValues() {
+//   if (network === "arbitrum") {
+//     return getArbValues()
+//   }
 
-  if (network === "avax") {
-    return getAvaxValues()
-  }
-}
+//   if (network === "avax") {
+//     return getAvaxValues()
+//   }
+// }
 
 async function main() {
   const referralStorage = await contractAt("ReferralStorage", "0x8DEfd6b1C07ff577D2b271D3de143FB3E724288e")
