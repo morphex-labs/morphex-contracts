@@ -502,7 +502,7 @@ module.exports = {
       isStrictStable: true,
       tokenWeight: 28000,
       minProfitBps: 0,
-      maxUsdgAmount: 1000 * 1000,
+      maxUsdgAmount: 1500 * 1000,
       bufferAmount: 700 * 1000,
       isStable: true,
       isShortable: false
@@ -516,7 +516,7 @@ module.exports = {
       isStrictStable: true,
       tokenWeight: 6000,
       minProfitBps: 0,
-      maxUsdgAmount: 300 * 1000,
+      maxUsdgAmount: 500 * 1000,
       bufferAmount: 100 * 1000,
       isStable: true,
       isShortable: false
