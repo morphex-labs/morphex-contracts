@@ -54,8 +54,24 @@ function getValues(signer) {
 }
 
 async function main() {
-  const signer = await getFrameSigner()
-  const { rewardToken, tokenDecimals, rewardTrackerArr } = await getValues(signer)
+  // const signer = await getFrameSigner()
+  // const { rewardToken, tokenDecimals, rewardTrackerArr } = await getValues(signer)
+
+  const rewardToken = await contractAt("Token", "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83")
+  const tokenDecimals = 18
+
+  const rewardTrackerArr = [
+    {
+      name: "feeGmxTracker",
+      address: "0x1d556F411370E5F1850A51EB66960798e6F5eDeC",
+      transferAmount: "26226.7"
+    },
+    {
+      name: "feeGlpTracker",
+      address: "0x7724dfE8E461C59F5017d9A0eB510dD0e2d61eDC",
+      transferAmount: "52453.4"
+    }
+  ]
 
   for (let i = 0; i < rewardTrackerArr.length; i++) {
     const rewardTrackerItem = rewardTrackerArr[i]
@@ -69,8 +85,8 @@ async function main() {
     console.log("convertedTransferAmount", convertedTransferAmount.toString())
     console.log("rewardsPerInterval", rewardsPerInterval.toString())
 
-    await sendTxn(rewardToken.transfer(rewardDistributorAddress, convertedTransferAmount, { gasLimit: 500000 }), `rewardToken.transfer ${i}`)
-    await updateTokensPerInterval(rewardDistributor, rewardsPerInterval, "rewardDistributor")
+    // await sendTxn(rewardToken.transfer(rewardDistributorAddress, convertedTransferAmount, { gasLimit: 500000 }), `rewardToken.transfer ${i}`)
+    // await updateTokensPerInterval(rewardDistributor, rewardsPerInterval, "rewardDistributor")
   }
 }
 
