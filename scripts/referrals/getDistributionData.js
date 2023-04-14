@@ -7,6 +7,8 @@ const ethers = require('ethers')
 const ARBITRUM_SUBGRAPH_ENDPOINT = 'https://api.thegraph.com/subgraphs/name/gmx-io/gmx-arbitrum-referrals'
 const AVALANCHE_SUBGRAPH_ENDPOINT = 'https://api.thegraph.com/subgraphs/name/gmx-io/gmx-avalanche-referrals'
 
+const FANTOM_SUBGRAPH_ENDPOINT = 'https://api.thegraph.com/subgraphs/name/morphex-labs/morphex-fantom-referrals'
+
 const BigNumber = ethers.BigNumber
 const { formatUnits, parseUnits } = ethers.utils
 const SHARE_DIVISOR = BigNumber.from("1000000000") // 1e9
@@ -29,7 +31,8 @@ function expandDecimals(n, decimals) {
 function getSubgraphEndpoint(network) {
   return {
     avalanche: AVALANCHE_SUBGRAPH_ENDPOINT,
-    arbitrum: ARBITRUM_SUBGRAPH_ENDPOINT
+    arbitrum: ARBITRUM_SUBGRAPH_ENDPOINT,
+    fantom: FANTOM_SUBGRAPH_ENDPOINT,
   }[network]
 }
 
@@ -341,16 +344,16 @@ async function main() {
     description: 'Get distribution data'
   });
   parser.add_argument('-n', '--network', {
-    help: 'Network: arbitrum, avalanche',
+    help: 'Network: arbitrum, avalanche, fantom',
     required: true
   });
   parser.add_argument('-f', '--from-date', {
-    help: 'Date from. E.g. 2022-04-20',
-    default: "2022-04-20"
+    help: 'Date from. E.g. 2023-03-29',
+    default: "2023-03-29"
   });
   parser.add_argument('-t', '--to-date', {
-    help: 'Date to. Exclusive. E.g. 2022-04-27',
-    default: "2022-04-27"
+    help: 'Date to. Exclusive. E.g. 2022-04-13',
+    default: "2023-04-14"
   });
   parser.add_argument('-a', '--account', { help: 'Account address' })
   parser.add_argument('-g', '--gmx-price', { help: 'GMX TWAP price' })
