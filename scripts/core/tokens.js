@@ -450,10 +450,10 @@ module.exports = {
       tokenWeight: 26000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 1450 * 1000,
+      bufferAmount: 1500 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 550 * 1000,
+      maxGlobalLongSize: 650 * 1000,
       maxGlobalShortSize: 500 * 1000,
       spreadBasisPoints: 0
     },
@@ -469,10 +469,10 @@ module.exports = {
       tokenWeight: 15000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 240,
+      bufferAmount: 280,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 500 * 1000,
+      maxGlobalLongSize: 600 * 1000,
       maxGlobalShortSize: 500 * 1000
     },
     btc: {
@@ -487,7 +487,7 @@ module.exports = {
       tokenWeight: 15000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 14,
+      bufferAmount: 15,
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 400 * 1000,
@@ -502,7 +502,7 @@ module.exports = {
       isStrictStable: true,
       tokenWeight: 28000,
       minProfitBps: 0,
-      maxUsdgAmount: 2000 * 1000,
+      maxUsdgAmount: 1300 * 1000,
       bufferAmount: 700 * 1000,
       isStable: true,
       isShortable: false
