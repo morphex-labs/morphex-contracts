@@ -11,6 +11,7 @@ data/nft
 data/snapshotBalance
 data/holders
 data/contractList
+scripts/volume-rewards/output.json
 flattened
 distribution-data*.json
 **/.DS_Store
