@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { ethers } = require('ethers');
 
-const filename = 'week4.csv';
+const filename = 'weeks/week4.csv';
 const outputFilename = 'output.json';
 
 const outputObj = {};
@@ -23,6 +23,12 @@ fs.readFile(filename, 'utf8', (err, data) => {
 
   console.log('Addresses:', JSON.stringify(addresses).replace(/\"/g, ''));
   console.log('Numbers (in wei):', numbers.join());
+
+  const totalSum = numbers.reduce((accumulator, currentValue) => {
+    return ethers.BigNumber.from(accumulator).add(ethers.BigNumber.from(currentValue));
+  }, ethers.BigNumber.from('0'));
+
+  console.log('Total sum of the numbers:', ethers.utils.formatEther(totalSum));
 
   fs.writeFile(outputFilename, JSON.stringify(outputObj), (err) => {
     if (err) {
