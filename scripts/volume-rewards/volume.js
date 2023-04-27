@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { ethers } = require('ethers');
 
-const filename = 'weeks/week4.csv';
+const filename = 'weeks/week5.csv'; // change this to the week you want to calculate
 const outputFilename = 'output.json';
 
 const outputObj = {};
@@ -15,13 +15,13 @@ fs.readFile(filename, 'utf8', (err, data) => {
   }
   data.split('\n').forEach(line => {
     const [address, number] = line.trim().split(',');
-    addresses.push(address.trim());
+    addresses.push(`"${address.trim()}"`);
     const weiNumber = ethers.utils.parseEther(number.trim());
     numbers.push(weiNumber.toString());
     outputObj[address.trim()] = weiNumber.toString();
   });
 
-  console.log('Addresses:', JSON.stringify(addresses).replace(/\"/g, ''));
+  console.log('Addresses:', `[${addresses.join(',')}]`);
   console.log('Numbers (in wei):', numbers.join());
 
   const totalSum = numbers.reduce((accumulator, currentValue) => {
