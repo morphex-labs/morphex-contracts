@@ -339,6 +339,10 @@ async function queryDistributionData(network, fromTimestamp, toTimestamp, accoun
   console.log("Data saved to: %s", filename)
 }
 
+// Last values:
+// From: 2023-04-14 (timestamp 1681430400)
+// To (exclusively): 2023-04-28 (timestamp 1682640000)
+
 async function main() {
   const parser = new ArgumentParser({
     description: 'Get distribution data'
