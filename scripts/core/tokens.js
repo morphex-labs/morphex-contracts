@@ -450,11 +450,11 @@ module.exports = {
       tokenWeight: 26000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 1500 * 1000,
+      bufferAmount: 1400 * 1000,
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 650 * 1000,
-      maxGlobalShortSize: 500 * 1000,
+      maxGlobalShortSize: 300 * 1000,
       spreadBasisPoints: 0
     },
     eth: {
@@ -469,11 +469,11 @@ module.exports = {
       tokenWeight: 15000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 280,
+      bufferAmount: 260,
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 600 * 1000,
-      maxGlobalShortSize: 500 * 1000
+      maxGlobalShortSize: 300 * 1000
     },
     btc: {
       name: "btc",
@@ -487,11 +487,11 @@ module.exports = {
       tokenWeight: 15000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 15,
+      bufferAmount: 14,
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 400 * 1000,
-      maxGlobalShortSize: 400 * 1000
+      maxGlobalShortSize: 300 * 1000
     },
     usdc: {
       name: "usdc",
@@ -531,7 +531,7 @@ module.exports = {
       tokenWeight: 10000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 300 * 1000,
+      bufferAmount: 250 * 1000,
       isStable: true,
       isShortable: false
     },
