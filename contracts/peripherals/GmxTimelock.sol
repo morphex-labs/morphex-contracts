@@ -23,7 +23,7 @@ contract MpxTimelock is IGmxTimelock {
     using SafeMath for uint256;
 
     uint256 public constant PRICE_PRECISION = 10 ** 30;
-    uint256 public constant MAX_BUFFER = 7 days;
+    uint256 public constant MAX_BUFFER = 30 days;
     uint256 public constant MAX_FEE_BASIS_POINTS = 300; // 3%
     uint256 public constant MAX_FUNDING_RATE_FACTOR = 200; // 0.02%
     uint256 public constant MAX_LEVERAGE_VALIDATION = 500000; // 50x

@@ -48,9 +48,9 @@ async function runForAvax() {
 async function runForFantom() {
   const admin = "0xB1dD2Fdb023cB54b7cc2a0f5D9e8d47a9F7723ce"
   const rewardManager = { address: ethers.constants.AddressZero }
-  const buffer = 24 * 60 * 60
-  const longBuffer = 7 * 24 * 60 * 60
-  const tokenManager = { address: "0xC28f1D82874ccFebFE6afDAB3c685D5E709067E5" }
+  const buffer = 48 * 60 * 60
+  const longBuffer = 30 * 24 * 60 * 60
+  const tokenManager = { address: "0xDd257d090FA0f9ffB496b790844418593e969ba6" }
   const mintReceiver = { address: AddressZero }
   const maxTokenSupply = expandDecimals("50000000", 18)
 
