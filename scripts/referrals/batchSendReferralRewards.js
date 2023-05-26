@@ -7,7 +7,7 @@ const { expandDecimals, bigNumberify } = require("../../test/shared/utilities")
 // const avaxPrice = "12"
 const gmxPrice = 25 // multiplied by 100 to avoid decimals, this is MPX
 
-const shouldSendTxn = false
+const shouldSendTxn = true
 
 // let arbitrumFile
 // if (process.env.ARBITRUM_FILE) {
@@ -75,7 +75,7 @@ async function main() {
 
   const batchSender = await contractAt("BatchSender", "0x90eaa0DB25C569993c80dC5681E6C2981f5C86D9")
   const esGmx = await contractAt("Token", "0xe0f606e6730bE531EeAf42348dE43C2feeD43505")
-  const nativeTokenPrice = 37 // FTM price, multiplied by 100 to avoid decimals
+  const nativeTokenPrice = 33 // FTM price, multiplied by 100 to avoid decimals
   const data = fantomData
 
   const { nativeToken } = tokens
@@ -179,7 +179,7 @@ async function main() {
       }
     }
 
-    await sendTxn(nativeTokenContract.approve(batchSender.address, totalNativeAmount), "nativeToken.approve")
+    // await sendTxn(nativeTokenContract.approve(batchSender.address, totalNativeAmount), "nativeToken.approve")
 
     await processBatch([affiliateAccounts, affiliateAmounts], batchSize, async (currentBatch) => {
       printBatch(currentBatch)
