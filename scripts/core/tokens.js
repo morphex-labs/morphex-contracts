@@ -447,14 +447,14 @@ module.exports = {
       fastPricePrecision: 1000,
       maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
-      tokenWeight: 26000,
+      tokenWeight: 21000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 1800 * 1000,
+      bufferAmount: 80 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 650 * 1000,
-      maxGlobalShortSize: 300 * 1000,
+      maxGlobalLongSize: 1,
+      maxGlobalShortSize: 1,
       spreadBasisPoints: 0
     },
     eth: {
@@ -466,14 +466,14 @@ module.exports = {
       fastPricePrecision: 1000,
       maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
-      tokenWeight: 15000,
+      tokenWeight: 18000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 260,
+      bufferAmount: 13,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 600 * 1000,
-      maxGlobalShortSize: 400 * 1000
+      maxGlobalLongSize: 1,
+      maxGlobalShortSize: 1
     },
     btc: {
       name: "btc",
@@ -484,14 +484,14 @@ module.exports = {
       fastPricePrecision: 1000,
       maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
-      tokenWeight: 15000,
+      tokenWeight: 18000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 14,
+      bufferAmount: 1,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 500 * 1000,
-      maxGlobalShortSize: 400 * 1000
+      maxGlobalLongSize: 1,
+      maxGlobalShortSize: 1
     },
     usdc: {
       name: "usdc",
@@ -503,7 +503,7 @@ module.exports = {
       tokenWeight: 28000,
       minProfitBps: 0,
       maxUsdgAmount: 2000 * 1000,
-      bufferAmount: 700 * 1000,
+      bufferAmount: 25 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -514,10 +514,10 @@ module.exports = {
       priceFeed: "0x91d5DEFAFfE2854C7D02F50c80FA1fdc8A721e52",
       priceDecimals: 8,
       isStrictStable: true,
-      tokenWeight: 6000,
+      tokenWeight: 5000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 250 * 1000,
+      bufferAmount: 25 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -531,7 +531,7 @@ module.exports = {
       tokenWeight: 10000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 250 * 1000,
+      bufferAmount: 25 * 1000,
       isStable: true,
       isShortable: false
     },
