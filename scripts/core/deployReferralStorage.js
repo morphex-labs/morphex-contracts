@@ -30,10 +30,10 @@ async function getValues() {
 }
 
 async function main() {
-  const positionRouter = await contractAt("PositionRouter", "0x26e6C47682FfC1824d7aC5512752FC671dA5e607")
-  const positionManager = await contractAt("PositionManager", "0x366152Fc0FC4680e0A05ce9739a4210228C72BA3")
-  const referralStorage = await deployContract("ReferralStorage", [])
-  // const referralStorage = await contractAt("ReferralStorage", await positionRouter.referralStorage())
+  const positionRouter = await contractAt("PositionRouter", "0x05D97A8a5eF11010a6A5f89B3D4628ce43092614")
+  const positionManager = await contractAt("PositionManager", "0x06c35893Ba9bc454e12c36F4117BC99f75e34346")
+  // const referralStorage = await deployContract("ReferralStorage", [])
+  const referralStorage = await contractAt("ReferralStorage", "0xb795e91DAefD6A7edEAc3060513D93cE7617370A")
 
   await sendTxn(positionRouter.setReferralStorage(referralStorage.address), "positionRouter.setReferralStorage")
   await sendTxn(positionManager.setReferralStorage(referralStorage.address), "positionManager.setReferralStorage")

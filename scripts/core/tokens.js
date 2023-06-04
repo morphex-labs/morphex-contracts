@@ -540,5 +540,149 @@ module.exports = {
       address: "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83",
       decimals: 18
     }
+  },
+  bsc: {
+    bnb: {
+      name: "bnb",
+      address: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      decimals: 18,
+      priceFeed: "0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE",
+      priceDecimals: 8,
+      fastPricePrecision: 1000,
+      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      isStrictStable: false,
+      tokenWeight: 20000,
+      minProfitBps: 0,
+      maxUsdgAmount: 3000 * 1000,
+      bufferAmount: 0,
+      isStable: false,
+      isShortable: true,
+      maxGlobalLongSize: 0,
+      maxGlobalShortSize: 0,
+      spreadBasisPoints: 0
+    },
+    eth: {
+      name: "eth",
+      address: "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+      decimals: 18,
+      priceFeed: "0x9ef1B8c0E4F7dc8bF5719Ea496883DC6401d5b2e",
+      priceDecimals: 8,
+      fastPricePrecision: 1000,
+      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      isStrictStable: false,
+      tokenWeight: 14000,
+      minProfitBps: 0,
+      maxUsdgAmount: 2000 * 1000,
+      bufferAmount: 0,
+      isStable: false,
+      isShortable: true,
+      maxGlobalLongSize: 0,
+      maxGlobalShortSize: 0
+    },
+    btc: {
+      name: "btc",
+      address: "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
+      decimals: 18,
+      priceFeed: "0x264990fbd0A4796A3E3d8E37C4d5F87a3aCa5Ebf",
+      priceDecimals: 8,
+      fastPricePrecision: 1000,
+      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      isStrictStable: false,
+      tokenWeight: 14000,
+      minProfitBps: 0,
+      maxUsdgAmount: 2000 * 1000,
+      bufferAmount: 0,
+      isStable: false,
+      isShortable: true,
+      maxGlobalLongSize: 0,
+      maxGlobalShortSize: 0
+    },
+    xrp: {
+      name: "xrp",
+      address: "0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE",
+      decimals: 18,
+      priceFeed: "0x93A67D414896A280bF8FFB3b389fE3686E014fda",
+      priceDecimals: 8,
+      fastPricePrecision: 1000,
+      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      isStrictStable: false,
+      tokenWeight: 1000,
+      minProfitBps: 0,
+      maxUsdgAmount: 500 * 1000,
+      bufferAmount: 0,
+      isStable: false,
+      isShortable: true,
+      maxGlobalLongSize: 0,
+      maxGlobalShortSize: 0
+    },
+    ada: {
+      name: "ada",
+      address: "0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47",
+      decimals: 18,
+      priceFeed: "0xa767f745331D267c7751297D982b050c93985627",
+      priceDecimals: 8,
+      fastPricePrecision: 1000,
+      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      isStrictStable: false,
+      tokenWeight: 1000,
+      minProfitBps: 0,
+      maxUsdgAmount: 500 * 1000,
+      bufferAmount: 0,
+      isStable: false,
+      isShortable: true,
+      maxGlobalLongSize: 0,
+      maxGlobalShortSize: 0
+    },
+    cake: {
+      name: "cake",
+      address: "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+      decimals: 18,
+      priceFeed: "0xB6064eD41d4f67e353768aA239cA86f4F73665a1",
+      priceDecimals: 8,
+      fastPricePrecision: 1000,
+      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      isStrictStable: false,
+      tokenWeight: 1,
+      minProfitBps: 0,
+      maxUsdgAmount: 1,
+      bufferAmount: 0,
+      isStable: false,
+      isShortable: true,
+      maxGlobalLongSize: 0,
+      maxGlobalShortSize: 0
+    },
+    usdc: {
+      name: "usdc",
+      address: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+      decimals: 18,
+      priceFeed: "0x51597f405303C4377E36123cBc172b13269EA163",
+      priceDecimals: 8,
+      isStrictStable: true,
+      tokenWeight: 15000,
+      minProfitBps: 0,
+      maxUsdgAmount: 1000 * 1000,
+      bufferAmount: 0,
+      isStable: true,
+      isShortable: false
+    },
+    usdt: {
+      name: "usdt",
+      address: "0x55d398326f99059fF775485246999027B3197955",
+      decimals: 18,
+      priceFeed: "0xB97Ad0E74fa7d920791E90258A6E2085088b4320",
+      priceDecimals: 8,
+      isStrictStable: true,
+      tokenWeight: 35000,
+      minProfitBps: 0,
+      maxUsdgAmount: 3000 * 1000,
+      bufferAmount: 0,
+      isStable: true,
+      isShortable: false
+    },
+    nativeToken: {
+      name: "wbnb",
+      address: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      decimals: 18
+    }
   }
 }

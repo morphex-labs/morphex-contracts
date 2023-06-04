@@ -11,11 +11,11 @@ async function main() {
 
   // Fantom testnet addresses
   await sendTxn(orderBook.initialize(
-    "0x3Acf67bD8C291F9C5bbBB14AC0eC86F60ABCE36E", // router
-    "0x3CB54f0eB62C371065D739A34a775CC16f46563e", // vault
-    "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83", // weth
-    "0xB7209EbCBF71c0ffA1585B4468A11CFfdcDBB9a9", // usdg
-    "250000000000000000", // 0.25 FTM
+    "0x26e6C47682FfC1824d7aC5512752FC671dA5e607", // router
+    "0x46940Dc651bFe3F2CC3E04cf9dC5579B50Cf0765", // vault
+    "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", // weth
+    "0x548f93779fBC992010C07467cBaf329DD5F059B7", // usdg
+    "5000000000000000", // 0.005 BNB
     expandDecimals(10, 30) // min purchase token amount usd
   ), "orderBook.initialize");
 

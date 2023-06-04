@@ -8,6 +8,7 @@ const ARBITRUM = 42161
 const AVALANCHE = 43114
 const FANTOM = 250
 const FANTOM_TESTNET = 4002
+const BSC = 56;
 
 const {
   ARBITRUM_URL,
@@ -17,21 +18,25 @@ const {
   FTM_URL,
   FTM_DEPLOY_KEY,
   FTM_TESTNET_URL,
-  FTM_TESTNET_DEPLOY_KEY
+  FTM_TESTNET_DEPLOY_KEY,
+  BSC_URL,
+  BSC_DEPLOY_KEY
 } = require("../../env.json")
 
 const providers = {
   arbitrum: new ethers.providers.JsonRpcProvider(ARBITRUM_URL),
   avax: new ethers.providers.JsonRpcProvider(AVAX_URL),
   fantom: new ethers.providers.JsonRpcProvider(FTM_URL),
-  fantomTestnet: new ethers.providers.JsonRpcProvider(FTM_TESTNET_URL)
+  fantomTestnet: new ethers.providers.JsonRpcProvider(FTM_TESTNET_URL),
+  bsc: new ethers.providers.JsonRpcProvider(BSC_URL)
 }
 
 const signers = {
   arbitrum: new ethers.Wallet(ARBITRUM_DEPLOY_KEY).connect(providers.arbitrum),
   avax: new ethers.Wallet(ARBITRUM_DEPLOY_KEY).connect(providers.avax),
   fantom: new ethers.Wallet(FTM_DEPLOY_KEY).connect(providers.fantom),
-  fantomTestnet: new ethers.Wallet(FTM_TESTNET_DEPLOY_KEY).connect(providers.fantomTestnet)
+  fantomTestnet: new ethers.Wallet(FTM_TESTNET_DEPLOY_KEY).connect(providers.fantomTestnet),
+  bsc: new ethers.Wallet(BSC_DEPLOY_KEY).connect(providers.bsc)
 }
 
 function sleep(ms) {
@@ -55,6 +60,10 @@ const readCsv = async (file) => {
 function getChainId(network) {
   if (network === "arbitrum") {
     return 42161
+  }
+
+  if (network === "bsc") {
+    return 56
   }
 
   if (network === "avax") {
@@ -199,6 +208,7 @@ module.exports = {
   ARBITRUM,
   AVALANCHE,
   FANTOM,
+  BSC,
   FANTOM_TESTNET,
   providers,
   signers,

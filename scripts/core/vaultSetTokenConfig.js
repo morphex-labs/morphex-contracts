@@ -3,7 +3,7 @@ const { expandDecimals } = require("../../test/shared/utilities")
 const { toChainlinkPrice } = require("../../test/shared/chainlink")
 
 const network = (process.env.HARDHAT_NETWORK || 'mainnet');
-const tokens = require('./tokens')['fantom'];
+const tokens = require('./tokens')['bsc'];
 
 async function getArbValues() {
   const vault = await contractAt("Vault", "0x489ee077994B6658eAfA855C308275EAd8097C4A")
@@ -43,10 +43,10 @@ async function main() {
   // const vaultMethod = "signalVaultSetTokenConfig"
   // const vaultMethod = "vaultSetTokenConfig"
 
-  const vault = await contractAt("Vault", "0x3CB54f0eB62C371065D739A34a775CC16f46563e")
+  const vault = await contractAt("Vault", "0x46940Dc651bFe3F2CC3E04cf9dC5579B50Cf0765")
 
-  const { ftm, eth, btc, usdc, usdt, dai } = tokens
-  const tokenArr = [ftm, eth, btc, usdc, usdt, dai]
+  const { bnb, eth, btc, xrp, ada, cake, usdt, usdc } = tokens
+  const tokenArr = [bnb, eth, btc, xrp, ada, cake, usdt, usdc]
 
   console.log("vault", vault.address)
   // console.log("vaultTimelock", vaultTimelock.address)

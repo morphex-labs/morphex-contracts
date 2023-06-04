@@ -2,7 +2,7 @@ const { deployContract, contractAt, sendTxn } = require("../shared/helpers")
 const { expandDecimals } = require("../../test/shared/utilities")
 
 const network = (process.env.HARDHAT_NETWORK || 'mainnet');
-const tokens = require('./tokens')[network];
+const tokens = require('./tokens')['bsc'];
 
 async function checkTokenConfig(tokenArr) {
   for (let i = 0; i < tokenArr.length; i++) {
@@ -46,12 +46,10 @@ async function checkTokenConfigArb() {
 }
 
 async function main() {
-  if (network === "avax") {
-    await checkTokenConfigAvax()
-    return
-  }
+  const { btc, eth, bnb, xrp, ada, cake, usdt, usdc } = tokens
+  const tokenArr = [btc, eth, bnb, xrp, ada, cake, usdt, usdc]
 
-  await checkTokenConfigArb()
+  await checkTokenConfig(tokenArr)
 }
 
 main()

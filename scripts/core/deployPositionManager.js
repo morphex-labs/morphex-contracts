@@ -5,7 +5,7 @@ const { errors } = require("../../test/core/Vault/helpers")
 
 const network = (process.env.HARDHAT_NETWORK || 'mainnet');
 const tokens = require('./tokens')[network];
-const nativeTokenAddress = "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83";
+const nativeTokenAddress = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
 
 const depositFee = 30 // 0.3%
 
@@ -77,7 +77,7 @@ async function getValues(signer) {
 }
 
 async function main() {
-  const signer = signers.fantomTestnet;
+  const signer = signers.bsc;
 
   // const {
   //   positionManagerAddress,
@@ -94,22 +94,21 @@ async function main() {
   //   partnerContracts
   // } = await getValues(signer)
 
-  const vault = await contractAt("Vault", "0x3CB54f0eB62C371065D739A34a775CC16f46563e")
+  const vault = await contractAt("Vault", "0x46940Dc651bFe3F2CC3E04cf9dC5579B50Cf0765")
   // const timelock = await contractAt("Timelock", await vault.gov(), signer)
   const router = await contractAt("Router", await vault.router(), signer)
-  const shortsTracker = await contractAt("ShortsTracker", "0x266D4C8DC144259ACd034357dae69EcA9Ba569b8", signer)
+  const shortsTracker = await contractAt("ShortsTracker", "0x6c72ADbDc1029ee901dC97C5604487285D972A4f", signer)
   const weth = await contractAt("WETH", nativeTokenAddress)
-  const orderBook = await contractAt("OrderBook", "0x46940Dc651bFe3F2CC3E04cf9dC5579B50Cf0765")
+  const orderBook = await contractAt("OrderBook", "0x73bF80506F891030570FDC4D53a71f44a442353C")
   // const referralStorage = await contractAt("ReferralStorage", "0x32034bF6693Cf8c4F970962740609BF7A43ff350")
 
-  const positionManagerAddress = "0x366152Fc0FC4680e0A05ce9739a4210228C72BA3"
+  const positionManagerAddress = ""
 
   const orderKeepers = [
-    { address: "0x90ed0d2B78058Be26Ad03dA904F2233fAD4109Cb" }
-    // { address: "0xf26f52d5985F6391E541A8d638e1EDaa522Ae56C" }
+    { address: "0xD7a38CbC6d7153e1c37Bab3E010cB73dEc6F4971" }
   ]
   const liquidators = [
-    { address: "0x2B373C5bB7907076A08D77D75eaa30576c8CcB61" }
+    { address: "0xb6254092f30A141bF85b2a7e3B2BcEc65d809Dd0" }
   ]
 
   const partnerContracts = []
@@ -152,9 +151,9 @@ async function main() {
   // if (!(await vault.isLiquidator(positionManager.address))) {
   //   await sendTxn(timelock.setLiquidator(vault.address, positionManager.address, true), "timelock.setLiquidator(vault, positionManager, true)")
   // }
-  // if (!(await shortsTracker.isHandler(positionManager.address))) {
-  //   await sendTxn(shortsTracker.setHandler(positionManager.address, true), "shortsTracker.setContractHandler(positionManager.address, true)")
-  // }
+  if (!(await shortsTracker.isHandler(positionManager.address))) {
+    await sendTxn(shortsTracker.setHandler(positionManager.address, true), "shortsTracker.setContractHandler(positionManager.address, true)")
+  }
   if (!(await router.plugins(positionManager.address))) {
     await sendTxn(router.addPlugin(positionManager.address), "router.addPlugin(positionManager)")
   }
