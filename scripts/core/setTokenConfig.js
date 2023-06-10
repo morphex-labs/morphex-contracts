@@ -51,7 +51,7 @@ async function main() {
 
   const vaultPropsLength = 14;
 
-  const shouldSendTxn = false
+  const shouldSendTxn = true
 
   let totalUsdgAmount = bigNumberify(0)
 
