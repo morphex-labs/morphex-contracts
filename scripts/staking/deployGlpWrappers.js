@@ -31,12 +31,12 @@ async function getValues() {
 }
 
 async function main() {
-  const signer = signers.fantomTestnet;
+  // const signer = signers.fantomTestnet;
   // const { glp, glpManager, stakedGlpTracker, feeGlpTracker } = await getValues()
-  const glp = { address: "0xd5c313DE2d33bf36014e6c659F13acE112B80a8E" }
-  const glpManager = { address: "0xA3Ea99f8aE06bA0d9A6Cf7618d06AEa4564340E9" }
-  const stakedGlpTracker = await contractAt("RewardTracker", "0x49A97680938B4F1f73816d1B70C3Ab801FAd124B") // fsMLP
-  const feeGlpTracker = await contractAt("RewardTracker", "0xd3C5dEd5F1207c80473D39230E5b0eD11B39F905") // fMLP
+  const glp = { address: "0xbd1dCEc2103675C8F3953c34aE40Ed907E1DCAC2" }
+  const glpManager = { address: "0x749DA3a34A6E1b098F3BFaEd23DAD2b7D7846b9B" }
+  const stakedGlpTracker = await contractAt("RewardTracker", "0x4e0e48b787E308049d0CA6bfAA84D5c61c5a4A1e") // fsMLP
+  const feeGlpTracker = await contractAt("RewardTracker", "0x1Fc9aB3b7bEE66fC29167AB205777537898ff235") // fMLP
 
   // const timelock = await contractAt("Timelock", await stakedGlpTracker.gov(), signer)
 
