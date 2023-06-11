@@ -108,7 +108,7 @@ async function main() {
   // const referralStorage = await contractAt("ReferralStorage", "0x32034bF6693Cf8c4F970962740609BF7A43ff350")
   const shortsTracker = await contractAt("ShortsTracker", "0x6c72ADbDc1029ee901dC97C5604487285D972A4f", signer)
   const depositFee = "30" // 0.3%
-  const minExecutionFee = "5000000000000000" // 0.005 BNB
+  const minExecutionFee = "3500000000000000" // 0.0035 BNB
 
   // const referralStorageGov = await contractAt("Timelock", await referralStorage.gov(), signer)
 

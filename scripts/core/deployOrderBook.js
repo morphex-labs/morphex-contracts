@@ -9,13 +9,12 @@ async function main() {
 
   const orderBook = await deployContract("OrderBook", []);
 
-  // Fantom testnet addresses
   await sendTxn(orderBook.initialize(
     "0x26e6C47682FfC1824d7aC5512752FC671dA5e607", // router
     "0x46940Dc651bFe3F2CC3E04cf9dC5579B50Cf0765", // vault
     "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", // weth
     "0x548f93779fBC992010C07467cBaf329DD5F059B7", // usdg
-    "5000000000000000", // 0.005 BNB
+    "3500000000000000", // 0.0035 BNB
     expandDecimals(10, 30) // min purchase token amount usd
   ), "orderBook.initialize");
 
