@@ -557,7 +557,7 @@ module.exports = {
       bufferAmount: 0,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 0,
+      maxGlobalLongSize: 1,
       maxGlobalShortSize: 0,
       spreadBasisPoints: 0
     },

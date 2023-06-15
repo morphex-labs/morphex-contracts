@@ -2,46 +2,10 @@ const { getFrameSigner, deployContract, contractAt, sendTxn, readTmpAddresses, c
 const { bigNumberify, expandDecimals } = require("../../test/shared/utilities")
 const { toChainlinkPrice } = require("../../test/shared/chainlink")
 
-const network = (process.env.HARDHAT_NETWORK || 'mainnet');
-const tokens = require('./tokens')['fantom'];
+const network = 'bsc' // set network here
+const tokens = require('./tokens')[network];
 
-async function getArbValues() {
-  const positionContracts = [
-    "0xb87a436B93fFE9D75c5cFA7bAcFff96430b09868", // PositionRouter
-    "0x75E42e6f01baf1D6022bEa862A28774a9f8a4A0C" // PositionManager
-  ]
-
-  const { btc, eth, link, uni } = tokens
-  const tokenArr = [btc, eth, link, uni]
-
-  return { positionContracts, tokenArr }
-}
-
-async function getAvaxValues() {
-  const positionContracts = [
-    "0xffF6D276Bc37c61A23f06410Dce4A400f66420f8", // PositionRouter
-    "0xA21B83E579f4315951bA658654c371520BDcB866" // PositionManager
-  ]
-
-  const { avax, eth, btc, btcb } = tokens
-  const tokenArr = [avax, eth, btc, btcb]
-
-  return { positionContracts, tokenArr }
-}
-
-async function getValues() {
-  if (network === "arbitrum") {
-    return getArbValues()
-  }
-
-  if (network === "avax") {
-    return getAvaxValues()
-  }
-}
-
-async function main() {
-  // const { positionContracts, tokenArr } = await getValues()
-
+async function getFantomValues() {
   const positionContracts = [
     "0x26e6C47682FfC1824d7aC5512752FC671dA5e607", // PositionRouter
     "0x366152Fc0FC4680e0A05ce9739a4210228C72BA3" // PositionManager
@@ -49,6 +13,34 @@ async function main() {
 
   const { ftm, eth, btc } = tokens
   const tokenArr = [ftm, eth, btc]
+
+  return { positionContracts, tokenArr }
+}
+
+async function getBscValues() {
+  const positionContracts = [
+    "0x05D97A8a5eF11010a6A5f89B3D4628ce43092614", // PositionRouter
+    "0x06c35893Ba9bc454e12c36F4117BC99f75e34346" // PositionManager
+  ]
+
+  const { bnb, eth, btc, xrp, ada } = tokens
+  const tokenArr = [bnb, eth, btc, xrp, ada]
+
+  return { positionContracts, tokenArr }
+}
+
+async function getValues() {
+  if (network === "fantom") {
+    return getFantomValues()
+  }
+
+  if (network === "bsc") {
+    return getBscValues()
+  }
+}
+
+async function main() {
+  const { positionContracts, tokenArr } = await getValues()
 
   const tokenAddresses = tokenArr.map(t => t.address)
   const longSizes = tokenArr.map((token) => {
