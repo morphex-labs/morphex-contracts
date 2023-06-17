@@ -340,8 +340,8 @@ async function queryDistributionData(network, fromTimestamp, toTimestamp, accoun
 }
 
 // Last values:
-// From: 2023-05-12 (timestamp 1683849600)
-// To (exclusively): 2023-05-27 (timestamp 1685145600)
+// From: 2023-05-27 (timestamp 1685145600)
+// To (exclusively): 2023-06-17 (timestamp 1686960000)
 
 async function main() {
   const parser = new ArgumentParser({
