@@ -179,7 +179,7 @@ async function main() {
       }
     }
 
-    // await sendTxn(nativeTokenContract.approve(batchSender.address, totalNativeAmount), "nativeToken.approve")
+    await sendTxn(nativeTokenContract.approve(batchSender.address, totalNativeAmount), "nativeToken.approve")
 
     await processBatch([affiliateAccounts, affiliateAmounts], batchSize, async (currentBatch) => {
       printBatch(currentBatch)
