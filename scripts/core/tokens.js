@@ -450,7 +450,7 @@ module.exports = {
       tokenWeight: 21000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 800 * 1000,
+      bufferAmount: 1000 * 1000,
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 300 * 1000,
@@ -472,7 +472,7 @@ module.exports = {
       bufferAmount: 120,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 400 * 1000,
+      maxGlobalLongSize: 500 * 1000,
       maxGlobalShortSize: 100 * 1000
     },
     btc: {
@@ -490,7 +490,7 @@ module.exports = {
       bufferAmount: 11,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 400 * 1000,
+      maxGlobalLongSize: 600 * 1000,
       maxGlobalShortSize: 100 * 1000
     },
     usdc: {
@@ -554,11 +554,11 @@ module.exports = {
       tokenWeight: 20000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 250,
+      bufferAmount: 300,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 60 * 1000,
-      maxGlobalShortSize: 40 * 1000,
+      maxGlobalLongSize: 80 * 1000,
+      maxGlobalShortSize: 60 * 1000,
       spreadBasisPoints: 0
     },
     eth: {
@@ -573,10 +573,10 @@ module.exports = {
       tokenWeight: 14000,
       minProfitBps: 0,
       maxUsdgAmount: 2000 * 1000,
-      bufferAmount: 15,
+      bufferAmount: 20,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 20 * 1000,
+      maxGlobalLongSize: 40 * 1000,
       maxGlobalShortSize: 20 * 1000
     },
     btc: {
@@ -609,11 +609,11 @@ module.exports = {
       tokenWeight: 1000,
       minProfitBps: 0,
       maxUsdgAmount: 500 * 1000,
-      bufferAmount: 6000,
+      bufferAmount: 10 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 1000,
-      maxGlobalShortSize: 1000
+      maxGlobalLongSize: 3000,
+      maxGlobalShortSize: 10 * 1000
     },
     ada: {
       name: "ada",
@@ -627,11 +627,11 @@ module.exports = {
       tokenWeight: 1000,
       minProfitBps: 0,
       maxUsdgAmount: 500 * 1000,
-      bufferAmount: 10 * 1000,
+      bufferAmount: 18 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 1000,
-      maxGlobalShortSize: 1000
+      maxGlobalLongSize: 3000,
+      maxGlobalShortSize: 10 * 1000
     },
     cake: {
       name: "cake",
@@ -661,7 +661,7 @@ module.exports = {
       tokenWeight: 15000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 20000,
+      bufferAmount: 40 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -675,7 +675,7 @@ module.exports = {
       tokenWeight: 35000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 60 * 1000,
+      bufferAmount: 80 * 1000,
       isStable: true,
       isShortable: false
     },
