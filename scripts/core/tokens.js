@@ -453,8 +453,8 @@ module.exports = {
       bufferAmount: 1000 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 300 * 1000,
-      maxGlobalShortSize: 100 * 1000,
+      maxGlobalLongSize: 32 * 1000,
+      maxGlobalShortSize: 1900,
       spreadBasisPoints: 0
     },
     eth: {
@@ -468,12 +468,12 @@ module.exports = {
       isStrictStable: false,
       tokenWeight: 18000,
       minProfitBps: 0,
-      maxUsdgAmount: 3000 * 1000,
+      maxUsdgAmount: 255 * 1000,
       bufferAmount: 120,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 500 * 1000,
-      maxGlobalShortSize: 100 * 1000
+      maxGlobalLongSize: 23600,
+      maxGlobalShortSize: 1
     },
     btc: {
       name: "btc",
@@ -486,12 +486,12 @@ module.exports = {
       isStrictStable: false,
       tokenWeight: 18000,
       minProfitBps: 0,
-      maxUsdgAmount: 3000 * 1000,
+      maxUsdgAmount:  654 * 1000,
       bufferAmount: 11,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 600 * 1000,
-      maxGlobalShortSize: 100 * 1000
+      maxGlobalLongSize: 92 * 1000,
+      maxGlobalShortSize: 1900
     },
     usdc: {
       name: "usdc",
@@ -502,8 +502,8 @@ module.exports = {
       isStrictStable: true,
       tokenWeight: 28000,
       minProfitBps: 0,
-      maxUsdgAmount: 2000 * 1000,
-      bufferAmount: 350 * 1000,
+      maxUsdgAmount: 500 * 1000,
+      bufferAmount: 250 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -516,7 +516,7 @@ module.exports = {
       isStrictStable: true,
       tokenWeight: 5000,
       minProfitBps: 0,
-      maxUsdgAmount: 1000 * 1000,
+      maxUsdgAmount: 100 * 1000,
       bufferAmount: 50 * 1000,
       isStable: true,
       isShortable: false
@@ -530,7 +530,7 @@ module.exports = {
       isStrictStable: true,
       tokenWeight: 10000,
       minProfitBps: 0,
-      maxUsdgAmount: 1000 * 1000,
+      maxUsdgAmount: 200 * 1000,
       bufferAmount: 150 * 1000,
       isStable: true,
       isShortable: false

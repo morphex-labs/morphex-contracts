@@ -2,33 +2,30 @@ const { getFrameSigner, deployContract, contractAt , sendTxn, writeTmpAddresses,
 const { expandDecimals } = require("../../test/shared/utilities")
 const { toUsd } = require("../../test/shared/units")
 
-const network = (process.env.HARDHAT_NETWORK || 'mainnet');
-const tokens = require('./tokens')[network];
+const network = 'bsc';
 
 async function main() {
-  const signer = await getFrameSigner()
-
   let vault
-  if (network === "avax") {
-    vault = await contractAt("Vault", "0x9ab2De34A33fB459b538c43f251eB825645e8595")
+  if (network === "bsc") {
+    vault = await contractAt("Vault", "0x46940Dc651bFe3F2CC3E04cf9dC5579B50Cf0765")
   }
-  if (network === "arbitrum") {
-    vault = await contractAt("Vault", "0x489ee077994B6658eAfA855C308275EAd8097C4A")
+  if (network === "fantom") {
+    vault = await contractAt("Vault", "0x3CB54f0eB62C371065D739A34a775CC16f46563e")
   }
 
-  const timelock = await contractAt("Timelock", await vault.gov(), signer)
+  const timelock = await contractAt("Timelock", await vault.gov())
   console.log("timelock", timelock.address)
 
   await sendTxn(timelock.setFees(
     vault.address,
     50, // _taxBasisPoints
     5, // _stableTaxBasisPoints
-    25, // _mintBurnFeeBasisPoints
+    20, // _mintBurnFeeBasisPoints
     30, // _swapFeeBasisPoints
     1, // _stableSwapFeeBasisPoints
     10, // _marginFeeBasisPoints
     toUsd(5), // _liquidationFeeUsd
-    3 * 60 * 60, // _minProfitTime
+    86400, // _minProfitTime
     true // _hasDynamicFees
   ), "vault.setFees")
 }

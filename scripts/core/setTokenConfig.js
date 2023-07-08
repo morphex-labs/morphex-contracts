@@ -2,7 +2,7 @@ const { deployContract, contractAt, sendTxn, readTmpAddresses, callWithRetries }
 const { bigNumberify, expandDecimals } = require("../../test/shared/utilities")
 const { toChainlinkPrice } = require("../../test/shared/chainlink")
 
-const chain = 'bsc' // set to chain you want to work with
+const chain = 'fantom' // set to chain you want to work with
 
 const network = (process.env.HARDHAT_NETWORK || 'mainnet');
 const tokens = require('./tokens')[chain];
