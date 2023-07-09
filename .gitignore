@@ -13,10 +13,10 @@ data/holders
 data/contractList
 scripts/volume-rewards/output.json
 scripts/analytics/prices.csv
-flattened
 distribution-data*.json
 **/.DS_Store
 
 #Hardhat files
 cache
 artifacts
+flattened
