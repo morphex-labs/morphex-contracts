@@ -453,8 +453,8 @@ module.exports = {
       bufferAmount: 1000 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 32 * 1000,
-      maxGlobalShortSize: 1900,
+      maxGlobalLongSize: 30 * 1000,
+      maxGlobalShortSize: 1186,
       spreadBasisPoints: 0
     },
     eth: {
@@ -472,7 +472,7 @@ module.exports = {
       bufferAmount: 120,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 23600,
+      maxGlobalLongSize: 23500,
       maxGlobalShortSize: 1
     },
     btc: {
@@ -490,8 +490,8 @@ module.exports = {
       bufferAmount: 11,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 92 * 1000,
-      maxGlobalShortSize: 1900
+      maxGlobalLongSize: 90 * 1000,
+      maxGlobalShortSize: 1850
     },
     usdc: {
       name: "usdc",
