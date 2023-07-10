@@ -453,8 +453,8 @@ module.exports = {
       bufferAmount: 1000 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 30 * 1000,
-      maxGlobalShortSize: 1186,
+      maxGlobalLongSize: 1,
+      maxGlobalShortSize: 1,
       spreadBasisPoints: 0
     },
     eth: {
@@ -472,7 +472,7 @@ module.exports = {
       bufferAmount: 120,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 23500,
+      maxGlobalLongSize: 1,
       maxGlobalShortSize: 1
     },
     btc: {
@@ -487,11 +487,11 @@ module.exports = {
       tokenWeight: 18000,
       minProfitBps: 0,
       maxUsdgAmount:  654 * 1000,
-      bufferAmount: 11,
+      bufferAmount: 50,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 90 * 1000,
-      maxGlobalShortSize: 1850
+      maxGlobalLongSize: 1,
+      maxGlobalShortSize: 1
     },
     usdc: {
       name: "usdc",
@@ -503,7 +503,7 @@ module.exports = {
       tokenWeight: 28000,
       minProfitBps: 0,
       maxUsdgAmount: 500 * 1000,
-      bufferAmount: 250 * 1000,
+      bufferAmount: 500 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -517,7 +517,7 @@ module.exports = {
       tokenWeight: 5000,
       minProfitBps: 0,
       maxUsdgAmount: 100 * 1000,
-      bufferAmount: 50 * 1000,
+      bufferAmount: 500 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -531,7 +531,7 @@ module.exports = {
       tokenWeight: 10000,
       minProfitBps: 0,
       maxUsdgAmount: 200 * 1000,
-      bufferAmount: 150 * 1000,
+      bufferAmount: 600 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -554,11 +554,11 @@ module.exports = {
       tokenWeight: 20000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 400,
+      bufferAmount: 800,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 80 * 1000,
-      maxGlobalShortSize: 60 * 1000,
+      maxGlobalLongSize: 200 * 1000,
+      maxGlobalShortSize: 100 * 1000,
       spreadBasisPoints: 0
     },
     eth: {
@@ -573,11 +573,11 @@ module.exports = {
       tokenWeight: 14000,
       minProfitBps: 0,
       maxUsdgAmount: 2000 * 1000,
-      bufferAmount: 40,
+      bufferAmount: 50,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 40 * 1000,
-      maxGlobalShortSize: 20 * 1000
+      maxGlobalLongSize: 75 * 1000,
+      maxGlobalShortSize: 100 * 1000
     },
     btc: {
       name: "btc",
@@ -591,11 +591,11 @@ module.exports = {
       tokenWeight: 14000,
       minProfitBps: 0,
       maxUsdgAmount: 2000 * 1000,
-      bufferAmount: 2,
+      bufferAmount: 4,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 40 * 1000,
-      maxGlobalShortSize: 20 * 1000
+      maxGlobalLongSize: 150 * 1000,
+      maxGlobalShortSize: 100 * 1000
     },
     xrp: {
       name: "xrp",
@@ -609,11 +609,11 @@ module.exports = {
       tokenWeight: 1000,
       minProfitBps: 0,
       maxUsdgAmount: 500 * 1000,
-      bufferAmount: 20 * 1000,
+      bufferAmount: 30 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 3000,
-      maxGlobalShortSize: 10 * 1000
+      maxGlobalLongSize: 10 * 1000,
+      maxGlobalShortSize: 50 * 1000
     },
     ada: {
       name: "ada",
@@ -630,8 +630,8 @@ module.exports = {
       bufferAmount: 20 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 3000,
-      maxGlobalShortSize: 10 * 1000
+      maxGlobalLongSize: 20 * 1000,
+      maxGlobalShortSize: 50 * 1000
     },
     cake: {
       name: "cake",
@@ -661,7 +661,7 @@ module.exports = {
       tokenWeight: 15000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 100 * 1000,
+      bufferAmount: 150 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -675,7 +675,7 @@ module.exports = {
       tokenWeight: 35000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 200 * 1000,
+      bufferAmount: 400 * 1000,
       isStable: true,
       isShortable: false
     },
