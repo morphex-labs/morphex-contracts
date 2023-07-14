@@ -7,7 +7,7 @@ const { expandDecimals, bigNumberify } = require("../../test/shared/utilities")
 // const avaxPrice = "12"
 const gmxPrice = 12 // multiplied by 100 to avoid decimals, this is MPX
 
-const shouldSendTxn = false
+const shouldSendTxn = true
 
 // let arbitrumFile
 // if (process.env.ARBITRUM_FILE) {
