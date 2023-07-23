@@ -48,7 +48,7 @@ task("accounts", "Prints the list of accounts", async () => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  defaultNetwork: "bsc",
+  defaultNetwork: "fantom",
   networks: {
     localhost: {
       timeout: 120000
@@ -99,7 +99,7 @@ module.exports = {
     },
     fantom: {
       url: FTM_URL,
-      // gasPrice: 100000000000,
+      gasMultiplier: 2,
       chainId: 250,
       accounts: [FTM_DEPLOY_KEY]
     },

@@ -5,7 +5,7 @@ const { errors } = require("../../test/core/Vault/helpers")
 
 const network = (process.env.HARDHAT_NETWORK || 'mainnet');
 const tokens = require('./tokens')[network];
-const nativeTokenAddress = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
+const nativeTokenAddress = "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83"; // wftm
 
 const depositFee = 30 // 0.3%
 
@@ -77,7 +77,7 @@ async function getValues(signer) {
 }
 
 async function main() {
-  const signer = signers.bsc;
+  const signer = signers.fantom;
 
   // const {
   //   positionManagerAddress,
@@ -94,15 +94,15 @@ async function main() {
   //   partnerContracts
   // } = await getValues(signer)
 
-  const vault = await contractAt("Vault", "0x46940Dc651bFe3F2CC3E04cf9dC5579B50Cf0765")
+  const vault = await contractAt("Vault", "0x245cD6d33578de9aF75a3C0c636c726b1A8cbdAa")
   // const timelock = await contractAt("Timelock", await vault.gov(), signer)
   const router = await contractAt("Router", await vault.router(), signer)
-  const shortsTracker = await contractAt("ShortsTracker", "0x6c72ADbDc1029ee901dC97C5604487285D972A4f", signer)
+  const shortsTracker = await contractAt("ShortsTracker", "0x0DBB9d0D0ae1C25Ce05272a6715819dE2e351D84", signer)
   const weth = await contractAt("WETH", nativeTokenAddress)
-  const orderBook = await contractAt("OrderBook", "0x73bF80506F891030570FDC4D53a71f44a442353C")
+  const orderBook = await contractAt("OrderBook", "0x3CF6fE161Ee517B5002feFa31Ed478681FAed8C9")
   // const referralStorage = await contractAt("ReferralStorage", "0x32034bF6693Cf8c4F970962740609BF7A43ff350")
 
-  const positionManagerAddress = ""
+  const positionManagerAddress = "0x2F66E711294328587e16E8912ae08bAD979feaAb"
 
   const orderKeepers = [
     { address: "0xD7a38CbC6d7153e1c37Bab3E010cB73dEc6F4971" }
