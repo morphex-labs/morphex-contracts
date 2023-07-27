@@ -110,20 +110,20 @@ async function main() {
 
   await sendTxn(glpManager.setHandler(rewardRouter.address, true), "glpManager.setHandler(rewardRouter)")
 
-  // // allow rewardRouter to stake in stakedGmxTracker         QUEUE
+  // // allow rewardRouter to stake in stakedGmxTracker         QUEUE /
   // await sendTxn(stakedGmxTracker.setHandler(rewardRouter.address, true), "stakedGmxTracker.setHandler(rewardRouter)")
 
   // // allow bonusGmxTracker to stake stakedGmxTracker            
   // await sendTxn(stakedGmxTracker.setHandler(bonusGmxTracker.address, true), "stakedGmxTracker.setHandler(bonusGmxTracker)")
 
-  // // allow rewardRouter to stake in bonusGmxTracker       QUEUE
+  // // allow rewardRouter to stake in bonusGmxTracker       QUEUE /
   // await sendTxn(bonusGmxTracker.setHandler(rewardRouter.address, true), "bonusGmxTracker.setHandler(rewardRouter)")
 
   // // allow bonusGmxTracker to stake feeGmxTracker          
   // await sendTxn(bonusGmxTracker.setHandler(feeGmxTracker.address, true), "bonusGmxTracker.setHandler(feeGmxTracker)")
   // await sendTxn(bonusGmxDistributor.setBonusMultiplier(10000), "bonusGmxDistributor.setBonusMultiplier")
   
-  // // allow rewardRouter to stake in feeGmxTracker           QUEUE
+  // // allow rewardRouter to stake in feeGmxTracker           QUEUE /
   // await sendTxn(feeGmxTracker.setHandler(rewardRouter.address, true), "feeGmxTracker.setHandler(rewardRouter)")
 
   // // allow stakedGmxTracker to stake esGmx
@@ -131,7 +131,7 @@ async function main() {
   // // allow feeGmxTracker to stake bnGmx
   // await sendTxn(bnGmx.setHandler(feeGmxTracker.address, true), "bnGmx.setHandler(feeGmxTracker")
 
-  // // allow rewardRouter to burn bnGmx          QUEUED TO TRANSFER GOV IN ORDER TO SET AS MINTER ROLE
+  // // allow rewardRouter to burn bnGmx          QUEUED TO TRANSFER GOV IN ORDER TO SET AS MINTER ROLE /
   // await sendTxn(bnGmx.setMinter(rewardRouter.address, true), "bnGmx.setMinter(rewardRouter")
 
   // allow stakedGlpTracker to stake feeGlpTracker
@@ -144,17 +144,17 @@ async function main() {
   // allow rewardRouter to stake in stakedGlpTracker
   await sendTxn(stakedGlpTracker.setHandler(rewardRouter.address, true), "stakedGlpTracker.setHandler(rewardRouter)")
 
-  // await sendTxn(esGmx.setHandler(rewardRouter.address, true), "esGmx.setHandler(rewardRouter)")    QUEUE
+  // await sendTxn(esGmx.setHandler(rewardRouter.address, true), "esGmx.setHandler(rewardRouter)")    QUEUE /
   // await sendTxn(esGmx.setHandler(stakedGmxDistributor.address, true), "esGmx.setHandler(stakedGmxDistributor)")
-  // await sendTxn(esGmx.setHandler(stakedGlpDistributor.address, true), "esGmx.setHandler(stakedGlpDistributor)")   QUEUE
-  // await sendTxn(esGmx.setHandler(stakedGlpTracker.address, true), "esGmx.setHandler(stakedGlpTracker)")     QUEUE
+  // await sendTxn(esGmx.setHandler(stakedGlpDistributor.address, true), "esGmx.setHandler(stakedGlpDistributor)")   QUEUE /
+  // await sendTxn(esGmx.setHandler(stakedGlpTracker.address, true), "esGmx.setHandler(stakedGlpTracker)")     QUEUE /
   // await sendTxn(esGmx.setHandler(gmxVester.address, true), "esGmx.setHandler(gmxVester)")
-  // await sendTxn(esGmx.setHandler(glpVester.address, true), "esGmx.setHandler(glpVester)")      QUEUE
+  // await sendTxn(esGmx.setHandler(glpVester.address, true), "esGmx.setHandler(glpVester)")      QUEUE /
 
   // await sendTxn(esGmx.setMinter(gmxVester.address, true), "esGmx.setMinter(gmxVester)")
-  // await sendTxn(esGmx.setMinter(glpVester.address, true), "esGmx.setMinter(glpVester)")  QUEUED TO TRANSFER GOV IN ORDER TO SET AS MINTER ROLE
+  // await sendTxn(esGmx.setMinter(glpVester.address, true), "esGmx.setMinter(glpVester)")  QUEUED TO TRANSFER GOV IN ORDER TO SET AS MINTER ROLE /
 
-  // await sendTxn(gmxVester.setHandler(rewardRouter.address, true), "gmxVester.setHandler(rewardRouter)")      QUEUE
+  // await sendTxn(gmxVester.setHandler(rewardRouter.address, true), "gmxVester.setHandler(rewardRouter)")      QUEUE /
   await sendTxn(glpVester.setHandler(rewardRouter.address, true), "glpVester.setHandler(rewardRouter)")
 
   // await sendTxn(feeGmxTracker.setHandler(gmxVester.address, true), "feeGmxTracker.setHandler(gmxVester)")

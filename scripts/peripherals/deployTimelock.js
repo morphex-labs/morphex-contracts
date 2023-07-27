@@ -48,15 +48,15 @@ async function main() {
 
   // const { vault, tokenManager, glpManager, rewardRouter, positionRouter, positionManager, gmx } = await getValues()
 
-  const vault = await contractAt("Vault", "0x46940Dc651bFe3F2CC3E04cf9dC5579B50Cf0765")
+  const vault = await contractAt("Vault", "0x245cD6d33578de9aF75a3C0c636c726b1A8cbdAa")
   const tokenManager = { address: "0xDd257d090FA0f9ffB496b790844418593e969ba6" }
-  const glpManager = { address: "0x749DA3a34A6E1b098F3BFaEd23DAD2b7D7846b9B" }
-  const rewardRouter = { address: "0x9Ac78C583bD14370248Fb65C151D33CF21c1f4E4" }
+  const glpManager = { address: "0x3A15Bac2D87C89F08147353fc9aE27080631b73d" }
+  const rewardRouter = { address: "0xd6489eAf13f61822356F30618E1D9947fa1Ef46F" }
 
-  const positionRouter = { address: "0x05D97A8a5eF11010a6A5f89B3D4628ce43092614" }
-  const positionManager = { address: "0x06c35893Ba9bc454e12c36F4117BC99f75e34346" }
+  const positionRouter = { address: "0x5D90059b8116906bF8c1c7B7E3920A4b6e9DF4dB" }
+  const positionManager = { address: "0x2F66E711294328587e16E8912ae08bAD979feaAb" }
 
-  const gmx = { address: "0x94C6B279b5df54b335aE51866d6E2A56BF5Ef9b7" }
+  const gmx = { address: "0x66eEd5FF1701E6ed8470DC391F05e27B1d0657eb" }
 
 
   const mintReceiver = tokenManager

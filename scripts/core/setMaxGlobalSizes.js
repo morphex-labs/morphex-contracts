@@ -7,12 +7,12 @@ const tokens = require('./tokens')[network];
 
 async function getFantomValues() {
   const positionContracts = [
-    "0x26e6C47682FfC1824d7aC5512752FC671dA5e607", // PositionRouter
-    "0x366152Fc0FC4680e0A05ce9739a4210228C72BA3" // PositionManager
+    "0x5D90059b8116906bF8c1c7B7E3920A4b6e9DF4dB", // PositionRouter
+    "0x2F66E711294328587e16E8912ae08bAD979feaAb" // PositionManager
   ]
 
-  const { ftm, eth, btc } = tokens
-  const tokenArr = [ftm, eth, btc]
+  const { ftm, axleth, lzeth, axlbtc, lzbtc } = tokens
+  const tokenArr = [ftm, axleth, lzeth, axlbtc, lzbtc]
 
   return { positionContracts, tokenArr }
 }
