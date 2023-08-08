@@ -450,11 +450,11 @@ module.exports = {
       tokenWeight: 22000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 25 * 1000,
+      bufferAmount: 150 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 1,
-      maxGlobalShortSize: 1,
+      maxGlobalLongSize: 100 * 1000,
+      maxGlobalShortSize: 40 * 1000,
       spreadBasisPoints: 0
     },
     lzeth: {
@@ -469,11 +469,11 @@ module.exports = {
       tokenWeight: 7000,
       minProfitBps: 0,
       maxUsdgAmount: 500 * 1000,
-      bufferAmount: 10,
+      bufferAmount: 1,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 1,
-      maxGlobalShortSize: 1
+      maxGlobalLongSize: 5 * 1000,
+      maxGlobalShortSize: 5 * 1000
     },
     axleth: {
       name: "axleth",
@@ -487,11 +487,11 @@ module.exports = {
       tokenWeight: 7000,
       minProfitBps: 0,
       maxUsdgAmount: 500 * 1000,
-      bufferAmount: 10,
+      bufferAmount: 1,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 1,
-      maxGlobalShortSize: 1
+      maxGlobalLongSize: 5 * 1000,
+      maxGlobalShortSize: 5 * 1000
     },
     lzbtc: {
       name: "lzbtc",
@@ -505,11 +505,11 @@ module.exports = {
       tokenWeight: 7000,
       minProfitBps: 0,
       maxUsdgAmount:  500 * 1000,
-      bufferAmount: 1,
+      bufferAmount: 0,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 1,
-      maxGlobalShortSize: 1
+      maxGlobalLongSize: 8 * 1000,
+      maxGlobalShortSize: 5 * 1000
     },
     axlbtc: {
       name: "axlbtc",
@@ -523,11 +523,11 @@ module.exports = {
       tokenWeight: 7000,
       minProfitBps: 0,
       maxUsdgAmount:  500 * 1000,
-      bufferAmount: 1,
+      bufferAmount: 0,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 1,
-      maxGlobalShortSize: 1
+      maxGlobalLongSize: 1 * 1000,
+      maxGlobalShortSize: 5 * 1000
     },
     lzusdc: {
       name: "lzusdc",
@@ -539,7 +539,7 @@ module.exports = {
       tokenWeight: 20000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 50 * 1000,
+      bufferAmount: 15 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -553,7 +553,7 @@ module.exports = {
       tokenWeight: 20000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 50 * 1000,
+      bufferAmount: 15 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -567,7 +567,7 @@ module.exports = {
       tokenWeight: 5000,
       minProfitBps: 0,
       maxUsdgAmount: 500 * 1000,
-      bufferAmount: 10 * 1000,
+      bufferAmount: 4 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -581,7 +581,7 @@ module.exports = {
       tokenWeight: 5000,
       minProfitBps: 0,
       maxUsdgAmount: 500 * 1000,
-      bufferAmount: 10 * 1000,
+      bufferAmount: 4 * 1000,
       isStable: true,
       isShortable: false
     },
