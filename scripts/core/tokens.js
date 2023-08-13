@@ -447,10 +447,10 @@ module.exports = {
       fastPricePrecision: 1000,
       maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
-      tokenWeight: 22000,
+      tokenWeight: 36000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 150 * 1000,
+      bufferAmount: 500 * 1000,
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 100 * 1000,
@@ -466,14 +466,14 @@ module.exports = {
       fastPricePrecision: 1000,
       maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
-      tokenWeight: 7000,
+      tokenWeight: 3500,
       minProfitBps: 0,
       maxUsdgAmount: 500 * 1000,
-      bufferAmount: 1,
+      bufferAmount: 5,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 5 * 1000,
-      maxGlobalShortSize: 5 * 1000
+      maxGlobalLongSize: 25 * 1000,
+      maxGlobalShortSize: 20 * 1000
     },
     axleth: {
       name: "axleth",
@@ -484,14 +484,14 @@ module.exports = {
       fastPricePrecision: 1000,
       maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
-      tokenWeight: 7000,
+      tokenWeight: 3500,
       minProfitBps: 0,
       maxUsdgAmount: 500 * 1000,
-      bufferAmount: 1,
+      bufferAmount: 5,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 5 * 1000,
-      maxGlobalShortSize: 5 * 1000
+      maxGlobalLongSize: 75 * 1000,
+      maxGlobalShortSize: 25 * 1000
     },
     lzbtc: {
       name: "lzbtc",
@@ -502,7 +502,7 @@ module.exports = {
       fastPricePrecision: 1000,
       maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
-      tokenWeight: 7000,
+      tokenWeight: 3500,
       minProfitBps: 0,
       maxUsdgAmount:  500 * 1000,
       bufferAmount: 0,
@@ -520,14 +520,14 @@ module.exports = {
       fastPricePrecision: 1000,
       maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
-      tokenWeight: 7000,
+      tokenWeight: 3500,
       minProfitBps: 0,
       maxUsdgAmount:  500 * 1000,
       bufferAmount: 0,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 1 * 1000,
-      maxGlobalShortSize: 5 * 1000
+      maxGlobalLongSize: 45 * 1000,
+      maxGlobalShortSize: 10 * 1000
     },
     lzusdc: {
       name: "lzusdc",
@@ -536,10 +536,10 @@ module.exports = {
       priceFeed: "0x2553f4eeb82d5A26427b8d1106C51499CBa5D99c",
       priceDecimals: 8,
       isStrictStable: true,
-      tokenWeight: 20000,
+      tokenWeight: 24000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 15 * 1000,
+      bufferAmount: 20 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -550,10 +550,10 @@ module.exports = {
       priceFeed: "0x2553f4eeb82d5A26427b8d1106C51499CBa5D99c",
       priceDecimals: 8,
       isStrictStable: true,
-      tokenWeight: 20000,
+      tokenWeight: 24000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 15 * 1000,
+      bufferAmount: 50 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -564,7 +564,7 @@ module.exports = {
       priceFeed: "0xF64b636c5dFe1d3555A847341cDC449f612307d0",
       priceDecimals: 8,
       isStrictStable: true,
-      tokenWeight: 5000,
+      tokenWeight: 1000,
       minProfitBps: 0,
       maxUsdgAmount: 500 * 1000,
       bufferAmount: 4 * 1000,
@@ -578,7 +578,7 @@ module.exports = {
       priceFeed: "0xF64b636c5dFe1d3555A847341cDC449f612307d0",
       priceDecimals: 8,
       isStrictStable: true,
-      tokenWeight: 5000,
+      tokenWeight: 1000,
       minProfitBps: 0,
       maxUsdgAmount: 500 * 1000,
       bufferAmount: 4 * 1000,
