@@ -19,7 +19,7 @@ async function main() {
 
   const stakedGlpTracker = await deployContract("RewardTracker", ["Fee + Staked BLP", "fsBLP"])
   // const stakedGlpTracker = await contractAt("RewardTracker", "0x4e0e48b787E308049d0CA6bfAA84D5c61c5a4A1e");
-  const stakedGlpDistributor = await deployContract("RewardDistributor", [gmx.address, stakedGlpTracker.address])
+  const stakedGlpDistributor = await deployContract("RewardDistributorV2", [gmx.address, stakedGlpTracker.address])
   // const stakedGlpDistributor = await contractAt("RewardDistributor", "0x99f8f0628003a52843c2C3b33A0e49E85d9a89e5");
   await sendTxn(stakedGlpTracker.initialize([feeGlpTracker.address], stakedGlpDistributor.address), "stakedGlpTracker.initialize")
   await sendTxn(stakedGlpDistributor.updateLastDistributionTime(), "stakedGlpDistributor.updateLastDistributionTime")

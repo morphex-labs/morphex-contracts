@@ -12,6 +12,7 @@ data/snapshotBalance
 data/holders
 data/contractList
 scripts/volume-rewards/output.json
+scripts/volume-rewards/weeks
 scripts/analytics/prices.csv
 distribution-data*.json
 **/.DS_Store

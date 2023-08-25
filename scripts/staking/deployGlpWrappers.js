@@ -3,8 +3,8 @@ const { signers, deployContract, contractAt, sendTxn, writeTmpAddresses } = requ
 async function main() {
   const glp = { address: "0xe771b4E273dF31B85D7A7aE0Efd22fb44BdD0633" }
   const glpManager = { address: "0x9fAc7b75f367d5B35a6D6D0a09572eFcC3D406C5" }
-  const stakedGlpTracker = await contractAt("RewardTracker", "0xA9F0fAed6940915A0737237d156B70Af6d9879F3") // fsBLP
-  const feeGlpTracker = await contractAt("RewardTracker", "0x4D4554307c9a3f20EffE1cc2D1D4ba6190D3C469") // fBLP
+  const stakedGlpTracker = await contractAt("RewardTracker", "0x2D5875ab0eFB999c1f49C798acb9eFbd1cfBF63c") // fsBLP
+  const feeGlpTracker = await contractAt("RewardTracker", "0xa2242d0A8b0b5c1A487AbFC03Cd9FEf6262BAdCA") // fBLP
 
   const stakedGlp = await deployContract("StakedGlp", [
     glp.address,
