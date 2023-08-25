@@ -14,7 +14,7 @@ contract USDG is YieldToken, IUSDG {
         _;
     }
 
-    constructor(address _vault) public YieldToken("Morphex USD", "mUSD", 0) {
+    constructor(address _vault) public YieldToken("BMX USD", "bUSD", 0) {
         vaults[_vault] = true;
     }
 

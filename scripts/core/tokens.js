@@ -604,11 +604,11 @@ module.exports = {
       tokenWeight: 20000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 400,
+      bufferAmount: 300,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 150 * 1000,
-      maxGlobalShortSize: 75 * 1000,
+      maxGlobalLongSize: 80 * 1000,
+      maxGlobalShortSize: 50 * 1000,
       spreadBasisPoints: 0
     },
     eth: {
@@ -623,11 +623,11 @@ module.exports = {
       tokenWeight: 14000,
       minProfitBps: 0,
       maxUsdgAmount: 2000 * 1000,
-      bufferAmount: 40,
+      bufferAmount: 30,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 100 * 1000,
-      maxGlobalShortSize: 75 * 1000
+      maxGlobalLongSize: 50 * 1000,
+      maxGlobalShortSize: 50 * 1000
     },
     btc: {
       name: "btc",
@@ -641,11 +641,11 @@ module.exports = {
       tokenWeight: 14000,
       minProfitBps: 0,
       maxUsdgAmount: 2000 * 1000,
-      bufferAmount: 2,
+      bufferAmount: 1,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 85 * 1000,
-      maxGlobalShortSize: 75 * 1000
+      maxGlobalLongSize: 50 * 1000,
+      maxGlobalShortSize: 50 * 1000
     },
     xrp: {
       name: "xrp",
@@ -659,11 +659,11 @@ module.exports = {
       tokenWeight: 1000,
       minProfitBps: 0,
       maxUsdgAmount: 500 * 1000,
-      bufferAmount: 10 * 1000,
+      bufferAmount: 3 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 20 * 1000,
-      maxGlobalShortSize: 20 * 1000
+      maxGlobalLongSize: 5 * 1000,
+      maxGlobalShortSize: 5 * 1000
     },
     ada: {
       name: "ada",
@@ -680,8 +680,8 @@ module.exports = {
       bufferAmount: 20 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 15 * 1000,
-      maxGlobalShortSize: 15 * 1000
+      maxGlobalLongSize: 7 * 1000,
+      maxGlobalShortSize: 5 * 1000
     },
     cake: {
       name: "cake",
@@ -711,7 +711,7 @@ module.exports = {
       tokenWeight: 15000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 100 * 1000,
+      bufferAmount: 60 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -725,13 +725,84 @@ module.exports = {
       tokenWeight: 35000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 250 * 1000,
+      bufferAmount: 125 * 1000,
       isStable: true,
       isShortable: false
     },
     nativeToken: {
       name: "wbnb",
       address: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      decimals: 18
+    }
+  },
+  base: {
+    eth: {
+      name: "eth",
+      address: "0x4200000000000000000000000000000000000006",
+      decimals: 18,
+      priceFeed: "0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70",
+      priceDecimals: 8,
+      fastPricePrecision: 1000,
+      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      isStrictStable: false,
+      tokenWeight: 40000,
+      minProfitBps: 0,
+      maxUsdgAmount: 2000 * 1000,
+      bufferAmount: 0,
+      isStable: false,
+      isShortable: true,
+      maxGlobalLongSize: 0,
+      maxGlobalShortSize: 0
+    },
+    btc: {
+      name: "btc",
+      address: "0x1a35EE4640b0A3B87705B0A4B45D227Ba60Ca2ad",
+      decimals: 8,
+      priceFeed: "0xCCADC697c55bbB68dc5bCdf8d3CBe83CdD4E071E",
+      priceDecimals: 8,
+      fastPricePrecision: 1000,
+      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      isStrictStable: false,
+      tokenWeight: 10000,
+      minProfitBps: 0,
+      maxUsdgAmount: 2000 * 1000,
+      bufferAmount: 0,
+      isStable: false,
+      isShortable: true,
+      maxGlobalLongSize: 0,
+      maxGlobalShortSize: 0
+    },
+    usdc: {
+      name: "usdc",
+      address: "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA",
+      decimals: 6,
+      priceFeed: "0x7e860098F58bBFC8648a4311b374B1D669a2bc6B",
+      priceDecimals: 8,
+      isStrictStable: true,
+      tokenWeight: 40000,
+      minProfitBps: 0,
+      maxUsdgAmount: 1000 * 1000,
+      bufferAmount: 0,
+      isStable: true,
+      isShortable: false
+    },
+    dai: {
+      name: "dai",
+      address: "0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb",
+      decimals: 18,
+      priceFeed: "0x591e79239a7d679378eC8c847e5038150364C78F",
+      priceDecimals: 8,
+      isStrictStable: true,
+      tokenWeight: 10000,
+      minProfitBps: 0,
+      maxUsdgAmount: 3000 * 1000,
+      bufferAmount: 0,
+      isStable: true,
+      isShortable: false
+    },
+    nativeToken: {
+      name: "weth",
+      address: "0x4200000000000000000000000000000000000006",
       decimals: 18
     }
   }

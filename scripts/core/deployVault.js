@@ -7,18 +7,18 @@ const network = (process.env.HARDHAT_NETWORK || 'mainnet');
 // const tokens = require('./tokens')[network];
 
 async function main() {
-  const nativeTokenAddress = "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83"; // wftm
+  const nativeTokenAddress = "0x4200000000000000000000000000000000000006"; // weth
 
-  // const vault = await deployContract("Vault", [])
-  const vault = await contractAt("Vault", "0x245cD6d33578de9aF75a3C0c636c726b1A8cbdAa")
-  // const usdg = await deployContract("USDG", [vault.address])
-  const usdg = await contractAt("USDG", "0xe135c7BFfda932b5B862Da442cF4CbC4d43DC3Ad")
-  // const router = await deployContract("Router", [vault.address, usdg.address, nativeTokenAddress])
-  const router = await contractAt("Router", "0x3D5343749279a974c16FCFF3515879C0e18E91C4")
-  const vaultPriceFeed = await contractAt("VaultPriceFeed", "0x7a451DE877CbB6551AACa671d0458B6f9dF1e29A")
+  const vault = await deployContract("Vault", [])
+  // const vault = await contractAt("Vault", "0x245cD6d33578de9aF75a3C0c636c726b1A8cbdAa")
+  const usdg = await deployContract("USDG", [vault.address])
+  // const usdg = await contractAt("USDG", "0xe135c7BFfda932b5B862Da442cF4CbC4d43DC3Ad")
+  const router = await deployContract("Router", [vault.address, usdg.address, nativeTokenAddress])
+  // const router = await contractAt("Router", "0x3D5343749279a974c16FCFF3515879C0e18E91C4")
+  // const vaultPriceFeed = await contractAt("VaultPriceFeed", "0x7a451DE877CbB6551AACa671d0458B6f9dF1e29A")
   // const secondaryPriceFeed = await deployContract("FastPriceFeed", [5 * 60])
 
-  // const vaultPriceFeed = await deployContract("VaultPriceFeed", [])
+  const vaultPriceFeed = await deployContract("VaultPriceFeed", [])
 
   await sendTxn(vaultPriceFeed.setMaxStrictPriceDeviation(expandDecimals(1, 28)), "vaultPriceFeed.setMaxStrictPriceDeviation") // 0.05 USD
   await sendTxn(vaultPriceFeed.setPriceSampleSpace(1), "vaultPriceFeed.setPriceSampleSpace")

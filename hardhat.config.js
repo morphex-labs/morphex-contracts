@@ -28,7 +28,10 @@ const {
   FTM_DEPLOY_KEY,
   FTMSCAN_API_KEY,
   FTM_TESTNET_URL,
-  FTM_TESTNET_DEPLOY_KEY
+  FTM_TESTNET_DEPLOY_KEY,
+
+  BASE_URL,
+  BASE_DEPLOY_KEY
 } = require("./env.json")
 
 // This is a sample Hardhat task. To learn how to create your own go to
@@ -48,7 +51,7 @@ task("accounts", "Prints the list of accounts", async () => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  defaultNetwork: "fantom",
+  defaultNetwork: "base",
   networks: {
     localhost: {
       timeout: 120000
@@ -108,7 +111,13 @@ module.exports = {
       // gasPrice: 100000000000,
       chainId: 4002,
       accounts: [FTM_TESTNET_DEPLOY_KEY]
-    }
+    },
+    base: {
+      url: BASE_URL,
+      gasMultiplier: 1.5,
+      chainId: 8453,
+      accounts: [BASE_DEPLOY_KEY]
+    },
   },
   etherscan: {
     apiKey: {

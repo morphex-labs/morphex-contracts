@@ -2,17 +2,17 @@ const { deployContract, contractAt, sendTxn, writeTmpAddresses } = require("../s
 
 // const network = (process.env.HARDHAT_NETWORK || 'mainnet');
 // const tokens = require('../core/tokens')[network];
-const nativeTokenAddress = "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83"
+const nativeTokenAddress = "0x4200000000000000000000000000000000000006"
 
 async function main() {
   // const { nativeToken } = tokens
 
   const vestingDuration = 365 * 24 * 60 * 60
 
-  const glpManager = await contractAt("GlpManager", "0x3A15Bac2D87C89F08147353fc9aE27080631b73d")
-  const glp = await contractAt("GLP", "0xF476F7F88E70470c976d9DF7c5C003dB1E1980Cb")
+  const glpManager = await contractAt("GlpManager", "0x9fAc7b75f367d5B35a6D6D0a09572eFcC3D406C5")
+  const glp = await contractAt("GLP", "0xe771b4E273dF31B85D7A7aE0Efd22fb44BdD0633")
 
-  const gmx = await contractAt("MPX", "0x66eEd5FF1701E6ed8470DC391F05e27B1d0657eb");
+  const gmx = await contractAt("BMX", "0x548f93779fBC992010C07467cBaf329DD5F059B7");
   const esGmx = await contractAt("EsGMX", "0xe0f606e6730bE531EeAf42348dE43C2feeD43505");
   // const bnGmx = await deployContract("MintableBaseToken", ["Bonus MPX", "bnMPX", 0]);
   const bnGmx = await contractAt("MintableBaseToken", "0xEf187825c6CdA0570B717a8E6fDa734812EC0b09");

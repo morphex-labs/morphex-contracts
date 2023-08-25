@@ -1,7 +1,7 @@
 const { deployContract, contractAt, writeTmpAddresses } = require("../shared/helpers")
 
 async function main() {
-  await deployContract("MPX", [])
+  await deployContract("BMX", [])
 }
 
 main()

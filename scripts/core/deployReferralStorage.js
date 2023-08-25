@@ -30,8 +30,8 @@ async function getValues() {
 }
 
 async function main() {
-  const positionRouter = await contractAt("PositionRouter", "0x5D90059b8116906bF8c1c7B7E3920A4b6e9DF4dB")
-  const positionManager = await contractAt("PositionManager", "0x2F66E711294328587e16E8912ae08bAD979feaAb")
+  const positionRouter = await contractAt("PositionRouter", "0x927F9c03d1Ac6e2630d31E614F226b5Ed028d443")
+  const positionManager = await contractAt("PositionManager", "0x2ace8F6Cc1ce4813Bd2D3AcE550ac95810855C40")
   const referralStorage = await deployContract("ReferralStorage", [])
   // const referralStorage = await contractAt("ReferralStorage", "0xb795e91DAefD6A7edEAc3060513D93cE7617370A")
 

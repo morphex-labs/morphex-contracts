@@ -1,44 +1,10 @@
 const { signers, deployContract, contractAt, sendTxn, writeTmpAddresses } = require("../shared/helpers")
 
-const network = (process.env.HARDHAT_NETWORK || 'mainnet');
-
-async function getArbValues() {
-  const glp = { address: "0x4277f8F2c384827B5273592FF7CeBd9f2C1ac258" }
-  const glpManager = { address: "0x321F653eED006AD1C29D174e17d96351BDe22649" }
-  const stakedGlpTracker = await contractAt("RewardTracker", "0x1aDDD80E6039594eE970E5872D247bf0414C8903")
-  const feeGlpTracker = await contractAt("RewardTracker", "0x4e971a87900b931fF39d1Aad67697F49835400b6")
-
-  return { glp, glpManager, stakedGlpTracker, feeGlpTracker }
-}
-
-async function getAvaxValues() {
-  const glp = { address: "0x01234181085565ed162a948b6a5e88758CD7c7b8" }
-  const glpManager = { address: "0xe1ae4d4b06A5Fe1fc288f6B4CD72f9F8323B107F" }
-  const stakedGlpTracker = await contractAt("RewardTracker", "0x9e295B5B976a184B14aD8cd72413aD846C299660")
-  const feeGlpTracker = await contractAt("RewardTracker", "0xd2D1162512F927a7e282Ef43a362659E4F2a728F")
-
-  return { glp, glpManager, stakedGlpTracker, feeGlpTracker }
-}
-
-async function getValues() {
-  if (network === "arbitrum") {
-    return getArbValues()
-  }
-
-  if (network === "avax") {
-    return getAvaxValues()
-  }
-}
-
 async function main() {
-  // const signer = signers.fantomTestnet;
-  // const { glp, glpManager, stakedGlpTracker, feeGlpTracker } = await getValues()
-  const glp = { address: "0xF476F7F88E70470c976d9DF7c5C003dB1E1980Cb" }
-  const glpManager = { address: "0x3A15Bac2D87C89F08147353fc9aE27080631b73d" }
-  const stakedGlpTracker = await contractAt("RewardTracker", "0xB30A97548551Ac8b185685FC25bF3564cE6E716D") // fsMLP
-  const feeGlpTracker = await contractAt("RewardTracker", "0x0Af7E9F3396423C30a4dF4a79882d118ea89e2F2") // fMLP
-
-  // const timelock = await contractAt("Timelock", await stakedGlpTracker.gov(), signer)
+  const glp = { address: "0xe771b4E273dF31B85D7A7aE0Efd22fb44BdD0633" }
+  const glpManager = { address: "0x9fAc7b75f367d5B35a6D6D0a09572eFcC3D406C5" }
+  const stakedGlpTracker = await contractAt("RewardTracker", "0xA9F0fAed6940915A0737237d156B70Af6d9879F3") // fsBLP
+  const feeGlpTracker = await contractAt("RewardTracker", "0x4D4554307c9a3f20EffE1cc2D1D4ba6190D3C469") // fBLP
 
   const stakedGlp = await deployContract("StakedGlp", [
     glp.address,
@@ -47,8 +13,8 @@ async function main() {
     feeGlpTracker.address
   ])
 
-  // await sendTxn(timelock.signalSetHandler(stakedGlpTracker.address, stakedGlp.address, true), "timelock.signalSetHandler(stakedGlpTracker)")
-  // await sendTxn(timelock.signalSetHandler(feeGlpTracker.address, stakedGlp.address, true), "timelock.signalSetHandler(stakedGlpTracker)")
+  await sendTxn(stakedGlpTracker.setHandler(stakedGlp.address, true), "stakedGlpTracker.setHandler(stakedGlp.address)")
+  await sendTxn(feeGlpTracker.setHandler(stakedGlp.address, true), "feeGlpTracker.setHandler(stakedGlp.address)")
 
   await deployContract("GlpBalance", [glpManager.address, stakedGlpTracker.address])
 }

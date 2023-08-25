@@ -2,7 +2,7 @@ const { getFrameSigner, deployContract, contractAt, sendTxn, readTmpAddresses, c
 const { bigNumberify, expandDecimals } = require("../../test/shared/utilities")
 const { toChainlinkPrice } = require("../../test/shared/chainlink")
 
-const network = 'fantom' // set network here
+const network = 'bsc' // set network here
 const tokens = require('./tokens')[network];
 
 async function getFantomValues() {
