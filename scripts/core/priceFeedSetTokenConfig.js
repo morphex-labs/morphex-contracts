@@ -2,32 +2,30 @@ const { getFrameSigner, deployContract, contractAt, sendTxn, readTmpAddresses, c
 const { expandDecimals } = require("../../test/shared/utilities")
 const { toChainlinkPrice } = require("../../test/shared/chainlink")
 
-const network = (process.env.HARDHAT_NETWORK || 'mainnet');
+const network = 'base';
 const tokens = require('./tokens')[network];
 
 async function main() {
-  const signer = await getFrameSigner()
-
-  const vault = await contractAt("Vault", "0x489ee077994B6658eAfA855C308275EAd8097C4A")
+  const vault = await contractAt("Vault", "0xec8d8D4b215727f3476FF0ab41c406FA99b4272C")
 
   const priceFeed = await contractAt("VaultPriceFeed", await vault.priceFeed())
-  const priceFeedGov = await priceFeed.gov()
-  const priceFeedTimelock = await contractAt("Timelock", priceFeedGov, signer)
+  // const priceFeedGov = await priceFeed.gov()
+  // const priceFeedTimelock = await contractAt("Timelock", priceFeedGov, signer)
 
-  const priceFeedMethod = "signalPriceFeedSetTokenConfig"
+  const priceFeedMethod = "setTokenConfig"
+  // const priceFeedMethod = "signalPriceFeedSetTokenConfig"
   // const priceFeedMethod = "priceFeedSetTokenConfig"
 
   console.log("vault", vault.address)
   console.log("priceFeed", priceFeed.address)
-  console.log("priceFeedTimelock", priceFeedTimelock.address)
+  // console.log("priceFeedTimelock", priceFeedTimelock.address)
   console.log("priceFeedMethod", priceFeedMethod)
 
-  const { dai } = tokens
-  const tokenArr = [dai]
+  const { eth, btc, usdc, dai } = tokens
+  const tokenArr = [ eth, btc, usdc, dai ]
 
   for (const token of tokenArr) {
-    await sendTxn(priceFeedTimelock[priceFeedMethod](
-      priceFeed.address, // _vaultPriceFeed
+    await sendTxn(priceFeed[priceFeedMethod](
       token.address, // _token
       token.priceFeed, // _priceFeed
       token.priceDecimals, // _priceDecimals
