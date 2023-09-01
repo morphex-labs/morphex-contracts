@@ -45,8 +45,8 @@ async function main() {
 
   const vault = await contractAt("Vault", "0xec8d8D4b215727f3476FF0ab41c406FA99b4272C")
 
-  const { eth, btc, usdc, usdt } = tokens
-  const tokenArr = [eth, btc, usdc, usdt]
+  const { eth, btc, usdc, dai } = tokens
+  const tokenArr = [eth, btc, usdc, dai]
 
   console.log("vault", vault.address)
   // console.log("vaultTimelock", vaultTimelock.address)
