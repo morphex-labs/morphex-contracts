@@ -2,7 +2,7 @@ const { deployContract, contractAt, sendTxn, readTmpAddresses, callWithRetries }
 const { bigNumberify, expandDecimals } = require("../../test/shared/utilities")
 const { toChainlinkPrice } = require("../../test/shared/chainlink")
 
-const chain = 'bsc' // set to chain you want to work with
+const chain = 'base' // set to chain you want to work with
 
 const network = (process.env.HARDHAT_NETWORK || 'mainnet');
 const tokens = require('./tokens')[chain];
@@ -33,6 +33,19 @@ async function getBscValues() {
   return { vault, timelock, reader, tokenArr, vaultTokenInfo }
 }
 
+async function getBaseValues() {
+  const vault = await contractAt("Vault", "0xec8d8D4b215727f3476FF0ab41c406FA99b4272C")
+  const timelock = await contractAt("Timelock", await vault.gov())
+  const reader = await contractAt("Reader", "0x92C97631450E804848781C0764907Ec4FC6fFd29")
+
+  const { eth, btc, dai, usdc } = tokens
+  const tokenArr = [ eth, btc, dai, usdc ]
+
+  const vaultTokenInfo = await reader.getVaultTokenInfoV2(vault.address, eth.address, 1, tokenArr.map(t => t.address))
+
+  return { vault, timelock, reader, tokenArr, vaultTokenInfo }
+}
+
 async function getValues() {
   if (chain === "fantom") {
     return getFtmValues()
@@ -40,6 +53,10 @@ async function getValues() {
 
   if (chain === "bsc") {
     return getBscValues()
+  }
+
+  if (chain === "base") {
+    return getBaseValues()
   }
 }
 

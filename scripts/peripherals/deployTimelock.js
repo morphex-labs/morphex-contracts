@@ -43,18 +43,18 @@ async function main() {
   // const signer = await getFrameSigner()
 
   const admin = "0xB1dD2Fdb023cB54b7cc2a0f5D9e8d47a9F7723ce"
-  const buffer = 48 * 60 * 60 // 48 * 60 * 60 - 48 hours
-  const maxTokenSupply = expandDecimals("50000000", 18)
+  const buffer = 24 * 60 * 60 // 48 * 60 * 60 --> 24 hours
+  const maxTokenSupply = expandDecimals("10000000", 18)
 
   // const { vault, tokenManager, glpManager, rewardRouter, positionRouter, positionManager, gmx } = await getValues()
 
-  const vault = await contractAt("Vault", "0x245cD6d33578de9aF75a3C0c636c726b1A8cbdAa")
-  const tokenManager = { address: "0xDd257d090FA0f9ffB496b790844418593e969ba6" }
-  const glpManager = { address: "0x3A15Bac2D87C89F08147353fc9aE27080631b73d" }
-  const rewardRouter = { address: "0xd6489eAf13f61822356F30618E1D9947fa1Ef46F" }
+  const vault = await contractAt("Vault", "0xec8d8D4b215727f3476FF0ab41c406FA99b4272C")
+  const tokenManager = { address: "0xE02Fb5C70aF32F80Aa7F9E8775FE7F12550348ec" }
+  const glpManager = { address: "0x9fAc7b75f367d5B35a6D6D0a09572eFcC3D406C5" }
+  const rewardRouter = { address: "0x49A97680938B4F1f73816d1B70C3Ab801FAd124B" }
 
-  const positionRouter = { address: "0x5D90059b8116906bF8c1c7B7E3920A4b6e9DF4dB" }
-  const positionManager = { address: "0x2F66E711294328587e16E8912ae08bAD979feaAb" }
+  const positionRouter = { address: "0x927F9c03d1Ac6e2630d31E614F226b5Ed028d443" }
+  const positionManager = { address: "0x2ace8F6Cc1ce4813Bd2D3AcE550ac95810855C40" }
 
   const gmx = { address: "0x66eEd5FF1701E6ed8470DC391F05e27B1d0657eb" }
 

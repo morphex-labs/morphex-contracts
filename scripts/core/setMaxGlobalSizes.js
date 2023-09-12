@@ -2,7 +2,7 @@ const { getFrameSigner, deployContract, contractAt, sendTxn, readTmpAddresses, c
 const { bigNumberify, expandDecimals } = require("../../test/shared/utilities")
 const { toChainlinkPrice } = require("../../test/shared/chainlink")
 
-const network = 'bsc' // set network here
+const network = 'base' // set network here
 const tokens = require('./tokens')[network];
 
 async function getFantomValues() {
@@ -29,6 +29,18 @@ async function getBscValues() {
   return { positionContracts, tokenArr }
 }
 
+async function getBaseValues() {
+  const positionContracts = [
+    "0x927F9c03d1Ac6e2630d31E614F226b5Ed028d443", // PositionRouter
+    "0x2ace8F6Cc1ce4813Bd2D3AcE550ac95810855C40" // PositionManager
+  ]
+
+  const { eth, btc } = tokens
+  const tokenArr = [eth, btc]
+
+  return { positionContracts, tokenArr }
+}
+
 async function getValues() {
   if (network === "fantom") {
     return getFantomValues()
@@ -36,6 +48,10 @@ async function getValues() {
 
   if (network === "bsc") {
     return getBscValues()
+  }
+
+  if (network === "base") {
+    return getBaseValues()
   }
 }
 
