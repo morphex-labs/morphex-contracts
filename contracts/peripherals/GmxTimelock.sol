@@ -19,7 +19,7 @@ import "../staking/interfaces/IVester.sol";
 import "../libraries/math/SafeMath.sol";
 import "../libraries/token/IERC20.sol";
 
-contract MpxTimelock is IGmxTimelock {
+contract BmxTimelock is IGmxTimelock {
     using SafeMath for uint256;
 
     uint256 public constant PRICE_PRECISION = 10 ** 30;
