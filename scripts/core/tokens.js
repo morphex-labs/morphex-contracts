@@ -751,8 +751,8 @@ module.exports = {
       bufferAmount: 0,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 100,
-      maxGlobalShortSize: 100
+      maxGlobalLongSize: 40 * 1000,
+      maxGlobalShortSize: 20 * 1000
     },
     btc: {
       name: "btc",
@@ -769,17 +769,31 @@ module.exports = {
       bufferAmount: 0,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 100,
-      maxGlobalShortSize: 100
+      maxGlobalLongSize: 8 * 1000,
+      maxGlobalShortSize: 8 * 1000
     },
     usdc: {
-      name: "usdc",
+      name: "usdbc",
       address: "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA",
       decimals: 6,
       priceFeed: "0x7e860098F58bBFC8648a4311b374B1D669a2bc6B",
       priceDecimals: 8,
       isStrictStable: true,
-      tokenWeight: 40000,
+      tokenWeight: 30000,
+      minProfitBps: 0,
+      maxUsdgAmount: 3000 * 1000,
+      bufferAmount: 0,
+      isStable: true,
+      isShortable: false
+    },
+    usdcCircle: {
+      name: "usdc",
+      address: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      decimals: 6,
+      priceFeed: "0x7e860098F58bBFC8648a4311b374B1D669a2bc6B",
+      priceDecimals: 8,
+      isStrictStable: true,
+      tokenWeight: 10000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
       bufferAmount: 0,

@@ -38,8 +38,8 @@ async function getBaseValues() {
   const timelock = await contractAt("Timelock", await vault.gov())
   const reader = await contractAt("Reader", "0x92C97631450E804848781C0764907Ec4FC6fFd29")
 
-  const { eth, btc, dai, usdc } = tokens
-  const tokenArr = [ eth, btc, dai, usdc ]
+  const { eth, btc, dai, usdc, usdcCircle } = tokens
+  const tokenArr = [ eth, btc, dai, usdc, usdcCircle ]
 
   const vaultTokenInfo = await reader.getVaultTokenInfoV2(vault.address, eth.address, 1, tokenArr.map(t => t.address))
 
