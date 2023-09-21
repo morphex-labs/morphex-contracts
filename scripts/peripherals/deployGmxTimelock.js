@@ -81,6 +81,7 @@ async function runForBase() {
     mintReceiver.address,
     maxTokenSupply
   ])
+  console.log("timelock", timelock.address)
 }
 
 async function main() {
