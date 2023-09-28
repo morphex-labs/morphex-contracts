@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { ethers } = require('ethers');
 
-const filename = 'weeks/bsc/week9.csv'; // change this to the week you want to calculate
+const filename = 'scripts/volume-rewards/weeks/bsc/week13.csv'; // change this to the week you want to calculate
 const outputFilename = 'output.json';
 
 const outputObj = {};

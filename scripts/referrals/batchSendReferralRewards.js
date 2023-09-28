@@ -5,7 +5,7 @@ const { expandDecimals, bigNumberify } = require("../../test/shared/utilities")
 
 // const ethPrice = "1211"
 // const avaxPrice = "12"
-const gmxPrice = 12 // multiplied by 100 to avoid decimals, this is MPX
+const gmxPrice = 2 // multiplied by 100 to avoid decimals, this is MPX
 
 const shouldSendTxn = true
 
@@ -75,7 +75,7 @@ async function main() {
 
   const batchSender = await contractAt("BatchSender", "0x90eaa0DB25C569993c80dC5681E6C2981f5C86D9")
   const esGmx = await contractAt("Token", "0xe0f606e6730bE531EeAf42348dE43C2feeD43505")
-  const nativeTokenPrice = 28 // FTM price, multiplied by 100 to avoid decimals
+  const nativeTokenPrice = 18 // FTM price, multiplied by 100 to avoid decimals
   const data = fantomData
 
   const { nativeToken } = tokens
