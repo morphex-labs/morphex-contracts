@@ -751,8 +751,8 @@ module.exports = {
       bufferAmount: 20,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 50 * 1000,
-      maxGlobalShortSize: 25 * 1000
+      maxGlobalLongSize: 100 * 1000,
+      maxGlobalShortSize: 75 * 1000
     },
     cbeth: {
       name: "cbeth",
@@ -787,8 +787,26 @@ module.exports = {
       bufferAmount: 1,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 10 * 1000,
-      maxGlobalShortSize: 8 * 1000
+      maxGlobalLongSize: 20 * 1000,
+      maxGlobalShortSize: 15 * 1000
+    },
+    yfi: {
+      name: "yfi",
+      address: "0x9EaF8C1E34F05a589EDa6BAfdF391Cf6Ad3CB239",
+      decimals: 18,
+      priceFeed: "0xD40e758b5eC80820B68DFC302fc5Ce1239083548",
+      priceDecimals: 8,
+      fastPricePrecision: 1000,
+      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      isStrictStable: false,
+      tokenWeight: 4000,
+      minProfitBps: 0,
+      maxUsdgAmount: 50 * 1000,
+      bufferAmount: 1,
+      isStable: false,
+      isShortable: true,
+      maxGlobalLongSize: 7500,
+      maxGlobalShortSize: 2500
     },
     usdc: {
       name: "usdbc",
