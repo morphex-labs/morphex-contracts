@@ -35,8 +35,8 @@ async function main() {
   const referralStorage = await deployContract("ReferralStorage", [])
   // const referralStorage = await contractAt("ReferralStorage", "0xb795e91DAefD6A7edEAc3060513D93cE7617370A")
 
-  await sendTxn(positionRouter.setReferralStorage(referralStorage.address), "positionRouter.setReferralStorage")
-  await sendTxn(positionManager.setReferralStorage(referralStorage.address), "positionManager.setReferralStorage")
+  // await sendTxn(positionRouter.setReferralStorage(referralStorage.address), "positionRouter.setReferralStorage")
+  // await sendTxn(positionManager.setReferralStorage(referralStorage.address), "positionManager.setReferralStorage")
 
   await sendTxn(referralStorage.setHandler(positionRouter.address, true), "referralStorage.setHandler(positionRouter)")
 }

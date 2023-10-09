@@ -24,6 +24,7 @@ contract ReferralStorage is Governable, IReferralStorage {
     mapping (uint256 => Tier) public tiers;
 
     mapping (address => bool) public isHandler;
+    mapping (bytes32 => bool) public isMasterCode;
 
     mapping (bytes32 => address) public override codeOwners;
     mapping (address => bytes32) public override traderReferralCodes;
@@ -47,6 +48,10 @@ contract ReferralStorage is Governable, IReferralStorage {
         emit SetHandler(_handler, _isActive);
     }
 
+    function setMasterCode(bytes32 _code, bool _isActive) external onlyGov {
+        isMasterCode[_code] = _isActive;
+    }
+
     function setTier(uint256 _tierId, uint256 _totalRebate, uint256 _discountShare) external override onlyGov {
         require(_totalRebate <= BASIS_POINTS, "ReferralStorage: invalid totalRebate");
         require(_discountShare <= BASIS_POINTS, "ReferralStorage: invalid discountShare");
@@ -58,7 +63,7 @@ contract ReferralStorage is Governable, IReferralStorage {
         emit SetTier(_tierId, _totalRebate, _discountShare);
     }
 
-    function setReferrerTier(address _referrer, uint256 _tierId) external override onlyGov {
+    function setReferrerTier(address _referrer, uint256 _tierId) external override onlyHandler {
         referrerTiers[_referrer] = _tierId;
         emit SetReferrerTier(_referrer, _tierId);
     }
@@ -70,11 +75,19 @@ contract ReferralStorage is Governable, IReferralStorage {
         emit SetReferrerDiscountShare(msg.sender, _discountShare);
     }
 
+    function setTraderReferralCodeByLocker(address _account, bytes32 _code) external onlyHandler {
+        _setTraderReferralCode(_account, _code);
+    }
+
     function setTraderReferralCode(address _account, bytes32 _code) external override onlyHandler {
+        require(isMasterCode[_code] == false, "ReferralStorage: can't use master code");
+
         _setTraderReferralCode(_account, _code);
     }
 
     function setTraderReferralCodeByUser(bytes32 _code) external {
+        require(isMasterCode[_code] == false, "ReferralStorage: can't use master code");
+
         _setTraderReferralCode(msg.sender, _code);
     }
 
