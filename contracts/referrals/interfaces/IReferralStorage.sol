@@ -12,4 +12,5 @@ interface IReferralStorage {
     function setTier(uint256 _tierId, uint256 _totalRebate, uint256 _discountShare) external;
     function setReferrerTier(address _referrer, uint256 _tierId) external;
     function govSetCodeOwner(bytes32 _code, address _newAccount) external;
+    function setTraderReferralCodeByLocker(address _account, bytes32 _code) external;
 }
