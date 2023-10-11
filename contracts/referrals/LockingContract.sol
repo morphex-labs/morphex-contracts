@@ -2,10 +2,10 @@
 
 pragma solidity 0.6.12;
 
-import '../libraries/MORPHSafeERC20.sol';
+import '../libraries/token/MORPHSafeERC20.sol';
 import '../libraries/utils/ReentrancyGuard.sol';
-import '../libraries/utils/Address.sol';
-import '../libraries/math/SafeMath.sol';
+// import '../libraries/utils/Address.sol';
+// import '../libraries/math/SafeMath.sol';
 import './interfaces/IReferralStorage.sol';
 
 contract LockingContract is ReentrancyGuard {

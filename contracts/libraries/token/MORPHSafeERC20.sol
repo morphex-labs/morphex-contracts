@@ -2,6 +2,9 @@
 
 pragma solidity 0.6.12;
 
+import '../math/SafeMath.sol';
+import '../utils/Address.sol';
+
 /**
  * @dev Interface of the MORPHERC20 .
  */

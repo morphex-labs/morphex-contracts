@@ -75,7 +75,7 @@ contract ReferralStorage is Governable, IReferralStorage {
         emit SetReferrerDiscountShare(msg.sender, _discountShare);
     }
 
-    function setTraderReferralCodeByLocker(address _account, bytes32 _code) external onlyHandler {
+    function setTraderReferralCodeByLocker(address _account, bytes32 _code) external override onlyHandler {
         _setTraderReferralCode(_account, _code);
     }
 
