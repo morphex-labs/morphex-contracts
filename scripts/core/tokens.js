@@ -453,7 +453,7 @@ module.exports = {
       bufferAmount: 125 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 200 * 1000,
+      maxGlobalLongSize: 250 * 1000,
       maxGlobalShortSize: 50 * 1000,
       spreadBasisPoints: 0
     },
@@ -508,8 +508,8 @@ module.exports = {
       bufferAmount: 0,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 15 * 1000,
-      maxGlobalShortSize: 7 * 1000
+      maxGlobalLongSize: 20 * 1000,
+      maxGlobalShortSize: 10 * 1000
     },
     axlbtc: {
       name: "axlbtc",
@@ -526,7 +526,7 @@ module.exports = {
       bufferAmount: 0,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 35 * 1000,
+      maxGlobalLongSize: 30 * 1000,
       maxGlobalShortSize: 15 * 1000
     },
     lzusdc: {
