@@ -453,8 +453,8 @@ module.exports = {
       bufferAmount: 125 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 250 * 1000,
-      maxGlobalShortSize: 50 * 1000,
+      maxGlobalLongSize: 220 * 1000,
+      maxGlobalShortSize: 100 * 1000,
       spreadBasisPoints: 0
     },
     lzeth: {
@@ -770,7 +770,7 @@ module.exports = {
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 2 * 1000,
-      maxGlobalShortSize: 2 * 1000
+      maxGlobalShortSize: 5 * 1000
     },
     btc: {
       name: "btc",
@@ -787,8 +787,8 @@ module.exports = {
       bufferAmount: 1,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 20 * 1000,
-      maxGlobalShortSize: 15 * 1000
+      maxGlobalLongSize: 50 * 1000,
+      maxGlobalShortSize: 30 * 1000
     },
     yfi: {
       name: "yfi",
@@ -805,7 +805,7 @@ module.exports = {
       bufferAmount: 1,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 20 * 1000,
+      maxGlobalLongSize: 30 * 1000,
       maxGlobalShortSize: 15 * 1000
     },
     usdc: {
@@ -845,7 +845,7 @@ module.exports = {
       isStrictStable: true,
       tokenWeight: 8000,
       minProfitBps: 0,
-      maxUsdgAmount: 185 * 1000,
+      maxUsdgAmount: 55 * 1000,
       bufferAmount: 5 * 1000,
       isStable: true,
       isShortable: false
