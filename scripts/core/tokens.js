@@ -751,8 +751,8 @@ module.exports = {
       bufferAmount: 40,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 150 * 1000,
-      maxGlobalShortSize: 100 * 1000
+      maxGlobalLongSize: 200 * 1000,
+      maxGlobalShortSize: 150 * 1000
     },
     cbeth: {
       name: "cbeth",
@@ -770,7 +770,7 @@ module.exports = {
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 2 * 1000,
-      maxGlobalShortSize: 5 * 1000
+      maxGlobalShortSize: 1 * 1000
     },
     btc: {
       name: "btc",
@@ -787,8 +787,8 @@ module.exports = {
       bufferAmount: 1,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 50 * 1000,
-      maxGlobalShortSize: 30 * 1000
+      maxGlobalLongSize: 60 * 1000,
+      maxGlobalShortSize: 40 * 1000
     },
     yfi: {
       name: "yfi",
@@ -805,8 +805,8 @@ module.exports = {
       bufferAmount: 1,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 30 * 1000,
-      maxGlobalShortSize: 15 * 1000
+      maxGlobalLongSize: 50 * 1000,
+      maxGlobalShortSize: 25 * 1000
     },
     usdc: {
       name: "usdbc",
