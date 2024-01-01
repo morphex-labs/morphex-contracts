@@ -9,24 +9,6 @@ const gmxPrice = 2 // multiplied by 100 to avoid decimals, this is MPX
 
 const shouldSendTxn = true
 
-// let arbitrumFile
-// if (process.env.ARBITRUM_FILE) {
-//   arbitrumFile = path.join(process.env.PWD, process.env.ARBITRUM_FILE)
-// } else {
-//   arbitrumFile = path.join(__dirname, "../../distribution-data-arbitrum.json")
-// }
-// console.log("Arbitrum file: %s", arbitrumFile)
-// const arbitrumData = require(arbitrumFile)
-
-// let avalancheFile
-// if (process.env.AVALANCHE_FILE) {
-//   avalancheFile = path.join(process.env.PWD, process.env.AVALANCHE_FILE)
-// } else {
-//   avalancheFile = path.join(__dirname, "../../distribution-data-avalanche.json")
-// }
-// console.log("Avalanche file: %s", avalancheFile)
-// const avaxData = require(avalancheFile)
-
 let fantomFile
 if (process.env.FANTOM_FILE) {
   fantomFile = path.join(process.env.PWD, process.env.FANTOM_FILE)
@@ -36,48 +18,51 @@ if (process.env.FANTOM_FILE) {
 console.log("Fantom file: %s", fantomFile)
 const fantomData = require(fantomFile)
 
-// const network = (process.env.HARDHAT_NETWORK || 'mainnet');
-const tokens = require('../core/tokens')['fantom'];
+let baseFile
+if (process.env.BASE_FILE) {
+  baseFile = path.join(process.env.PWD, process.env.BASE_FILE)
+} else {
+  baseFile = path.join(__dirname, "../../distribution-data-base.json")
+}
+console.log("Base file: %s", baseFile)
+const baseData = require(baseFile)
+
+const network = 'base';
+const tokens = require('../core/tokens')[network];
 
 const { AddressZero } = ethers.constants
 
-// async function getArbValues() {
-//   const batchSender = await contractAt("BatchSender", "0x1070f775e8eb466154BBa8FA0076C4Adc7FE17e8")
-//   const esGmx = await contractAt("Token", "0xf42Ae1D54fd613C9bb14810b0588FaAa09a426cA")
-//   const nativeTokenPrice = ethPrice
-//   const data = arbitrumData
-
-//   return { batchSender, esGmx, nativeTokenPrice, data }
-// }
-
-// async function getAvaxValues() {
-//   const batchSender = await contractAt("BatchSender", "0xF0f929162751DD723fBa5b86A9B3C88Dc1D4957b")
-//   const esGmx = await contractAt("Token", "0xFf1489227BbAAC61a9209A08929E4c2a526DdD17")
-//   const nativeTokenPrice = avaxPrice
-//   const data = avaxData
-
-//   return { batchSender, esGmx, nativeTokenPrice, data }
-// }
-
-// async function getValues() {
-//   if (network === "arbitrum") {
-//     return getArbValues()
-//   }
-
-//   if (network === "avax") {
-//     return getAvaxValues()
-//   }
-// }
-
-async function main() {
-  const wallet = { address: "0xB1dD2Fdb023cB54b7cc2a0f5D9e8d47a9F7723ce" }
-  // const { batchSender, esGmx, nativeTokenPrice, data } = await getValues()
-
+async function getFantomValues() {
   const batchSender = await contractAt("BatchSender", "0x90eaa0DB25C569993c80dC5681E6C2981f5C86D9")
   const esGmx = await contractAt("Token", "0xe0f606e6730bE531EeAf42348dE43C2feeD43505")
   const nativeTokenPrice = 18 // FTM price, multiplied by 100 to avoid decimals
   const data = fantomData
 
+  return { batchSender, esGmx, nativeTokenPrice, data }
+}
+
+async function getBaseValues() {
+  const batchSender = await contractAt("BatchSender", "0xF9a352b7C7B62a852e5C8A64A455246Dd9596461")
+  const esGmx = await contractAt("Token", "0x3Ff7AB26F2dfD482C40bDaDfC0e88D01BFf79713") // oBMX placeholder
+  const nativeTokenPrice = 230809 // ETH price, multiplied by 100 to avoid decimals
+  const data = baseData
+
+  return { batchSender, esGmx, nativeTokenPrice, data }
+}
+
+async function getValues() {
+  if (network === "fantom") {
+    return getFantomValues()
+  }
+
+  if (network === "base") {
+    return getBaseValues()
+  }
+}
+
+async function main() {
+  const wallet = { address: "0xB1dD2Fdb023cB54b7cc2a0f5D9e8d47a9F7723ce" }
+  const { batchSender, esGmx, nativeTokenPrice, data } = await getValues()
   const { nativeToken } = tokens
   const nativeTokenContract = await contractAt("Token", nativeToken.address)
 

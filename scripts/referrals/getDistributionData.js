@@ -8,6 +8,7 @@ const ARBITRUM_SUBGRAPH_ENDPOINT = 'https://api.thegraph.com/subgraphs/name/gmx-
 const AVALANCHE_SUBGRAPH_ENDPOINT = 'https://api.thegraph.com/subgraphs/name/gmx-io/gmx-avalanche-referrals'
 
 const FANTOM_SUBGRAPH_ENDPOINT = 'https://api.thegraph.com/subgraphs/name/morphex-labs/morphex-fantom-referrals'
+const BASE_SUBGRAPH_ENDPOINT = 'https://api.thegraph.com/subgraphs/name/morphex-labs/bmx-base-referrals'
 
 const BigNumber = ethers.BigNumber
 const { formatUnits, parseUnits } = ethers.utils
@@ -33,6 +34,7 @@ function getSubgraphEndpoint(network) {
     avalanche: AVALANCHE_SUBGRAPH_ENDPOINT,
     arbitrum: ARBITRUM_SUBGRAPH_ENDPOINT,
     fantom: FANTOM_SUBGRAPH_ENDPOINT,
+    base: BASE_SUBGRAPH_ENDPOINT
   }[network]
 }
 
@@ -196,6 +198,7 @@ async function queryDistributionData(network, fromTimestamp, toTimestamp, accoun
 
   if (allReferrersRebateUsd.eq(0)) {
     console.warn("No rebates on %s", network)
+    console.log(referrersRebatesData)
     return
   }
 
@@ -340,15 +343,19 @@ async function queryDistributionData(network, fromTimestamp, toTimestamp, accoun
 }
 
 // Last values:
-// From: 2023-05-27 (timestamp 1685145600)
-// To (exclusively): 2023-06-17 (timestamp 1686960000)
+// Fantom:
+// - From: 2023-05-27 (timestamp 1685145600)
+// - To (exclusively): 2023-06-17 (timestamp 1686960000)
+// Base:
+// - From: 2023-05-27 (timestamp 1685145600)
+// - To (exclusively): 2023-06-17 (timestamp 1686960000)
 
 async function main() {
   const parser = new ArgumentParser({
     description: 'Get distribution data'
   });
   parser.add_argument('-n', '--network', {
-    help: 'Network: arbitrum, avalanche, fantom',
+    help: 'Network: base, fantom',
     required: true
   });
   parser.add_argument('-f', '--from-date', {
