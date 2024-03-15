@@ -169,10 +169,10 @@ module.exports = {
       tokenWeight: 20000,
       minProfitBps: 0,
       maxUsdgAmount: 20 * 1000,
-      bufferAmount: 1,
+      bufferAmount: 0,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 1 * 1000,
+      maxGlobalLongSize: 1,
       maxGlobalShortSize: 1,
       spreadBasisPoints: 0
     },
@@ -188,10 +188,10 @@ module.exports = {
       tokenWeight: 14000,
       minProfitBps: 0,
       maxUsdgAmount: 5 * 1000,
-      bufferAmount: 1,
+      bufferAmount: 0,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 1 * 1000,
+      maxGlobalLongSize: 1,
       maxGlobalShortSize: 1
     },
     btc: {
@@ -227,7 +227,7 @@ module.exports = {
       bufferAmount: 0,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 1 * 1000,
+      maxGlobalLongSize: 1,
       maxGlobalShortSize: 1
     },
     ada: {
@@ -245,7 +245,7 @@ module.exports = {
       bufferAmount: 0,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 5 * 1000,
+      maxGlobalLongSize: 1,
       maxGlobalShortSize: 1
     },
     cake: {
@@ -316,8 +316,8 @@ module.exports = {
       bufferAmount: 60,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 250 * 1000,
-      maxGlobalShortSize: 150 * 1000
+      maxGlobalLongSize: 350 * 1000,
+      maxGlobalShortSize: 200 * 1000
     },
     cbeth: {
       name: "cbeth",
@@ -330,12 +330,12 @@ module.exports = {
       isStrictStable: false,
       tokenWeight: 1000,
       minProfitBps: 0,
-      maxUsdgAmount: 100 * 1000,
+      maxUsdgAmount: 50 * 1000,
       bufferAmount: 0,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 3 * 1000,
-      maxGlobalShortSize: 1 * 1000
+      maxGlobalLongSize: 10 * 1000,
+      maxGlobalShortSize: 5 * 1000
     },
     btc: {
       name: "btc",
@@ -352,7 +352,7 @@ module.exports = {
       bufferAmount: 1,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 70 * 1000,
+      maxGlobalLongSize: 75 * 1000,
       maxGlobalShortSize: 40 * 1000
     },
     yfi: {
@@ -366,11 +366,11 @@ module.exports = {
       isStrictStable: false,
       tokenWeight: 4000,
       minProfitBps: 0,
-      maxUsdgAmount: 40 * 1000,
+      maxUsdgAmount: 45 * 1000,
       bufferAmount: 1,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 30 * 1000,
+      maxGlobalLongSize: 35 * 1000,
       maxGlobalShortSize: 15 * 1000
     },
     usdc: {
@@ -383,7 +383,7 @@ module.exports = {
       tokenWeight: 23000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 50 * 1000,
+      bufferAmount: 100 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -397,7 +397,7 @@ module.exports = {
       tokenWeight: 23000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 50 * 1000,
+      bufferAmount: 100 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -410,8 +410,8 @@ module.exports = {
       isStrictStable: true,
       tokenWeight: 1000,
       minProfitBps: 0,
-      maxUsdgAmount: 50 * 1000,
-      bufferAmount: 5 * 1000,
+      maxUsdgAmount: 20 * 1000,
+      bufferAmount: 2 * 1000,
       isStable: true,
       isShortable: false
     },
