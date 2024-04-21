@@ -2,7 +2,7 @@ const { deployContract, contractAt, sendTxn, readTmpAddresses, callWithRetries }
 const { bigNumberify, expandDecimals } = require("../../test/shared/utilities")
 const { toChainlinkPrice } = require("../../test/shared/chainlink")
 
-const chain = 'bsc' // set to chain you want to work with
+const chain = 'base' // set to chain you want to work with
 
 const network = (process.env.HARDHAT_NETWORK || 'mainnet');
 const tokens = require('./tokens')[chain];
@@ -12,8 +12,8 @@ async function getFtmValues() {
   const timelock = await contractAt("Timelock", await vault.gov())
   const reader = await contractAt("Reader", "0xcA47b9b612a152ece991F31d8D3547D73BaF2Ecc")
 
-  const { ftm, axleth, lzeth, axlbtc, lzbtc, axlusdc, lzusdc, axlusdt, lzusdt } = tokens
-  const tokenArr = [ ftm, axleth, lzeth, axlbtc, lzbtc, axlusdc, lzusdc, axlusdt, lzusdt ]
+  const { ftm, axleth, lzeth, axlbtc, lzbtc, axlusdc, lzusdc, usdc,  axlusdt, lzusdt } = tokens
+  const tokenArr = [ ftm, axleth, lzeth, axlbtc, lzbtc, axlusdc, lzusdc, usdc, axlusdt, lzusdt ]
 
   const vaultTokenInfo = await reader.getVaultTokenInfoV2(vault.address, ftm.address, 1, tokenArr.map(t => t.address))
 
