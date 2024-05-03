@@ -330,7 +330,7 @@ module.exports = {
       bufferAmount: 90,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 300 * 1000,
+      maxGlobalLongSize: 350 * 1000,
       maxGlobalShortSize: 150 * 1000
     },
     cbeth: {
@@ -344,7 +344,7 @@ module.exports = {
       isStrictStable: false,
       tokenWeight: 0,
       minProfitBps: 0,
-      maxUsdgAmount: 13 * 1000,
+      maxUsdgAmount: 1,
       bufferAmount: 0,
       isStable: false,
       isShortable: true,
@@ -360,7 +360,7 @@ module.exports = {
       fastPricePrecision: 1000,
       maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
-      tokenWeight: 10000,
+      tokenWeight: 8000,
       minProfitBps: 0,
       maxUsdgAmount: 500 * 1000,
       bufferAmount: 1,
@@ -387,6 +387,24 @@ module.exports = {
       maxGlobalLongSize: 15 * 1000,
       maxGlobalShortSize: 8 * 1000
     },
+    aero: {
+      name: "aero",
+      address: "0x940181a94A35A4569E4529A3CDfB74e38FD98631",
+      decimals: 18,
+      priceFeed: "0x4EC5970fC728C5f65ba413992CD5fF6FD70fcfF0",
+      priceDecimals: 8,
+      fastPricePrecision: 1000,
+      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      isStrictStable: false,
+      tokenWeight: 4000,
+      minProfitBps: 0,
+      maxUsdgAmount: 100 * 1000,
+      bufferAmount: 30 * 1000,
+      isStable: false,
+      isShortable: true,
+      maxGlobalLongSize: 1,
+      maxGlobalShortSize: 1
+    },
     usdc: {
       name: "usdbc",
       address: "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA",
@@ -397,7 +415,7 @@ module.exports = {
       tokenWeight: 16000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 200 * 1000,
+      bufferAmount: 150 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -408,10 +426,10 @@ module.exports = {
       priceFeed: "0x7e860098F58bBFC8648a4311b374B1D669a2bc6B",
       priceDecimals: 8,
       isStrictStable: true,
-      tokenWeight: 32000,
+      tokenWeight: 30000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 400 * 1000,
+      bufferAmount: 350 * 1000,
       isStable: true,
       isShortable: false
     },
