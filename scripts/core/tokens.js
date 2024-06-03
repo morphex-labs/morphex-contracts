@@ -330,8 +330,8 @@ module.exports = {
       bufferAmount: 150,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 500 * 1000,
-      maxGlobalShortSize: 250 * 1000
+      maxGlobalLongSize: 750 * 1000,
+      maxGlobalShortSize: 450 * 1000
     },
     cbeth: {
       name: "cbeth",
@@ -380,7 +380,7 @@ module.exports = {
       isStrictStable: false,
       tokenWeight: 1000,
       minProfitBps: 0,
-      maxUsdgAmount: 27 * 1000,
+      maxUsdgAmount: 26 * 1000,
       bufferAmount: 1,
       isStable: false,
       isShortable: true,
@@ -398,12 +398,12 @@ module.exports = {
       isStrictStable: false,
       tokenWeight: 4000,
       minProfitBps: 0,
-      maxUsdgAmount: 100 * 1000,
-      bufferAmount: 45 * 1000,
+      maxUsdgAmount: 135 * 1000,
+      bufferAmount: 50 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 75 * 1000,
-      maxGlobalShortSize: 50 * 1000
+      maxGlobalLongSize: 100 * 1000,
+      maxGlobalShortSize: 75 * 1000
     },
     usdc: {
       name: "usdbc",
@@ -414,8 +414,8 @@ module.exports = {
       isStrictStable: true,
       tokenWeight: 12000,
       minProfitBps: 0,
-      maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 200 * 1000,
+      maxUsdgAmount: 1500 * 1000,
+      bufferAmount: 300 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -428,7 +428,7 @@ module.exports = {
       isStrictStable: true,
       tokenWeight: 37000,
       minProfitBps: 0,
-      maxUsdgAmount: 2000 * 1000,
+      maxUsdgAmount: 3000 * 1000,
       bufferAmount: 750 * 1000,
       isStable: true,
       isShortable: false
