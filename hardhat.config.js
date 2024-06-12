@@ -31,7 +31,10 @@ const {
   FTM_TESTNET_DEPLOY_KEY,
 
   BASE_URL,
-  BASE_DEPLOY_KEY
+  BASE_DEPLOY_KEY,
+
+  MODE_URL,
+  MODE_DEPLOY_KEY,
 } = require("./env.json")
 
 // This is a sample Hardhat task. To learn how to create your own go to
@@ -118,6 +121,12 @@ module.exports = {
       chainId: 8453,
       accounts: [BASE_DEPLOY_KEY]
     },
+    mode: {
+      url: MODE_URL,
+      gasMultiplier: 1.5,
+      chainId: 34443,
+      accounts: [MODE_DEPLOY_KEY]
+    }
   },
   etherscan: {
     apiKey: {
