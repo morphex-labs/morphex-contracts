@@ -10,14 +10,14 @@ import "../core/interfaces/IGlpManager.sol";
 import "./interfaces/IRewardTracker.sol";
 import "./interfaces/IRewardTracker.sol";
 
-// provide a way to transfer staked BLP tokens by unstaking from the sender
+// provide a way to transfer staked MLT tokens by unstaking from the sender
 // and staking for the receiver
 // tests in RewardRouterV2.js
 contract StakedGlp {
     using SafeMath for uint256;
 
-    string public constant name = "StakedBLP";
-    string public constant symbol = "sBLP";
+    string public constant name = "StakedMLT";
+    string public constant symbol = "sMLT";
     uint8 public constant decimals = 18;
 
     address public glp;

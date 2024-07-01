@@ -18,8 +18,8 @@ module.exports = {
       bufferAmount: 400 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 300 * 1000,
-      maxGlobalShortSize: 150 * 1000,
+      maxGlobalLongSize: 600 * 1000,
+      maxGlobalShortSize: 200 * 1000,
       spreadBasisPoints: 0
     },
     lzeth: {
@@ -34,10 +34,10 @@ module.exports = {
       tokenWeight: 2500,
       minProfitBps: 0,
       maxUsdgAmount: 150 * 1000,
-      bufferAmount: 8,
+      bufferAmount: 6,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 20 * 1000,
+      maxGlobalLongSize: 25 * 1000,
       maxGlobalShortSize: 10 * 1000
     },
     axleth: {
@@ -55,8 +55,8 @@ module.exports = {
       bufferAmount: 8,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 25 * 1000,
-      maxGlobalShortSize: 10 * 1000
+      maxGlobalLongSize: 60 * 1000,
+      maxGlobalShortSize: 30 * 1000
     },
     lzbtc: {
       name: "lzbtc",
@@ -73,8 +73,8 @@ module.exports = {
       bufferAmount: 1,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 40 * 1000,
-      maxGlobalShortSize: 15 * 1000
+      maxGlobalLongSize: 70 * 1000,
+      maxGlobalShortSize: 35 * 1000
     },
     axlbtc: {
       name: "axlbtc",
@@ -91,8 +91,8 @@ module.exports = {
       bufferAmount: 1,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 40 * 1000,
-      maxGlobalShortSize: 10 * 1000
+      maxGlobalLongSize: 50 * 1000,
+      maxGlobalShortSize: 20 * 1000
     },
     lzusdc: {
       name: "lzusdc",
@@ -132,7 +132,7 @@ module.exports = {
       tokenWeight: 16000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 200 * 1000,
+      bufferAmount: 150 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -145,8 +145,8 @@ module.exports = {
       isStrictStable: true,
       tokenWeight: 0,
       minProfitBps: 0,
-      maxUsdgAmount: 19 * 1000,
-      bufferAmount: 0 * 1000,
+      maxUsdgAmount: 1,
+      bufferAmount: 0,
       isStable: true,
       isShortable: false
     },
@@ -159,8 +159,8 @@ module.exports = {
       isStrictStable: true,
       tokenWeight: 0,
       minProfitBps: 0,
-      maxUsdgAmount: 50,
-      bufferAmount: 0 * 1000,
+      maxUsdgAmount: 1,
+      bufferAmount: 0,
       isStable: true,
       isShortable: false
     },
@@ -330,8 +330,8 @@ module.exports = {
       bufferAmount: 150,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 800 * 1000,
-      maxGlobalShortSize: 450 * 1000
+      maxGlobalLongSize: 600 * 1000,
+      maxGlobalShortSize: 400 * 1000
     },
     cbeth: {
       name: "cbeth",
@@ -398,12 +398,12 @@ module.exports = {
       isStrictStable: false,
       tokenWeight: 4000,
       minProfitBps: 0,
-      maxUsdgAmount: 140 * 1000,
+      maxUsdgAmount: 110 * 1000,
       bufferAmount: 60 * 1000,
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 100 * 1000,
-      maxGlobalShortSize: 70 * 1000
+      maxGlobalShortSize: 60 * 1000
     },
     usdc: {
       name: "usdbc",
@@ -414,8 +414,8 @@ module.exports = {
       isStrictStable: true,
       tokenWeight: 12000,
       minProfitBps: 0,
-      maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 200 * 1000,
+      maxUsdgAmount: 2000 * 1000,
+      bufferAmount: 150 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -429,7 +429,7 @@ module.exports = {
       tokenWeight: 37000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 750 * 1000,
+      bufferAmount: 650 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -443,6 +443,81 @@ module.exports = {
       tokenWeight: 0,
       minProfitBps: 0,
       maxUsdgAmount: 1,
+      bufferAmount: 0,
+      isStable: true,
+      isShortable: false
+    },
+    nativeToken: {
+      name: "weth",
+      address: "0x4200000000000000000000000000000000000006",
+      decimals: 18
+    }
+  },
+  mode: {
+    weeth: {
+      name: "weeth",
+      address: "0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A",
+      decimals: 18,
+      priceFeed: "0x4ECcCA9634213bCE9A9725D1C65dFF17e38b2757",
+      priceDecimals: 18,
+      fastPricePrecision: 1000,
+      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      isStrictStable: false,
+      tokenWeight: 36000,
+      minProfitBps: 0,
+      maxUsdgAmount: 2000 * 1000,
+      bufferAmount: 0,
+      isStable: false,
+      isShortable: true,
+      maxGlobalLongSize: 1 * 1000,
+      maxGlobalShortSize: 1 * 1000
+    },
+    wbtc: {
+      name: "wbtc",
+      address: "0xcDd475325D6F564d27247D1DddBb0DAc6fA0a5CF",
+      decimals: 8,
+      priceFeed: "0xF48C76Bf6EFA90CBcE23972192a46bD12530aDB6",
+      priceDecimals: 18,
+      fastPricePrecision: 1000,
+      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      isStrictStable: false,
+      tokenWeight: 6000,
+      minProfitBps: 0,
+      maxUsdgAmount: 500 * 1000,
+      bufferAmount: 0,
+      isStable: false,
+      isShortable: true,
+      maxGlobalLongSize: 1 * 1000,
+      maxGlobalShortSize: 1 * 1000
+    },
+    mode: {
+      name: "mode",
+      address: "0xDfc7C877a950e49D2610114102175A06C2e3167a",
+      decimals: 18,
+      priceFeed: "0xEF367CB26A6Dc7DF0e48aEd99d0E68250Ff7A9F4",
+      priceDecimals: 18,
+      fastPricePrecision: 100000,
+      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      isStrictStable: false,
+      tokenWeight: 10000,
+      minProfitBps: 0,
+      maxUsdgAmount: 1000 * 1000,
+      bufferAmount: 0,
+      isStable: false,
+      isShortable: true,
+      maxGlobalLongSize: 1 * 1000,
+      maxGlobalShortSize: 1 * 1000
+    },
+    usdc: {
+      name: "usdc",
+      address: "0xd988097fb8612cc24eeC14542bC03424c656005f",
+      decimals: 6,
+      priceFeed: "0xF9440bd417c28C407C9c22785928Ec3DFE04Bb76",
+      priceDecimals: 18,
+      isStrictStable: true,
+      tokenWeight: 48000,
+      minProfitBps: 0,
+      maxUsdgAmount: 2500 * 1000,
       bufferAmount: 0,
       isStable: true,
       isShortable: false

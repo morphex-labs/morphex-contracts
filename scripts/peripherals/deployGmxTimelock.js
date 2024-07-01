@@ -84,8 +84,29 @@ async function runForBase() {
   console.log("timelock", timelock.address)
 }
 
+async function runForMode() {
+  const admin = "0x99FC968d932f394256e536B5dF3A6e2C8aa2DD36"
+  const rewardManager = { address: ethers.constants.AddressZero }
+  const buffer = 24 * 60 * 60
+  const longBuffer = 30 * 24 * 60 * 60
+  const tokenManager = { address: "0x99FC968d932f394256e536B5dF3A6e2C8aa2DD36" }
+  const mintReceiver = { address: AddressZero }
+  const maxTokenSupply = expandDecimals("10000000", 18)
+
+  const timelock = await deployContract("BmxTimelock", [
+    admin,
+    buffer,
+    longBuffer,
+    rewardManager.address,
+    tokenManager.address,
+    mintReceiver.address,
+    maxTokenSupply
+  ])
+  console.log("timelock", timelock.address)
+}
+
 async function main() {
-  await runForBase()
+  await runForMode()
 }
 
 main()

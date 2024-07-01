@@ -30,13 +30,13 @@ async function getValues() {
 }
 
 async function main() {
-  const positionRouter = await contractAt("PositionRouter", "0x927F9c03d1Ac6e2630d31E614F226b5Ed028d443")
-  const positionManager = await contractAt("PositionManager", "0x2ace8F6Cc1ce4813Bd2D3AcE550ac95810855C40")
+  const positionRouter = await contractAt("PositionRouter", "0x6D6ec3bd7c94ab35e7a0a6FdA864EE35eB9fAE04")
+  const positionManager = await contractAt("PositionManager", "0x3CB54f0eB62C371065D739A34a775CC16f46563e")
   const referralStorage = await deployContract("ReferralStorage", [])
   // const referralStorage = await contractAt("ReferralStorage", "0xb795e91DAefD6A7edEAc3060513D93cE7617370A")
 
-  // await sendTxn(positionRouter.setReferralStorage(referralStorage.address), "positionRouter.setReferralStorage")
-  // await sendTxn(positionManager.setReferralStorage(referralStorage.address), "positionManager.setReferralStorage")
+  await sendTxn(positionRouter.setReferralStorage(referralStorage.address), "positionRouter.setReferralStorage")
+  await sendTxn(positionManager.setReferralStorage(referralStorage.address), "positionManager.setReferralStorage")
 
   await sendTxn(referralStorage.setHandler(positionRouter.address, true), "referralStorage.setHandler(positionRouter)")
 }

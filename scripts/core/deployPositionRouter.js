@@ -4,7 +4,7 @@ const { toUsd } = require("../../test/shared/units")
 
 const network = (process.env.HARDHAT_NETWORK || 'mainnet');
 const tokens = require('./tokens')[network];
-const nativeTokenAddress = "0x4200000000000000000000000000000000000006"; // wftm
+const nativeTokenAddress = "0x4200000000000000000000000000000000000006"; // weth
 
 async function getArbValues(signer) {
   const vault = await contractAt("Vault", "0x489ee077994B6658eAfA855C308275EAd8097C4A")
@@ -88,7 +88,7 @@ async function getValues(signer) {
 }
 
 async function main() {
-  const signer = signers.fantom;
+  // const signer = signers.fantom;
 
   // const {
   //   vault,
@@ -101,20 +101,20 @@ async function main() {
   //   minExecutionFee,
   // } = await getValues(signer)
 
-  const vault = await contractAt("Vault", "0xec8d8D4b215727f3476FF0ab41c406FA99b4272C")
+  const vault = await contractAt("Vault", "0xff745bdB76AfCBa9d3ACdCd71664D4250Ef1ae49")
   // const timelock = await contractAt("Timelock", await vault.gov(), signer)
   const router = await contractAt("Router", await vault.router())
   const weth = await contractAt("WETH", nativeTokenAddress)
   // const referralStorage = await contractAt("ReferralStorage", "0x32034bF6693Cf8c4F970962740609BF7A43ff350")
-  const shortsTracker = await contractAt("ShortsTracker", "0x37E62664C7B78e1e05CA47AA80924D9a6280F420")
+  const shortsTracker = await contractAt("ShortsTracker", "0x6fd75b32C8e839C6A6d971c011F66E14b008d80D")
   const depositFee = "30" // 0.3%
-  const minExecutionFee = "200000000000000" // 0.0002 ETH
+  const minExecutionFee = "100000000000000" // 0.0002 ETH
 
   // const referralStorageGov = await contractAt("Timelock", await referralStorage.gov(), signer)
 
   const positionRouterArgs = [vault.address, router.address, weth.address, shortsTracker.address, depositFee, minExecutionFee]
-  // const positionRouter = await deployContract("PositionRouter", positionRouterArgs)
-  const positionRouter = await contractAt("PositionRouter", "0x927F9c03d1Ac6e2630d31E614F226b5Ed028d443")
+  const positionRouter = await deployContract("PositionRouter", positionRouterArgs)
+  // const positionRouter = await contractAt("PositionRouter", "0x927F9c03d1Ac6e2630d31E614F226b5Ed028d443")
 
   // await sendTxn(positionRouter.setReferralStorage(referralStorage.address), "positionRouter.setReferralStorage")
   // await sendTxn(referralStorageGov.signalSetHandler(referralStorage.address, positionRouter.address, true), "referralStorage.signalSetHandler(positionRouter)")

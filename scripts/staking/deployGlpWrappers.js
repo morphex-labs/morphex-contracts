@@ -1,10 +1,10 @@
 const { signers, deployContract, contractAt, sendTxn, writeTmpAddresses } = require("../shared/helpers")
 
 async function main() {
-  const glp = { address: "0xe771b4E273dF31B85D7A7aE0Efd22fb44BdD0633" }
-  const glpManager = { address: "0x9fAc7b75f367d5B35a6D6D0a09572eFcC3D406C5" }
-  const stakedGlpTracker = await contractAt("RewardTracker", "0x2D5875ab0eFB999c1f49C798acb9eFbd1cfBF63c") // fsBLP
-  const feeGlpTracker = await contractAt("RewardTracker", "0xa2242d0A8b0b5c1A487AbFC03Cd9FEf6262BAdCA") // fBLP
+  const glp = { address: "0x952AdBB385296Dcf86a668f7eaa02DF7eb684439" }
+  const glpManager = { address: "0xf9Fc0B2859f9B6d33fD1Cea5B0A9f1D56C258178" }
+  const stakedGlpTracker = await contractAt("RewardTracker", "0x6c72ADbDc1029ee901dC97C5604487285D972A4f") // fsMLT
+  const feeGlpTracker = await contractAt("RewardTracker", "0xCcBF79AA51919f1711E40293a32bbC71F8842FC3") // fMLT
 
   const stakedGlp = await deployContract("StakedGlp", [
     glp.address,

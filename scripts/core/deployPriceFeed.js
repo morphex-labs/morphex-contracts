@@ -3,7 +3,7 @@ const { expandDecimals } = require("../../test/shared/utilities")
 const { toUsd } = require("../../test/shared/units")
 
 const network = (process.env.HARDHAT_NETWORK || 'mainnet');
-const tokens = require('./tokens')['base'];
+const tokens = require('./tokens')['mode'];
 
 async function getArbValues(signer) {
   const { btc, eth, usdc, link, uni, usdt, mim, frax, dai } = tokens
@@ -84,9 +84,9 @@ async function main() {
   // const signer = await getFrameSigner()
   const deployer = { address: "0xB1dD2Fdb023cB54b7cc2a0f5D9e8d47a9F7723ce" }
 
-  const { eth, btc, usdc, dai } = tokens
-  const tokenArr = [eth, btc, usdc, dai]
-  const fastPriceTokens = [eth, btc]
+  const { weeth, wbtc, mode, usdc } = tokens
+  const tokenArr = [weeth, wbtc, mode, usdc]
+  const fastPriceTokens = [weeth, wbtc, mode]
 
   // const priceFeedTimelock = { address: "0xCa8b5F2fF7B8d452bE8972B44Dc026Be96b97228" }
 
@@ -94,9 +94,9 @@ async function main() {
   const keeper1 = { address: "0x2cd775ac25a8DBD11C4Db46901C776936699f2EE" }
   const updaters = [updater1.address, keeper1.address]
 
-  const tokenManager = { address: "0xB1dD2Fdb023cB54b7cc2a0f5D9e8d47a9F7723ce" }
+  // const tokenManager = { address: "0xB1dD2Fdb023cB54b7cc2a0f5D9e8d47a9F7723ce" }
 
-  const positionRouter = await contractAt("PositionRouter", "0x927F9c03d1Ac6e2630d31E614F226b5Ed028d443")
+  const positionRouter = await contractAt("PositionRouter", "0x6D6ec3bd7c94ab35e7a0a6FdA864EE35eB9fAE04")
 
   const fastPriceEvents = await deployContract("FastPriceEvents", [])
   // const fastPriceEvents = await contractAt("FastPriceEvents", "0xD09eF52d1BB74D67B0c508b932E90f8a6B7F1884")
@@ -149,7 +149,7 @@ async function main() {
   // const secondaryPriceFeed = await contractAt("FastPriceFeed", "0x89BE4cF89c425F74b2d0691A268A9a421e9dce7b")
 
   // const vaultPriceFeed = await deployContract("VaultPriceFeed", [])
-  const vaultPriceFeed = await contractAt("VaultPriceFeed", "0x786AcC981FB93a12D5d195903C5C0d6D9c633cd8")
+  const vaultPriceFeed = await contractAt("VaultPriceFeed", "0x8453491DBf88f102a54c6809bAe6C16c87a1EDca")
 
   await sendTxn(vaultPriceFeed.setMaxStrictPriceDeviation(expandDecimals(1, 28)), "vaultPriceFeed.setMaxStrictPriceDeviation") // 0.01 USD
   await sendTxn(vaultPriceFeed.setPriceSampleSpace(1), "vaultPriceFeed.setPriceSampleSpace")

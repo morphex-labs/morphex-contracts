@@ -10,12 +10,12 @@ async function main() {
 
   // const { vault, tokenManager, glpManager, rewardRouter, positionRouter, positionManager, gmx } = await getValues()
 
-  const tokenManager = { address: "0xE02Fb5C70aF32F80Aa7F9E8775FE7F12550348ec" }
-  const glpManager = { address: "0x9fAc7b75f367d5B35a6D6D0a09572eFcC3D406C5" }
-  const rewardRouter = { address: "0x49A97680938B4F1f73816d1B70C3Ab801FAd124B" }
+  const tokenManager = { address: "0x99FC968d932f394256e536B5dF3A6e2C8aa2DD36" }
+  const glpManager = { address: "0xf9Fc0B2859f9B6d33fD1Cea5B0A9f1D56C258178" }
+  const rewardRouter = { address: "0x73bF80506F891030570FDC4D53a71f44a442353C" }
 
-  const positionRouter = { address: "0x927F9c03d1Ac6e2630d31E614F226b5Ed028d443" }
-  const positionManager = { address: "0x2ace8F6Cc1ce4813Bd2D3AcE550ac95810855C40" }
+  const positionRouter = { address: "0x6D6ec3bd7c94ab35e7a0a6FdA864EE35eB9fAE04" }
+  const positionManager = { address: "0x3CB54f0eB62C371065D739A34a775CC16f46563e" }
 
   const mintReceiver = tokenManager
 

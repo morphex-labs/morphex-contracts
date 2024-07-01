@@ -3,7 +3,7 @@ const { expandDecimals } = require("../../test/shared/utilities")
 const { toChainlinkPrice } = require("../../test/shared/chainlink")
 
 const network = (process.env.HARDHAT_NETWORK || 'mainnet');
-const tokens = require('./tokens')['base'];
+const tokens = require('./tokens')['mode'];
 
 async function getArbValues() {
   const vault = await contractAt("Vault", "0x489ee077994B6658eAfA855C308275EAd8097C4A")
@@ -37,14 +37,14 @@ async function main() {
   // const signer = await getFrameSigner()
 
   // const { vault, tokenArr } = await getValues()
-  const vault = await contractAt("Vault", "0xec8d8D4b215727f3476FF0ab41c406FA99b4272C")
+  const vault = await contractAt("Vault", "0xff745bdB76AfCBa9d3ACdCd71664D4250Ef1ae49")
   const timelock = await contractAt("Timelock", await vault.gov())
 
   // const vaultMethod = "signalVaultSetTokenConfig"
-  // const vaultMethod = "vaultSetTokenConfig"
+  const vaultMethod = "vaultSetTokenConfig"
 
-  const { usdcCircle } = tokens
-  const tokenArr = [usdcCircle]
+  const { weeth, wbtc, mode, usdc } = tokens
+  const tokenArr = [weeth, wbtc, mode, usdc]
 
   console.log("vault", vault.address)
   console.log("timelock", timelock.address)   
@@ -52,21 +52,8 @@ async function main() {
   // console.log("vaultTimelock", vaultTimelock.address)
   // console.log("vaultMethod", vaultMethod)
 
-  for (const token of tokenArr) {
-    await sendTxn(timelock.vaultSetTokenConfig(
-      vault.address,
-      token.address, // _token
-      token.decimals, // _tokenDecimals
-      token.tokenWeight, // _tokenWeight
-      token.minProfitBps, // _minProfitBps
-      expandDecimals(token.maxUsdgAmount, 18), // _maxUsdgAmount
-      token.isStable, // _isStable
-      token.isShortable // _isShortable
-    ), `vault.setTokenConfig(${token.name}) ${token.address}`)
-  }
-  
   // for (const token of tokenArr) {
-  //   await sendTxn(vaultTimelock[vaultMethod](
+  //   await sendTxn(timelock.vaultSetTokenConfig(
   //     vault.address,
   //     token.address, // _token
   //     token.decimals, // _tokenDecimals
@@ -75,8 +62,21 @@ async function main() {
   //     expandDecimals(token.maxUsdgAmount, 18), // _maxUsdgAmount
   //     token.isStable, // _isStable
   //     token.isShortable // _isShortable
-  //   ), `vault.${vaultMethod}(${token.name}) ${token.address}`)
+  //   ), `vault.setTokenConfig(${token.name}) ${token.address}`)
   // }
+  
+  for (const token of tokenArr) {
+    await sendTxn(timelock[vaultMethod](
+      vault.address,
+      token.address, // _token
+      token.decimals, // _tokenDecimals
+      token.tokenWeight, // _tokenWeight
+      token.minProfitBps, // _minProfitBps
+      expandDecimals(token.maxUsdgAmount, 18), // _maxUsdgAmount
+      token.isStable, // _isStable
+      token.isShortable // _isShortable
+    ), `vault.${vaultMethod}(${token.name}) ${token.address}`)
+  }
 }
 
 main()
