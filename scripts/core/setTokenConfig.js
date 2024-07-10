@@ -2,7 +2,7 @@ const { deployContract, contractAt, sendTxn, readTmpAddresses, callWithRetries }
 const { bigNumberify, expandDecimals } = require("../../test/shared/utilities")
 const { toChainlinkPrice } = require("../../test/shared/chainlink")
 
-const chain = 'base' // set to chain you want to work with
+const chain = 'mode' // set to chain you want to work with
 
 const network = (process.env.HARDHAT_NETWORK || 'mainnet');
 const tokens = require('./tokens')[chain];
@@ -46,6 +46,19 @@ async function getBaseValues() {
   return { vault, timelock, reader, tokenArr, vaultTokenInfo }
 }
 
+async function getModeValues() {
+  const vault = await contractAt("Vault", "0xff745bdB76AfCBa9d3ACdCd71664D4250Ef1ae49")
+  const timelock = await contractAt("Timelock", await vault.gov())
+  const reader = await contractAt("Reader", "0xA3Ea99f8aE06bA0d9A6Cf7618d06AEa4564340E9")
+
+  const { eth, weeth, wbtc, mode, usdc } = tokens
+  const tokenArr = [ eth, weeth, wbtc, mode, usdc ]
+
+  const vaultTokenInfo = await reader.getVaultTokenInfoV2(vault.address, eth.address, 1, tokenArr.map(t => t.address))
+
+  return { vault, timelock, reader, tokenArr, vaultTokenInfo }
+}
+
 async function getValues() {
   if (chain === "fantom") {
     return getFtmValues()
@@ -57,6 +70,10 @@ async function getValues() {
 
   if (chain === "base") {
     return getBaseValues()
+  }
+
+  if (chain === "mode") {
+    return getModeValues()
   }
 }
 

@@ -330,8 +330,8 @@ module.exports = {
       bufferAmount: 150,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 600 * 1000,
-      maxGlobalShortSize: 400 * 1000
+      maxGlobalLongSize: 500 * 1000,
+      maxGlobalShortSize: 300 * 1000
     },
     cbeth: {
       name: "cbeth",
@@ -398,11 +398,11 @@ module.exports = {
       isStrictStable: false,
       tokenWeight: 4000,
       minProfitBps: 0,
-      maxUsdgAmount: 110 * 1000,
+      maxUsdgAmount: 100 * 1000,
       bufferAmount: 60 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 100 * 1000,
+      maxGlobalLongSize: 90 * 1000,
       maxGlobalShortSize: 60 * 1000
     },
     usdc: {
@@ -454,6 +454,24 @@ module.exports = {
     }
   },
   mode: {
+    eth: {
+      name: "eth",
+      address: "0x4200000000000000000000000000000000000006",
+      decimals: 18,
+      priceFeed: "0x73144b43560C34581A2Bb31f62bAAB21e656d77f",
+      priceDecimals: 8,
+      fastPricePrecision: 1000,
+      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      isStrictStable: false,
+      tokenWeight: 11000,
+      minProfitBps: 0,
+      maxUsdgAmount: 1000 * 1000,
+      bufferAmount: 0,
+      isStable: false,
+      isShortable: true,
+      maxGlobalLongSize: 1 * 1000,
+      maxGlobalShortSize: 1 * 1000
+    },
     weeth: {
       name: "weeth",
       address: "0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A",
@@ -463,7 +481,7 @@ module.exports = {
       fastPricePrecision: 1000,
       maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
-      tokenWeight: 36000,
+      tokenWeight: 25000,
       minProfitBps: 0,
       maxUsdgAmount: 2000 * 1000,
       bufferAmount: 0,
