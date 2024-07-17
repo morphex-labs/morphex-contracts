@@ -466,10 +466,10 @@ module.exports = {
       tokenWeight: 11000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 0,
+      bufferAmount: 2,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 1 * 1000,
+      maxGlobalLongSize: 3 * 1000,
       maxGlobalShortSize: 1 * 1000
     },
     weeth: {
@@ -484,11 +484,11 @@ module.exports = {
       tokenWeight: 25000,
       minProfitBps: 0,
       maxUsdgAmount: 2000 * 1000,
-      bufferAmount: 0,
+      bufferAmount: 4,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 1 * 1000,
-      maxGlobalShortSize: 1 * 1000
+      maxGlobalLongSize: 10 * 1000,
+      maxGlobalShortSize: 5 * 1000
     },
     wbtc: {
       name: "wbtc",
@@ -502,10 +502,10 @@ module.exports = {
       tokenWeight: 6000,
       minProfitBps: 0,
       maxUsdgAmount: 500 * 1000,
-      bufferAmount: 0,
+      bufferAmount: 1,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 1 * 1000,
+      maxGlobalLongSize: 2 * 1000,
       maxGlobalShortSize: 1 * 1000
     },
     mode: {
@@ -520,10 +520,10 @@ module.exports = {
       tokenWeight: 10000,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
-      bufferAmount: 0,
+      bufferAmount: 250 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 1 * 1000,
+      maxGlobalLongSize: 3 * 1000,
       maxGlobalShortSize: 1 * 1000
     },
     usdc: {
@@ -536,7 +536,7 @@ module.exports = {
       tokenWeight: 48000,
       minProfitBps: 0,
       maxUsdgAmount: 2500 * 1000,
-      bufferAmount: 0,
+      bufferAmount: 24 * 1000,
       isStable: true,
       isShortable: false
     },

@@ -24,6 +24,18 @@ const velocimeterAbi = [
     type: "function",
   },
 ];
+const aerodromeAbi = [
+  {
+    inputs: [
+      { internalType: "address", name: "_rewardsToken", type: "address" },
+      { internalType: "uint256", name: "reward", type: "uint256" },
+    ],
+    name: "notifyRewardAmount",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
 
 // Function to encode function call data
 async function encodeFunctionCall(abi, functionName, params) {
@@ -92,6 +104,8 @@ async function getBaseValues() {
     "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", // USDC
     "0x9EaF8C1E34F05a589EDa6BAfdF391Cf6Ad3CB239", // YFI
     "0x940181a94A35A4569E4529A3CDfB74e38FD98631", // AERO
+    "0x50c5725949a6f0c72e6c4a641f24049a917db0cb", // DAI
+    "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22", // cbETH
   ];
   const rewardTrackerArr = [
     {
@@ -105,10 +119,52 @@ async function getBaseValues() {
       allocation: 60,
     },
     {
-      name: "velocimeterGauge",
-      address: "0x1F7B5E65c09dF12742255BB8Fe26958f4B52F9bb",
+      name: "aerodromeBribes", // BMX-wBLT
+      address: "0xE1e4637738e575F90d02B3fA18b55373Dc510522",
       allocation: 30,
-      abi: velocimeterAbi,
+      abi: aerodromeAbi,
+    },
+  ];
+
+  return {
+    chainId,
+    provider,
+    rewardToken,
+    rewardTrackerArr,
+    swapTokenArr,
+  };
+}
+
+async function getModeValues() {
+  const chainId = 34443;
+  const provider = new ethers.providers.JsonRpcProvider(BASE_URL);
+  const rewardToken = await contractAt(
+    "Token",
+    "0x4200000000000000000000000000000000000006"
+  );
+
+  const swapTokenArr = [
+    "0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A", // weETH
+    "0xcDd475325D6F564d27247D1DddBb0DAc6fA0a5CF", // wBTC
+    "0xDfc7C877a950e49D2610114102175A06C2e3167a", // MODE
+    "0xd988097fb8612cc24eeC14542bC03424c656005f", // USDC
+  ];
+  const rewardTrackerArr = [
+    {
+      name: "feeGmxDistributor",
+      address: "0x26e6C47682FfC1824d7aC5512752FC671dA5e607",
+      allocation: 10,
+    },
+    {
+      name: "feeGlpDistributor",
+      address: "0x366152Fc0FC4680e0A05ce9739a4210228C72BA3",
+      allocation: 60,
+    },
+    {
+      name: "aerodromeBribes", // BMX-wMLT
+      address: "",
+      allocation: 30,
+      abi: aerodromeAbi,
     },
   ];
 
@@ -128,6 +184,11 @@ function getValues() {
   if (network === "fantom") {
     return getFantomValues();
   }
+  if (network === "mode") {
+    return getModeValues();
+  }
+
+  throw new Error("Invalid network");
 }
 
 async function main() {
@@ -157,10 +218,12 @@ async function main() {
     const feeTokenAddress = swapTokenArr[i];
     const feeToken = await contractAt("Token", feeTokenAddress);
     const feeTokenBalance = await feeToken.balanceOf(userAddress);
-    feeTokenBalances.push({
-      tokenAddress: feeTokenAddress,
-      amount: feeTokenBalance.toString(),
-    });
+    if (feeTokenBalance.toString() !== "0") {
+      feeTokenBalances.push({
+        tokenAddress: feeTokenAddress,
+        amount: feeTokenBalance.toString(),
+      });
+    }
     console.log(`${feeTokenAddress}:`, feeTokenBalance.toString());
   }
 
@@ -280,6 +343,21 @@ async function main() {
       await sendTxn(
         wallet.sendTransaction(tx),
         `velocimeterGauge.notifyRewardAmount`
+      );
+    } else if (name === "aerodromeBribes") {
+      const data = await encodeFunctionCall(
+        rewardTrackerArr[i].abi,
+        "notifyRewardAmount",
+        [rewardToken.address, rewardAllocation]
+      );
+
+      const tx = {
+        to: address,
+        data: data,
+      };
+      await sendTxn(
+        wallet.sendTransaction(tx),
+        `aerodromeBribes.notifyRewardAmount`
       );
     } else {
       const rewardDistributor = await contractAt("RewardDistributor", address);
