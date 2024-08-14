@@ -2,7 +2,7 @@ const { getFrameSigner, deployContract, contractAt, sendTxn, readTmpAddresses, c
 const { bigNumberify, expandDecimals } = require("../../test/shared/utilities")
 const { toChainlinkPrice } = require("../../test/shared/chainlink")
 
-const network = 'mode' // set network here
+const network = 'base' // set network here
 const tokens = require('./tokens')[network];
 
 async function getFantomValues() {
@@ -35,8 +35,8 @@ async function getBaseValues() {
     "0x2ace8F6Cc1ce4813Bd2D3AcE550ac95810855C40" // PositionManager
   ]
 
-  const { eth, btc, aero, yfi } = tokens
-  const tokenArr = [eth, btc, aero, yfi]
+  const { eth, btc, aero, yfi, mog } = tokens
+  const tokenArr = [eth, btc, aero, yfi, mog]
 
   return { positionContracts, tokenArr }
 }

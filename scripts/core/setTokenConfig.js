@@ -2,7 +2,7 @@ const { deployContract, contractAt, sendTxn, readTmpAddresses, callWithRetries }
 const { bigNumberify, expandDecimals } = require("../../test/shared/utilities")
 const { toChainlinkPrice } = require("../../test/shared/chainlink")
 
-const chain = 'mode' // set to chain you want to work with
+const chain = 'base' // set to chain you want to work with
 
 const network = (process.env.HARDHAT_NETWORK || 'mainnet');
 const tokens = require('./tokens')[chain];
@@ -38,8 +38,8 @@ async function getBaseValues() {
   const timelock = await contractAt("Timelock", await vault.gov())
   const reader = await contractAt("Reader", "0x92C97631450E804848781C0764907Ec4FC6fFd29")
 
-  const { eth, cbeth, btc, yfi, aero, dai, usdc, usdcCircle } = tokens
-  const tokenArr = [ eth, cbeth, btc, yfi, aero, dai, usdc, usdcCircle ]
+  const { eth, cbeth, btc, yfi, aero, mog, dai, usdc, usdcCircle } = tokens
+  const tokenArr = [ eth, cbeth, btc, yfi, aero, mog, dai, usdc, usdcCircle ]
 
   const vaultTokenInfo = await reader.getVaultTokenInfoV2(vault.address, eth.address, 1, tokenArr.map(t => t.address))
 

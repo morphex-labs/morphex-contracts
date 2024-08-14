@@ -4,7 +4,12 @@ const {
   updateTokensPerInterval,
 } = require("../shared/helpers");
 const { ethers } = require("hardhat");
-const { BASE_DEPLOY_KEY, BASE_URL, FTM_URL, MODE_URL } = require("../../env.json");
+const {
+  BASE_DEPLOY_KEY,
+  BASE_URL,
+  FTM_URL,
+  MODE_URL,
+} = require("../../env.json");
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
@@ -106,6 +111,7 @@ async function getBaseValues() {
     "0x940181a94A35A4569E4529A3CDfB74e38FD98631", // AERO
     "0x50c5725949a6f0c72e6c4a641f24049a917db0cb", // DAI
     "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22", // cbETH
+    "0x2Da56AcB9Ea78330f947bD57C54119Debda7AF71", // MOG
   ];
   const rewardTrackerArr = [
     {
@@ -301,7 +307,9 @@ async function main() {
     }
   }
 
-  if (feeTokenBalances.length > 6) {
+  if (feeTokenBalances.length === 0) {
+    console.log("No tokens to swap");
+  } else if (feeTokenBalances.length > 6) {
     const mid = Math.ceil(feeTokenBalances.length / 2);
     const firstHalf = feeTokenBalances.slice(0, mid);
     const secondHalf = feeTokenBalances.slice(mid);
@@ -361,7 +369,20 @@ async function main() {
       );
     } else {
       const rewardDistributor = await contractAt("RewardDistributor", address);
-      const rewardsPerInterval = rewardAllocation.div(7 * 24 * 60 * 60);
+      const rewardAllocationWithFreestyle =
+        allocation === 10
+          ? rewardAllocation.add("472744231046430000") // set this
+          : rewardAllocation.add("945488462092870000"); // set this
+      const rewardsPerInterval =
+        network === "base"
+          ? rewardAllocationWithFreestyle.div(7 * 24 * 60 * 60)
+          : rewardAllocation.div(7 * 24 * 60 * 60);
+      network === "base" && console.log(
+        "allocations",
+        allocation,
+        ethers.utils.formatEther(rewardAllocation),
+        ethers.utils.formatEther(rewardAllocationWithFreestyle)
+      );
       console.log("rewardsPerInterval", rewardsPerInterval.toString());
 
       await sendTxn(
