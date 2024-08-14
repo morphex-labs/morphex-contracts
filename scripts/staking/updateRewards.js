@@ -4,7 +4,7 @@ const {
   updateTokensPerInterval,
 } = require("../shared/helpers");
 const { ethers } = require("hardhat");
-const { BASE_DEPLOY_KEY, BASE_URL, FTM_URL } = require("../../env.json");
+const { BASE_DEPLOY_KEY, BASE_URL, FTM_URL, MODE_URL } = require("../../env.json");
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
@@ -137,7 +137,7 @@ async function getBaseValues() {
 
 async function getModeValues() {
   const chainId = 34443;
-  const provider = new ethers.providers.JsonRpcProvider(BASE_URL);
+  const provider = new ethers.providers.JsonRpcProvider(MODE_URL);
   const rewardToken = await contractAt(
     "Token",
     "0x4200000000000000000000000000000000000006"
@@ -160,12 +160,12 @@ async function getModeValues() {
       address: "0x366152Fc0FC4680e0A05ce9739a4210228C72BA3",
       allocation: 60,
     },
-    {
-      name: "aerodromeBribes", // BMX-wMLT
-      address: "",
-      allocation: 30,
-      abi: aerodromeAbi,
-    },
+    // {
+    //   name: "aerodromeBribes", // BMX-wMLT
+    //   address: "",
+    //   allocation: 30,
+    //   abi: aerodromeAbi,
+    // },
   ];
 
   return {
