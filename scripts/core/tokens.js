@@ -330,7 +330,7 @@ module.exports = {
       bufferAmount: 120,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 300 * 1000,
+      maxGlobalLongSize: 350 * 1000,
       maxGlobalShortSize: 250 * 1000
     },
     cbeth: {
@@ -402,7 +402,7 @@ module.exports = {
       bufferAmount: 60 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 80 * 1000,
+      maxGlobalLongSize: 70 * 1000,
       maxGlobalShortSize: 60 * 1000
     },
     mog: {
@@ -430,10 +430,10 @@ module.exports = {
       priceFeed: "0x7e860098F58bBFC8648a4311b374B1D669a2bc6B",
       priceDecimals: 8,
       isStrictStable: true,
-      tokenWeight: 11000,
+      tokenWeight: 6000,
       minProfitBps: 0,
       maxUsdgAmount: 2000 * 1000,
-      bufferAmount: 50 * 1000,
+      bufferAmount: 35 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -447,7 +447,7 @@ module.exports = {
       tokenWeight: 37000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 400 * 1000,
+      bufferAmount: 350 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -462,6 +462,20 @@ module.exports = {
       minProfitBps: 0,
       maxUsdgAmount: 1,
       bufferAmount: 0,
+      isStable: true,
+      isShortable: false
+    },
+    eurc: {
+      name: "eurc",
+      address: "0x60a3E35Cc302bFA44Cb288Bc5a4F316Fdb1adb42",
+      decimals: 6,
+      priceFeed: "0xDAe398520e2B67cd3f27aeF9Cf14D93D927f8250",
+      priceDecimals: 8,
+      isStrictStable: false,
+      tokenWeight: 5000,
+      minProfitBps: 0,
+      maxUsdgAmount: 500 * 1000,
+      bufferAmount: 35 * 1000,
       isStable: true,
       isShortable: false
     },
