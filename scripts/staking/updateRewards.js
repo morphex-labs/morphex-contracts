@@ -112,6 +112,7 @@ async function getBaseValues() {
     "0x50c5725949a6f0c72e6c4a641f24049a917db0cb", // DAI
     "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22", // cbETH
     "0x2Da56AcB9Ea78330f947bD57C54119Debda7AF71", // MOG
+    "0x60a3e35cc302bfa44cb288bc5a4f316fdb1adb42", // EURC
   ];
   const rewardTrackerArr = [
     {
@@ -297,6 +298,7 @@ async function main() {
       return txReceipt;
     } else {
       const errorText = await response.text();
+      console.log('assembleRequestBody', assembleRequestBody)
       console.error(
         "Error in Transaction Assembly:",
         response.status,
@@ -371,8 +373,8 @@ async function main() {
       const rewardDistributor = await contractAt("RewardDistributor", address);
       const rewardAllocationWithFreestyle =
         allocation === 10
-          ? rewardAllocation.add("94142949062644004") // set this (single staking)
-          : rewardAllocation.add("188343449790490003"); // set this (blt)
+          ? rewardAllocation.add("22614478570543000") // set this (single staking)
+          : rewardAllocation.add("45233792255182000"); // set this (blt)
       const rewardsPerInterval =
         network === "base"
           ? rewardAllocationWithFreestyle.div(7 * 24 * 60 * 60)
