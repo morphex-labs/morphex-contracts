@@ -373,8 +373,8 @@ async function main() {
       const rewardDistributor = await contractAt("RewardDistributor", address);
       const rewardAllocationWithFreestyle =
         allocation === 10
-          ? rewardAllocation.add("22614478570543000") // set this (single staking)
-          : rewardAllocation.add("45233792255182000"); // set this (blt)
+          ? rewardAllocation.add("37561673446630000") // set this (single staking)
+          : rewardAllocation.add("75105798443614997"); // set this (blt)
       const rewardsPerInterval =
         network === "base"
           ? rewardAllocationWithFreestyle.div(7 * 24 * 60 * 60)
