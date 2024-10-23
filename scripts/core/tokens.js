@@ -384,8 +384,8 @@ module.exports = {
       bufferAmount: 1,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 1,
-      maxGlobalShortSize: 1
+      maxGlobalLongSize: 100 * 1000,
+      maxGlobalShortSize: 50 * 1000
     },
     yfi: {
       name: "yfi",
