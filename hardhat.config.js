@@ -54,7 +54,7 @@ task("accounts", "Prints the list of accounts", async () => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  defaultNetwork: "base",
+  defaultNetwork: "mode",
   networks: {
     localhost: {
       timeout: 120000
@@ -123,7 +123,7 @@ module.exports = {
     },
     mode: {
       url: MODE_URL,
-      gasMultiplier: 1.5,
+      gasPrice: 100000000,
       chainId: 34443,
       accounts: [MODE_DEPLOY_KEY]
     }

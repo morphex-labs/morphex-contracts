@@ -448,7 +448,7 @@ module.exports = {
       priceFeed: "0x7e860098F58bBFC8648a4311b374B1D669a2bc6B",
       priceDecimals: 8,
       isStrictStable: true,
-      tokenWeight: 9000,
+      tokenWeight: 8000,
       minProfitBps: 0,
       maxUsdgAmount: 2000 * 1000,
       bufferAmount: 150 * 1000,
@@ -462,10 +462,10 @@ module.exports = {
       priceFeed: "0x7e860098F58bBFC8648a4311b374B1D669a2bc6B",
       priceDecimals: 8,
       isStrictStable: true,
-      tokenWeight: 37000,
+      tokenWeight: 36000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 600 * 1000,
+      bufferAmount: 625 * 1000,
       isStable: true,
       isShortable: false
     },
@@ -490,7 +490,7 @@ module.exports = {
       priceFeed: "0xDAe398520e2B67cd3f27aeF9Cf14D93D927f8250",
       priceDecimals: 8,
       isStrictStable: false,
-      tokenWeight: 2000,
+      tokenWeight: 4000,
       minProfitBps: 0,
       maxUsdgAmount: 100 * 1000,
       bufferAmount: 20 * 1000,
@@ -519,8 +519,8 @@ module.exports = {
       bufferAmount: 3,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 10 * 1000,
-      maxGlobalShortSize: 5 * 1000
+      maxGlobalLongSize: 20 * 1000,
+      maxGlobalShortSize: 10 * 1000
     },
     weeth: {
       name: "weeth",
@@ -537,8 +537,8 @@ module.exports = {
       bufferAmount: 6,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 30 * 1000,
-      maxGlobalShortSize: 15 * 1000
+      maxGlobalLongSize: 40 * 1000,
+      maxGlobalShortSize: 20 * 1000
     },
     wbtc: {
       name: "wbtc",
@@ -555,8 +555,8 @@ module.exports = {
       bufferAmount: 0,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 10 * 1000,
-      maxGlobalShortSize: 5 * 1000
+      maxGlobalLongSize: 15 * 1000,
+      maxGlobalShortSize: 8 * 1000
     },
     mode: {
       name: "mode",
@@ -586,7 +586,7 @@ module.exports = {
       tokenWeight: 48000,
       minProfitBps: 0,
       maxUsdgAmount: 2500 * 1000,
-      bufferAmount: 40 * 1000,
+      bufferAmount: 45 * 1000,
       isStable: true,
       isShortable: false
     },

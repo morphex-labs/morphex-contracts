@@ -113,6 +113,7 @@ async function getBaseValues() {
     "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22", // cbETH
     "0x2Da56AcB9Ea78330f947bD57C54119Debda7AF71", // MOG
     "0x60a3e35cc302bfa44cb288bc5a4f316fdb1adb42", // EURC
+    "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf" // cbBTC
   ];
   const rewardTrackerArr = [
     {
@@ -298,7 +299,7 @@ async function main() {
       return txReceipt;
     } else {
       const errorText = await response.text();
-      console.log('assembleRequestBody', assembleRequestBody)
+      console.log("assembleRequestBody", assembleRequestBody);
       console.error(
         "Error in Transaction Assembly:",
         response.status,
@@ -373,18 +374,19 @@ async function main() {
       const rewardDistributor = await contractAt("RewardDistributor", address);
       const rewardAllocationWithFreestyle =
         allocation === 10
-          ? rewardAllocation.add("37561673446630000") // set this (single staking)
-          : rewardAllocation.add("75105798443614997"); // set this (blt)
+          ? rewardAllocation.add("13388807349783001") // set this (single staking)
+          : rewardAllocation.add("20128340625072001"); // set this (blt/mlt)
       const rewardsPerInterval =
-        network === "base"
+        network === "base" || network === "mode"
           ? rewardAllocationWithFreestyle.div(7 * 24 * 60 * 60)
           : rewardAllocation.div(7 * 24 * 60 * 60);
-      network === "base" && console.log(
-        "allocations",
-        allocation,
-        ethers.utils.formatEther(rewardAllocation),
-        ethers.utils.formatEther(rewardAllocationWithFreestyle)
-      );
+      (network === "base" || network === "mode") &&
+        console.log(
+          "allocations",
+          allocation,
+          ethers.utils.formatEther(rewardAllocation),
+          ethers.utils.formatEther(rewardAllocationWithFreestyle)
+        );
       console.log("rewardsPerInterval", rewardsPerInterval.toString());
 
       await sendTxn(
