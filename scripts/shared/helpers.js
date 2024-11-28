@@ -201,7 +201,7 @@ async function updateTokensPerInterval(distributor, tokensPerInterval, label) {
     // so the lastDistributionTime should be manually updated here
     await sendTxn(distributor.updateLastDistributionTime({ gasLimit: 500000 }), `${label}.updateLastDistributionTime`)
   }
-  await sendTxn(distributor.setTokensPerInterval(tokensPerInterval, { gasLimit: 500000 }), `${label}.setTokensPerInterval`)
+  await sendTxn(distributor.setTokensPerInterval(tokensPerInterval, { gasLimit: 1000000 }), `${label}.setTokensPerInterval`)
 }
 
 module.exports = {

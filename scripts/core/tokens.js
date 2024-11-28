@@ -1,5 +1,5 @@
 // price feeds https://docs.chain.link/docs/binance-smart-chain-addresses/
-const { expandDecimals } = require("../../test/shared/utilities")
+const { expandDecimals } = require("../../test/shared/utilities");
 
 module.exports = {
   fantom: {
@@ -10,7 +10,7 @@ module.exports = {
       priceFeed: "0xf4766552D15AE4d256Ad41B6cf2933482B0680dc",
       priceDecimals: 8,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 41000,
       minProfitBps: 0,
@@ -20,7 +20,7 @@ module.exports = {
       isShortable: true,
       maxGlobalLongSize: 500 * 1000,
       maxGlobalShortSize: 250 * 1000,
-      spreadBasisPoints: 0
+      spreadBasisPoints: 0,
     },
     lzeth: {
       name: "lzeth",
@@ -29,7 +29,7 @@ module.exports = {
       priceFeed: "0x11DdD3d147E5b83D01cee7070027092397d63658",
       priceDecimals: 8,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 2500,
       minProfitBps: 0,
@@ -38,7 +38,7 @@ module.exports = {
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 30 * 1000,
-      maxGlobalShortSize: 15 * 1000
+      maxGlobalShortSize: 15 * 1000,
     },
     axleth: {
       name: "axleth",
@@ -47,7 +47,7 @@ module.exports = {
       priceFeed: "0x11DdD3d147E5b83D01cee7070027092397d63658",
       priceDecimals: 8,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 2500,
       minProfitBps: 0,
@@ -56,7 +56,7 @@ module.exports = {
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 25 * 1000,
-      maxGlobalShortSize: 10 * 1000
+      maxGlobalShortSize: 10 * 1000,
     },
     lzbtc: {
       name: "lzbtc",
@@ -65,16 +65,16 @@ module.exports = {
       priceFeed: "0x8e94C22142F4A64b99022ccDd994f4e9EC86E4B4",
       priceDecimals: 8,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 3000,
       minProfitBps: 0,
-      maxUsdgAmount:  200 * 1000,
+      maxUsdgAmount: 200 * 1000,
       bufferAmount: 0,
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 50 * 1000,
-      maxGlobalShortSize: 25 * 1000
+      maxGlobalShortSize: 25 * 1000,
     },
     axlbtc: {
       name: "axlbtc",
@@ -83,16 +83,16 @@ module.exports = {
       priceFeed: "0x8e94C22142F4A64b99022ccDd994f4e9EC86E4B4",
       priceDecimals: 8,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 3000,
       minProfitBps: 0,
-      maxUsdgAmount:  200 * 1000,
+      maxUsdgAmount: 200 * 1000,
       bufferAmount: 0,
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 50 * 1000,
-      maxGlobalShortSize: 25 * 1000
+      maxGlobalShortSize: 25 * 1000,
     },
     lzusdc: {
       name: "lzusdc",
@@ -106,7 +106,7 @@ module.exports = {
       maxUsdgAmount: 480 * 1000,
       bufferAmount: 150 * 1000,
       isStable: true,
-      isShortable: false
+      isShortable: false,
     },
     axlusdc: {
       name: "axlusdc",
@@ -120,7 +120,7 @@ module.exports = {
       maxUsdgAmount: 480 * 1000,
       bufferAmount: 100 * 1000,
       isStable: true,
-      isShortable: false
+      isShortable: false,
     },
     usdc: {
       name: "usdc",
@@ -134,7 +134,7 @@ module.exports = {
       maxUsdgAmount: 1000 * 1000,
       bufferAmount: 200 * 1000,
       isStable: true,
-      isShortable: false
+      isShortable: false,
     },
     lzusdt: {
       name: "lzusdt",
@@ -148,7 +148,7 @@ module.exports = {
       maxUsdgAmount: 1,
       bufferAmount: 0,
       isStable: true,
-      isShortable: false
+      isShortable: false,
     },
     axlusdt: {
       name: "axlusdt",
@@ -162,13 +162,13 @@ module.exports = {
       maxUsdgAmount: 1,
       bufferAmount: 0,
       isStable: true,
-      isShortable: false
+      isShortable: false,
     },
     nativeToken: {
       name: "wftm",
       address: "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83",
-      decimals: 18
-    }
+      decimals: 18,
+    },
   },
   bsc: {
     bnb: {
@@ -178,7 +178,7 @@ module.exports = {
       priceFeed: "0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE",
       priceDecimals: 8,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 20000,
       minProfitBps: 0,
@@ -188,7 +188,7 @@ module.exports = {
       isShortable: true,
       maxGlobalLongSize: 1,
       maxGlobalShortSize: 1,
-      spreadBasisPoints: 0
+      spreadBasisPoints: 0,
     },
     eth: {
       name: "eth",
@@ -197,7 +197,7 @@ module.exports = {
       priceFeed: "0x9ef1B8c0E4F7dc8bF5719Ea496883DC6401d5b2e",
       priceDecimals: 8,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 14000,
       minProfitBps: 0,
@@ -206,7 +206,7 @@ module.exports = {
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 1,
-      maxGlobalShortSize: 1
+      maxGlobalShortSize: 1,
     },
     btc: {
       name: "btc",
@@ -215,7 +215,7 @@ module.exports = {
       priceFeed: "0x264990fbd0A4796A3E3d8E37C4d5F87a3aCa5Ebf",
       priceDecimals: 8,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 14000,
       minProfitBps: 0,
@@ -224,7 +224,7 @@ module.exports = {
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 1,
-      maxGlobalShortSize: 1
+      maxGlobalShortSize: 1,
     },
     xrp: {
       name: "xrp",
@@ -233,7 +233,7 @@ module.exports = {
       priceFeed: "0x93A67D414896A280bF8FFB3b389fE3686E014fda",
       priceDecimals: 8,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 1000,
       minProfitBps: 0,
@@ -242,7 +242,7 @@ module.exports = {
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 1,
-      maxGlobalShortSize: 1
+      maxGlobalShortSize: 1,
     },
     ada: {
       name: "ada",
@@ -251,7 +251,7 @@ module.exports = {
       priceFeed: "0xa767f745331D267c7751297D982b050c93985627",
       priceDecimals: 8,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 1000,
       minProfitBps: 0,
@@ -260,7 +260,7 @@ module.exports = {
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 1,
-      maxGlobalShortSize: 1
+      maxGlobalShortSize: 1,
     },
     cake: {
       name: "cake",
@@ -269,7 +269,7 @@ module.exports = {
       priceFeed: "0xB6064eD41d4f67e353768aA239cA86f4F73665a1",
       priceDecimals: 8,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 1,
       minProfitBps: 0,
@@ -278,7 +278,7 @@ module.exports = {
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 0,
-      maxGlobalShortSize: 0
+      maxGlobalShortSize: 0,
     },
     usdc: {
       name: "usdc",
@@ -292,7 +292,7 @@ module.exports = {
       maxUsdgAmount: 1000,
       bufferAmount: 0,
       isStable: true,
-      isShortable: false
+      isShortable: false,
     },
     usdt: {
       name: "usdt",
@@ -306,13 +306,13 @@ module.exports = {
       maxUsdgAmount: 3500,
       bufferAmount: 0,
       isStable: true,
-      isShortable: false
+      isShortable: false,
     },
     nativeToken: {
       name: "wbnb",
       address: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-      decimals: 18
-    }
+      decimals: 18,
+    },
   },
   base: {
     eth: {
@@ -322,7 +322,7 @@ module.exports = {
       priceFeed: "0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70",
       priceDecimals: 8,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 38000,
       minProfitBps: 0,
@@ -330,8 +330,8 @@ module.exports = {
       bufferAmount: 200,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 500 * 1000,
-      maxGlobalShortSize: 250 * 1000
+      maxGlobalLongSize: 750 * 1000,
+      maxGlobalShortSize: 400 * 1000,
     },
     cbeth: {
       name: "cbeth",
@@ -340,7 +340,7 @@ module.exports = {
       priceFeed: "0xd7818272B9e248357d13057AAb0B417aF31E817d",
       priceDecimals: 8,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 0,
       minProfitBps: 0,
@@ -349,7 +349,7 @@ module.exports = {
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 1,
-      maxGlobalShortSize: 1
+      maxGlobalShortSize: 1,
     },
     btc: {
       name: "btc",
@@ -358,7 +358,7 @@ module.exports = {
       priceFeed: "0xCCADC697c55bbB68dc5bCdf8d3CBe83CdD4E071E",
       priceDecimals: 8,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 0,
       minProfitBps: 0,
@@ -367,7 +367,7 @@ module.exports = {
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 1,
-      maxGlobalShortSize: 1
+      maxGlobalShortSize: 1,
     },
     cbbtc: {
       name: "cbbtc",
@@ -376,16 +376,16 @@ module.exports = {
       priceFeed: "0x07DA0E54543a844a80ABE69c8A12F22B3aA59f9D",
       priceDecimals: 8,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 8000,
       minProfitBps: 0,
-      maxUsdgAmount: 400 * 1000,
+      maxUsdgAmount: 500 * 1000,
       bufferAmount: 1,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 100 * 1000,
-      maxGlobalShortSize: 50 * 1000
+      maxGlobalLongSize: 200 * 1000,
+      maxGlobalShortSize: 100 * 1000,
     },
     yfi: {
       name: "yfi",
@@ -394,7 +394,7 @@ module.exports = {
       priceFeed: "0xD40e758b5eC80820B68DFC302fc5Ce1239083548",
       priceDecimals: 8,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 0,
       minProfitBps: 0,
@@ -403,7 +403,7 @@ module.exports = {
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 1,
-      maxGlobalShortSize: 1
+      maxGlobalShortSize: 1,
     },
     aero: {
       name: "aero",
@@ -412,7 +412,7 @@ module.exports = {
       priceFeed: "0x4EC5970fC728C5f65ba413992CD5fF6FD70fcfF0",
       priceDecimals: 8,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 4000,
       minProfitBps: 0,
@@ -421,7 +421,7 @@ module.exports = {
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 70 * 1000,
-      maxGlobalShortSize: 60 * 1000
+      maxGlobalShortSize: 60 * 1000,
     },
     mog: {
       name: "mog",
@@ -430,7 +430,7 @@ module.exports = {
       priceFeed: "0x4aeb6D15769EaD32D0c5Be2940F40c7CFf53801d",
       priceDecimals: 18,
       fastPricePrecision: 10000000000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 2000,
       minProfitBps: 0,
@@ -439,7 +439,7 @@ module.exports = {
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 50 * 1000,
-      maxGlobalShortSize: 25 * 1000
+      maxGlobalShortSize: 25 * 1000,
     },
     usdc: {
       name: "usdbc",
@@ -451,9 +451,9 @@ module.exports = {
       tokenWeight: 8000,
       minProfitBps: 0,
       maxUsdgAmount: 2000 * 1000,
-      bufferAmount: 150 * 1000,
+      bufferAmount: 175 * 1000,
       isStable: true,
-      isShortable: false
+      isShortable: false,
     },
     usdcCircle: {
       name: "usdc",
@@ -465,9 +465,9 @@ module.exports = {
       tokenWeight: 36000,
       minProfitBps: 0,
       maxUsdgAmount: 3000 * 1000,
-      bufferAmount: 625 * 1000,
+      bufferAmount: 750 * 1000,
       isStable: true,
-      isShortable: false
+      isShortable: false,
     },
     dai: {
       name: "dai",
@@ -481,7 +481,7 @@ module.exports = {
       maxUsdgAmount: 1,
       bufferAmount: 0,
       isStable: true,
-      isShortable: false
+      isShortable: false,
     },
     eurc: {
       name: "eurc",
@@ -493,15 +493,15 @@ module.exports = {
       tokenWeight: 4000,
       minProfitBps: 0,
       maxUsdgAmount: 100 * 1000,
-      bufferAmount: 20 * 1000,
+      bufferAmount: 75 * 1000,
       isStable: true,
-      isShortable: false
+      isShortable: false,
     },
     nativeToken: {
       name: "weth",
       address: "0x4200000000000000000000000000000000000006",
-      decimals: 18
-    }
+      decimals: 18,
+    },
   },
   mode: {
     eth: {
@@ -511,7 +511,7 @@ module.exports = {
       priceFeed: "0x73144b43560C34581A2Bb31f62bAAB21e656d77f",
       priceDecimals: 8,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 11000,
       minProfitBps: 0,
@@ -520,7 +520,7 @@ module.exports = {
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 20 * 1000,
-      maxGlobalShortSize: 10 * 1000
+      maxGlobalShortSize: 10 * 1000,
     },
     weeth: {
       name: "weeth",
@@ -529,7 +529,7 @@ module.exports = {
       priceFeed: "0x4ECcCA9634213bCE9A9725D1C65dFF17e38b2757",
       priceDecimals: 18,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 25000,
       minProfitBps: 0,
@@ -538,7 +538,7 @@ module.exports = {
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 40 * 1000,
-      maxGlobalShortSize: 20 * 1000
+      maxGlobalShortSize: 20 * 1000,
     },
     wbtc: {
       name: "wbtc",
@@ -547,7 +547,7 @@ module.exports = {
       priceFeed: "0xF48C76Bf6EFA90CBcE23972192a46bD12530aDB6",
       priceDecimals: 18,
       fastPricePrecision: 1000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 6000,
       minProfitBps: 0,
@@ -556,7 +556,7 @@ module.exports = {
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 15 * 1000,
-      maxGlobalShortSize: 8 * 1000
+      maxGlobalShortSize: 8 * 1000,
     },
     mode: {
       name: "mode",
@@ -565,7 +565,7 @@ module.exports = {
       priceFeed: "0xEF367CB26A6Dc7DF0e48aEd99d0E68250Ff7A9F4",
       priceDecimals: 18,
       fastPricePrecision: 100000,
-      maxCumulativeDeltaDiff: 0.10 * 10 * 1000 * 1000, // 10%
+      maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 10000,
       minProfitBps: 0,
@@ -574,7 +574,7 @@ module.exports = {
       isStable: false,
       isShortable: true,
       maxGlobalLongSize: 10 * 1000,
-      maxGlobalShortSize: 5 * 1000
+      maxGlobalShortSize: 5 * 1000,
     },
     usdc: {
       name: "usdc",
@@ -588,12 +588,12 @@ module.exports = {
       maxUsdgAmount: 2500 * 1000,
       bufferAmount: 45 * 1000,
       isStable: true,
-      isShortable: false
+      isShortable: false,
     },
     nativeToken: {
       name: "weth",
       address: "0x4200000000000000000000000000000000000006",
-      decimals: 18
-    }
-  }
-}
+      decimals: 18,
+    },
+  },
+};

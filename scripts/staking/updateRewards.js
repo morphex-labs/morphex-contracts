@@ -126,12 +126,12 @@ async function getBaseValues() {
       address: "0x06c35893Ba9bc454e12c36F4117BC99f75e34346",
       allocation: 60,
     },
-    {
-      name: "aerodromeBribes", // BMX-wBLT
-      address: "0xE1e4637738e575F90d02B3fA18b55373Dc510522",
-      allocation: 30,
-      abi: aerodromeAbi,
-    },
+    // {
+    //   name: "aerodromeBribes", // BMX-wBLT
+    //   address: "0xE1e4637738e575F90d02B3fA18b55373Dc510522",
+    //   allocation: 30,
+    //   abi: aerodromeAbi,
+    // },
   ];
 
   return {
@@ -374,8 +374,8 @@ async function main() {
       const rewardDistributor = await contractAt("RewardDistributor", address);
       const rewardAllocationWithFreestyle =
         allocation === 10
-          ? rewardAllocation.add("13388807349783001") // set this (single staking)
-          : rewardAllocation.add("20128340625072001"); // set this (blt/mlt)
+          ? rewardAllocation.add("0") // set this (single staking)
+          : rewardAllocation.add("0"); // set this (blt/mlt)
       const rewardsPerInterval =
         network === "base" || network === "mode"
           ? rewardAllocationWithFreestyle.div(7 * 24 * 60 * 60)
