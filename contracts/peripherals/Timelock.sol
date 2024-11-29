@@ -20,6 +20,10 @@ import "../staking/interfaces/IRewardRouterV2.sol";
 import "../libraries/math/SafeMath.sol";
 import "../libraries/token/IERC20.sol";
 
+interface IVaultClearTokenConfig {
+    function clearTokenConfig(address _token) external;
+}
+
 contract Timelock is ITimelock {
     using SafeMath for uint256;
 
@@ -64,7 +68,7 @@ contract Timelock is ITimelock {
         bool isStable,
         bool isShortable
     );
-    event SignalClearTokenConfig(address vault, address token, bytes32 action);
+    event SignalClearVaultTokenConfig(address vault, address token, bytes32 action);
     event ClearAction(bytes32 action);
 
     modifier onlyAdmin() {
@@ -585,17 +589,17 @@ contract Timelock is ITimelock {
         );
     }
 
-    function signalClearTokenConfig(address _vault, address _token) external onlyAdmin {
-        bytes32 action = keccak256(abi.encodePacked("clearTokenConfig", _vault, _token));
+    function signalClearVaultTokenConfig(address _vault, address _token) external onlyAdmin {
+        bytes32 action = keccak256(abi.encodePacked("clearVaultTokenConfig", _vault, _token));
         _setPendingAction(action);
-        emit SignalClearTokenConfig(_vault, _token, action);
+        emit SignalClearVaultTokenConfig(_vault, _token, action);
     }
 
-    function clearTokenConfig(address _vault, address _token) external onlyAdmin {
-        bytes32 action = keccak256(abi.encodePacked("clearTokenConfig", _vault, _token));
+    function clearVaultTokenConfig(address _vault, address _token) external onlyAdmin {
+        bytes32 action = keccak256(abi.encodePacked("clearVaultTokenConfig", _vault, _token));
         _validateAction(action);
         _clearAction(action);
-        IVault(_vault).clearTokenConfig(_token);
+        IVaultClearTokenConfig(_vault).clearTokenConfig(_token);
     }
 
     function cancelAction(bytes32 _action) external onlyAdmin {
