@@ -360,7 +360,7 @@ module.exports = {
       fastPricePrecision: 1000,
       maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
-      tokenWeight: 8000,
+      tokenWeight: 7500,
       minProfitBps: 0,
       maxUsdgAmount: 1000 * 1000,
       bufferAmount: 1,
@@ -414,7 +414,7 @@ module.exports = {
       fastPricePrecision: 100000000,
       maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
-      tokenWeight: 2000,
+      tokenWeight: 1500,
       minProfitBps: 0,
       maxUsdgAmount: 75 * 1000,
       bufferAmount: 200 * 1000,
