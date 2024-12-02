@@ -54,7 +54,7 @@ task("accounts", "Prints the list of accounts", async () => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  defaultNetwork: "mode",
+  defaultNetwork: "base",
   networks: {
     localhost: {
       timeout: 120000
