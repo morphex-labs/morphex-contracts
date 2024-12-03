@@ -13,7 +13,7 @@ const {
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
-const network = "fantom"; // set to network you want to update on
+const network = "mode"; // set to network you want to update on
 const quoteUrl = "https://api.odos.xyz/sor/quote/v2";
 const assembleUrl = "https://api.odos.xyz/sor/assemble";
 const userAddress = "0xB1dD2Fdb023cB54b7cc2a0f5D9e8d47a9F7723ce";
@@ -113,7 +113,8 @@ async function getBaseValues() {
     "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22", // cbETH
     "0x2Da56AcB9Ea78330f947bD57C54119Debda7AF71", // MOG
     "0x60a3e35cc302bfa44cb288bc5a4f316fdb1adb42", // EURC
-    "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf" // cbBTC
+    "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf", // cbBTC
+    "0xA88594D404727625A9437C3f886C7643872296AE" // WELL
   ];
   const rewardTrackerArr = [
     {
