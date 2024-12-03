@@ -420,8 +420,8 @@ module.exports = {
       bufferAmount: 200 * 1000,
       isStable: false,
       isShortable: true,
-      maxGlobalLongSize: 1,
-      maxGlobalShortSize: 1,
+      maxGlobalLongSize: 40 * 1000,
+      maxGlobalShortSize: 20 * 1000,
     },
     mog: {
       name: "mog",
