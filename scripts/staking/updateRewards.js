@@ -13,11 +13,34 @@ const {
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
-const network = "mode"; // set to network you want to update on
-const quoteUrl = "https://api.odos.xyz/sor/quote/v2";
-const assembleUrl = "https://api.odos.xyz/sor/assemble";
-const userAddress = "0xB1dD2Fdb023cB54b7cc2a0f5D9e8d47a9F7723ce";
-const velocimeterAbi = [
+// Configuration
+const network = "fantom"; // set to network you want to update on
+const additionalRevenueSources = {
+  freestyleUSDC: "0", // set this, 6 decimals
+  basedMediaXETH: "0", // set this, 18 decimals
+};
+const USER_ADDRESS = "0xB1dD2Fdb023cB54b7cc2a0f5D9e8d47a9F7723ce";
+
+// Constants
+const API_ENDPOINTS = {
+  quote: "https://api.odos.xyz/sor/quote/v2",
+  assemble: "https://api.odos.xyz/sor/assemble",
+};
+const FREESTYLE_ALLOCATIONS = {
+  singleStaking: 20, // swap to weth
+  bltMlt: 30, // swap to weth
+  bribes: 40,
+  burnBmx: 10, // swap to BMX
+};
+const BASED_MEDIAX_ALLOCATIONS = {
+  singleStaking: 50,
+  bltMlt: 20,
+  bribes: 25,
+  burnBmx: 5, // swap to BMX
+};
+
+// Contract ABIs
+const VELOCIMETER_ABI = [
   {
     inputs: [
       { internalType: "address", name: "token", type: "address" },
@@ -29,7 +52,8 @@ const velocimeterAbi = [
     type: "function",
   },
 ];
-const aerodromeAbi = [
+
+const AERODROME_ABI = [
   {
     inputs: [
       { internalType: "address", name: "_rewardsToken", type: "address" },
@@ -42,10 +66,136 @@ const aerodromeAbi = [
   },
 ];
 
-// Function to encode function call data
+// Helper Functions
+function logSectionHeader(title) {
+  console.log("\n" + "=".repeat(50));
+  console.log(`${title}`);
+  console.log("=".repeat(50));
+}
+function logTransactionHash(type, hash) {
+  console.log("\n📝 Transaction Hash:");
+  console.log(`${type}:`);
+  console.log(`${hash}`);
+}
+function logBalance(label, amount, decimals = 18, symbol = "ETH") {
+  console.log(
+    `${label}: ${amount.toString()} (${ethers.utils.formatUnits(
+      amount,
+      decimals
+    )} ${symbol})`
+  );
+}
+async function logFinalSummary(
+  freestyleResults,
+  basedMediaXResults,
+  classicRewardBalance
+) {
+  logSectionHeader("Final Distribution Summary");
+
+  console.log("\n🏆 Classic Revenue:");
+  logBalance("Total Classic ETH", classicRewardBalance);
+
+  console.log("\n🎯 Additional Revenue Sources:");
+  if (freestyleResults?.bribes) {
+    console.log("\nFreestyle Bribes:");
+    logBalance("Amount", freestyleResults.bribes.amount, 6, "USDC");
+  }
+  if (basedMediaXResults?.bribes) {
+    console.log("\nBased MediaX Bribes:");
+    logBalance("Amount", basedMediaXResults.bribes.amount, 18, "ETH");
+  }
+}
+
 async function encodeFunctionCall(abi, functionName, params) {
   const iface = new ethers.utils.Interface(abi);
   return iface.encodeFunctionData(functionName, params);
+}
+
+async function createQuoteRequest(chainId, toTokenAddress, inputTokens) {
+  return {
+    chainId,
+    inputTokens,
+    outputTokens: [
+      {
+        tokenAddress: toTokenAddress,
+        proportion: 1,
+      },
+    ],
+    userAddr: USER_ADDRESS,
+    slippageLimitPercent: 1,
+    referralCode: 0,
+    disableRFQs: true,
+    compact: true,
+  };
+}
+
+async function requestQuote(tokens, toTokenAddress, chainId) {
+  const requestBody = await createQuoteRequest(chainId, toTokenAddress, tokens);
+  console.log(`Getting quote for ${toTokenAddress}...`);
+
+  const response = await fetch(API_ENDPOINTS.quote, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(requestBody),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error(
+      "Quote Error:",
+      response.status,
+      response.statusText,
+      errorText
+    );
+    throw new Error("Quote request failed");
+  }
+
+  const quote = await response.json();
+  console.log("Quote generated successfully");
+  return quote;
+}
+
+async function assembleAndExecuteTransaction(quote, wallet, provider) {
+  const assembleRequestBody = {
+    userAddr: USER_ADDRESS,
+    pathId: quote.pathId,
+    simulate: true,
+  };
+
+  console.log("Assembling transaction...");
+  const response = await fetch(API_ENDPOINTS.assemble, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(assembleRequestBody),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error(
+      "Assembly Error:",
+      response.status,
+      response.statusText,
+      errorText
+    );
+    throw new Error("Transaction assembly failed");
+  }
+
+  const assembled = await response.json();
+  console.log("Transaction assembled");
+
+  const transaction = {
+    ...assembled.transaction,
+    gasLimit: assembled.transaction.gas,
+    value: parseInt(assembled.transaction.value),
+  };
+  delete transaction.gas;
+
+  const signedTx = await wallet.signTransaction(transaction);
+  const txResponse = await provider.sendTransaction(signedTx);
+  const receipt = await txResponse.wait();
+
+  console.log("Transaction executed:", receipt.transactionHash);
+  return receipt;
 }
 
 async function getFantomValues() {
@@ -54,6 +204,14 @@ async function getFantomValues() {
   const rewardToken = await contractAt(
     "Token",
     "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83"
+  );
+  const govToken = await contractAt(
+    "Token",
+    "0x66eEd5FF1701E6ed8470DC391F05e27B1d0657eb"
+  );
+  const usdcToken = await contractAt(
+    "Token",
+    "0x2F733095B80A04b38b0D10cC884524a3d09b836a"
   );
 
   const swapTokenArr = [
@@ -82,7 +240,7 @@ async function getFantomValues() {
       name: "velocimeterGauge",
       address: "0x172bbbE7B3575865a0B7D51e044b1bCb75f9780E",
       allocation: 30,
-      abi: velocimeterAbi,
+      abi: VELOCIMETER_ABI,
     },
   ];
 
@@ -92,6 +250,8 @@ async function getFantomValues() {
     rewardToken,
     rewardTrackerArr,
     swapTokenArr,
+    govToken,
+    usdcToken,
   };
 }
 
@@ -101,6 +261,14 @@ async function getBaseValues() {
   const rewardToken = await contractAt(
     "Token",
     "0x4200000000000000000000000000000000000006"
+  );
+  const govToken = await contractAt(
+    "Token",
+    "0x548f93779fBC992010C07467cBaf329DD5F059B7"
+  );
+  const usdcToken = await contractAt(
+    "Token",
+    "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
   );
 
   const swapTokenArr = [
@@ -114,7 +282,7 @@ async function getBaseValues() {
     "0x2Da56AcB9Ea78330f947bD57C54119Debda7AF71", // MOG
     "0x60a3e35cc302bfa44cb288bc5a4f316fdb1adb42", // EURC
     "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf", // cbBTC
-    "0xA88594D404727625A9437C3f886C7643872296AE" // WELL
+    "0xA88594D404727625A9437C3f886C7643872296AE", // WELL
   ];
   const rewardTrackerArr = [
     {
@@ -141,6 +309,8 @@ async function getBaseValues() {
     rewardToken,
     rewardTrackerArr,
     swapTokenArr,
+    govToken,
+    usdcToken,
   };
 }
 
@@ -150,6 +320,14 @@ async function getModeValues() {
   const rewardToken = await contractAt(
     "Token",
     "0x4200000000000000000000000000000000000006"
+  );
+  const govToken = await contractAt(
+    "Token",
+    "0x66eEd5FF1701E6ed8470DC391F05e27B1d0657eb"
+  );
+  const usdcToken = await contractAt(
+    "Token",
+    "0xd988097fb8612cc24eeC14542bC03424c656005f"
   );
 
   const swapTokenArr = [
@@ -183,6 +361,8 @@ async function getModeValues() {
     rewardToken,
     rewardTrackerArr,
     swapTokenArr,
+    govToken,
+    usdcToken,
   };
 }
 
@@ -200,202 +380,282 @@ function getValues() {
   throw new Error("Invalid network");
 }
 
-async function main() {
-  const { chainId, provider, rewardToken, rewardTrackerArr, swapTokenArr } =
-    await getValues();
-  const wallet = new ethers.Wallet(BASE_DEPLOY_KEY, provider);
-
-  const quoteRequestBody = {
-    chainId: chainId,
-    inputTokens: [],
-    outputTokens: [
-      {
-        tokenAddress: rewardToken.address,
-        proportion: 1,
-      },
-    ],
-    userAddr: userAddress,
-    slippageLimitPercent: 1, // 1 = 1%
-    referralCode: 0,
-    disableRFQs: true,
-    compact: true,
-  };
-
-  console.log("Calculating balances...");
-  const feeTokenBalances = [];
-  for (let i = 0; i < swapTokenArr.length; i++) {
-    const feeTokenAddress = swapTokenArr[i];
-    const feeToken = await contractAt("Token", feeTokenAddress);
-    const feeTokenBalance = await feeToken.balanceOf(userAddress);
-    if (feeTokenBalance.toString() !== "0") {
-      feeTokenBalances.push({
-        tokenAddress: feeTokenAddress,
-        amount: feeTokenBalance.toString(),
-      });
-    }
-    console.log(`${feeTokenAddress}:`, feeTokenBalance.toString());
+// Revenue Processing Functions
+async function processClassicRevenue(
+  tokens,
+  rewardToken,
+  wallet,
+  provider,
+  chainId,
+  basedMediaXETH
+) {
+  logSectionHeader("Processing Classic Revenue");
+  if (tokens.length === 0) {
+    console.log("No classic revenue tokens to process");
+    const balanceRaw = await rewardToken.balanceOf(USER_ADDRESS);
+    const balance = balanceRaw.sub(basedMediaXETH);
+    logBalance("Classic Revenue Final Balance", balance);
+    return balance;
   }
 
-  async function requestQuote(tokens) {
-    const requestBody = {
-      ...quoteRequestBody,
-      inputTokens: tokens,
-    };
-    console.log("Getting quote...");
-    const response = await fetch(quoteUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(requestBody),
-    });
+  if (tokens.length > 6) {
+    const mid = Math.ceil(tokens.length / 2);
+    const firstHalf = tokens.slice(0, mid);
+    const secondHalf = tokens.slice(mid);
 
-    if (response.status === 200) {
-      const quote = await response.json();
-      console.log("Generated quote!");
-      return quote;
-    } else {
-      const errorText = await response.text();
-      console.error(
-        "Error in Quote:",
-        response.status,
-        response.statusText,
-        errorText
-      );
-      throw new Error("Quote request failed");
-    }
-  }
+    const firstQuote = await requestQuote(
+      firstHalf,
+      rewardToken.address,
+      chainId
+    );
+    await assembleAndExecuteTransaction(firstQuote, wallet, provider);
 
-  async function assembleAndSendTransaction(quote) {
-    const assembleRequestBody = {
-      userAddr: userAddress,
-      pathId: quote.pathId,
-      simulate: true,
-    };
-
-    console.log("Assembling transaction...");
-    const response = await fetch(assembleUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(assembleRequestBody),
-    });
-
-    if (response.status === 200) {
-      const assembledTransaction = await response.json();
-      console.log("Assembled transaction!", assembledTransaction);
-
-      console.log("Sending swap transaction...");
-
-      const transaction = {
-        ...assembledTransaction.transaction,
-        gasLimit: assembledTransaction.transaction.gas,
-        value: parseInt(assembledTransaction.transaction.value),
-      };
-      delete transaction.gas;
-
-      const signedTx = await wallet.signTransaction(transaction);
-      const txResponse = await provider.sendTransaction(signedTx);
-      const txReceipt = await txResponse.wait();
-
-      console.log("Transaction Hash:", txReceipt.transactionHash);
-
-      return txReceipt;
-    } else {
-      const errorText = await response.text();
-      console.log("assembleRequestBody", assembleRequestBody);
-      console.error(
-        "Error in Transaction Assembly:",
-        response.status,
-        response.statusText,
-        errorText
-      );
-      throw new Error("Transaction assembly failed");
-    }
-  }
-
-  if (feeTokenBalances.length === 0) {
-    console.log("No tokens to swap");
-  } else if (feeTokenBalances.length > 6) {
-    const mid = Math.ceil(feeTokenBalances.length / 2);
-    const firstHalf = feeTokenBalances.slice(0, mid);
-    const secondHalf = feeTokenBalances.slice(mid);
-
-    const firstQuote = await requestQuote(firstHalf);
-    await assembleAndSendTransaction(firstQuote);
-
-    const secondQuote = await requestQuote(secondHalf);
-    await assembleAndSendTransaction(secondQuote);
+    const secondQuote = await requestQuote(
+      secondHalf,
+      rewardToken.address,
+      chainId
+    );
+    await assembleAndExecuteTransaction(secondQuote, wallet, provider);
   } else {
-    const quote = await requestQuote(feeTokenBalances);
-    await assembleAndSendTransaction(quote);
+    const quote = await requestQuote(tokens, rewardToken.address, chainId);
+    await assembleAndExecuteTransaction(quote, wallet, provider);
   }
 
-  const rewardTokenBalance = await rewardToken.balanceOf(userAddress);
+  const finalBalanceWithBasedMediaX = await rewardToken.balanceOf(USER_ADDRESS);
+  const finalBalance = finalBalanceWithBasedMediaX.sub(basedMediaXETH);
+  logBalance("Classic Revenue Final Balance", finalBalance);
+  return finalBalance;
+}
+
+async function processFreestyleRevenue(
+  freestyleUSDC,
+  allocations,
+  rewardToken,
+  govToken,
+  wallet,
+  provider,
+  chainId,
+  classicRewardBalance
+) {
+  logSectionHeader("Processing Freestyle Revenue");
+  if (freestyleUSDC.amount === "0") {
+    console.log("No Freestyle revenue to process");
+    return null;
+  }
+
   console.log(
-    "rewardTokenBalance",
-    rewardTokenBalance.toString(),
-    ethers.utils.formatEther(rewardTokenBalance)
+    `Total amount: ${freestyleUSDC.amount}, ${ethers.utils.formatUnits(
+      freestyleUSDC.amount,
+      6
+    )} USDC`
   );
 
-  console.log("Updating rewards...");
-  for (let i = 0; i < rewardTrackerArr.length; i++) {
-    const { name, address, allocation } = rewardTrackerArr[i];
-    const rewardAllocation = rewardTokenBalance.mul(allocation).div(100);
-    console.log(`${name} rewardAllocation`, rewardAllocation.toString());
+  const amounts = {
+    singleStaking: freestyleUSDC.amount.mul(allocations.singleStaking).div(100),
+    bltMlt: freestyleUSDC.amount.mul(allocations.bltMlt).div(100),
+    bribes: freestyleUSDC.amount.mul(allocations.bribes).div(100),
+    burnBmx: freestyleUSDC.amount.mul(allocations.burnBmx).div(100),
+  };
 
-    if (name === "velocimeterGauge") {
-      const data = await encodeFunctionCall(
-        rewardTrackerArr[i].abi,
-        "notifyRewardAmount",
-        [rewardToken.address, rewardAllocation]
-      );
+  // Log allocations
+  Object.entries(amounts).forEach(([key, value]) => {
+    console.log(
+      `${key}: ${value.toString()}, ${ethers.utils.formatUnits(value, 6)} USDC`
+    );
+  });
 
-      const tx = {
-        to: address,
-        data: data,
-      };
+  const result = {
+    singleStaking: ethers.BigNumber.from(0),
+    bltMlt: ethers.BigNumber.from(0),
+    bribes: {
+      tokenAddress: freestyleUSDC.tokenAddress,
+      amount: amounts.bribes,
+    },
+    hasBurnedBMX: false,
+  };
+
+  // Process single staking
+  const singleQuote = await requestQuote(
+    [
+      {
+        tokenAddress: freestyleUSDC.tokenAddress,
+        amount: amounts.singleStaking,
+      },
+    ],
+    rewardToken.address,
+    chainId
+  );
+  await assembleAndExecuteTransaction(singleQuote, wallet, provider);
+  const singleStakingBalance = await rewardToken.balanceOf(USER_ADDRESS);
+  result.singleStaking = singleStakingBalance
+    .sub(classicRewardBalance)
+    .sub(additionalRevenueSources.basedMediaXETH);
+
+  // Process BLT/MLT
+  const bltMltQuote = await requestQuote(
+    [{ tokenAddress: freestyleUSDC.tokenAddress, amount: amounts.bltMlt }],
+    rewardToken.address,
+    chainId
+  );
+  await assembleAndExecuteTransaction(bltMltQuote, wallet, provider);
+  const bltMltBalance = await rewardToken.balanceOf(USER_ADDRESS);
+  result.bltMlt = bltMltBalance
+    .sub(classicRewardBalance)
+    .sub(additionalRevenueSources.basedMediaXETH)
+    .sub(result.singleStaking);
+
+  // Process BMX burning
+  console.log("Buying BMX from Freestyle revenue...");
+  const burnQuote = await requestQuote(
+    [{ tokenAddress: freestyleUSDC.tokenAddress, amount: amounts.burnBmx }],
+    govToken.address,
+    chainId
+  );
+  const burnTx = await assembleAndExecuteTransaction(
+    burnQuote,
+    wallet,
+    provider
+  );
+  logTransactionHash("Freestyle BMX Purchase", burnTx.transactionHash);
+  result.hasBurnedBMX = true;
+
+  return result;
+}
+
+async function processBasedMediaXRevenue(
+  basedMediaXETH,
+  allocations,
+  govToken,
+  wallet,
+  provider,
+  chainId
+) {
+  logSectionHeader("Processing Based MediaX Revenue");
+  if (basedMediaXETH.amount === "0") {
+    console.log("No Based MediaX revenue to process");
+    return null;
+  }
+
+  console.log(
+    `Total amount: ${basedMediaXETH.amount}, ${ethers.utils.formatEther(
+      basedMediaXETH.amount
+    )} ETH`
+  );
+
+  const amounts = {
+    singleStaking: basedMediaXETH.amount
+      .mul(allocations.singleStaking)
+      .div(100),
+    bltMlt: basedMediaXETH.amount.mul(allocations.bltMlt).div(100),
+    bribes: basedMediaXETH.amount.mul(allocations.bribes).div(100),
+    burnBmx: basedMediaXETH.amount.mul(allocations.burnBmx).div(100),
+  };
+
+  // Log allocations
+  Object.entries(amounts).forEach(([key, value]) => {
+    console.log(
+      `${key}: ${value.toString()}, ${ethers.utils.formatEther(value)} ETH`
+    );
+  });
+
+  const result = {
+    singleStaking: amounts.singleStaking,
+    bltMlt: amounts.bltMlt,
+    bribes: {
+      tokenAddress: basedMediaXETH.tokenAddress,
+      amount: amounts.bribes,
+    },
+    hasBurnedBMX: false,
+  };
+
+  // Process BMX burning
+  console.log("Buying BMX from Based MediaX revenue...");
+  const burnQuote = await requestQuote(
+    [{ tokenAddress: basedMediaXETH.tokenAddress, amount: amounts.burnBmx }],
+    govToken.address,
+    chainId
+  );
+  const burnTx = await assembleAndExecuteTransaction(
+    burnQuote,
+    wallet,
+    provider
+  );
+  logTransactionHash("Based MediaX BMX Purchase", burnTx.transactionHash);
+  result.hasBurnedBMX = true;
+
+  return result;
+}
+
+async function burnAccumulatedBMX(govToken) {
+  logSectionHeader("Burning Accumulated BMX");
+  const burnAmount = await govToken.balanceOf(USER_ADDRESS);
+  if (burnAmount?.gt(0)) {
+    logBalance("BMX to burn", burnAmount, 18, "BMX");
+    const tx = await sendTxn(
+      govToken.transfer(
+        "0x000000000000000000000000000000000000dEaD",
+        burnAmount,
+        {
+          gasLimit: 500000,
+        }
+      ),
+      `Burning BMX`
+    );
+    logTransactionHash("BMX Burned", tx.hash);
+  }
+}
+
+async function distributeRewards(
+  rewardTrackerArr,
+  rewardToken,
+  rewardTokenBalance,
+  totalSingleStaking,
+  totalBltMlt,
+  wallet
+) {
+  console.log("\nDistributing rewards...");
+  for (const { name, address, allocation, abi } of rewardTrackerArr) {
+    const baseAllocation = rewardTokenBalance.mul(allocation).div(100);
+    const additionalAmount =
+      allocation === 10
+        ? totalSingleStaking
+        : allocation === 60
+        ? totalBltMlt
+        : ethers.BigNumber.from(0);
+
+    const totalAllocation = baseAllocation.add(additionalAmount);
+    console.log(
+      `\n${name} distribution:`,
+      `\nBase allocation: ${ethers.utils.formatEther(baseAllocation)} ETH`,
+      `\nAdditional amount: ${ethers.utils.formatEther(additionalAmount)} ETH`,
+      `\nTotal: ${ethers.utils.formatEther(totalAllocation)} ETH`
+    );
+
+    if (name === "velocimeterGauge" || name === "aerodromeBribes") {
+      const data = await encodeFunctionCall(abi, "notifyRewardAmount", [
+        rewardToken.address,
+        totalAllocation,
+      ]);
+
       await sendTxn(
-        wallet.sendTransaction(tx),
-        `velocimeterGauge.notifyRewardAmount`
-      );
-    } else if (name === "aerodromeBribes") {
-      const data = await encodeFunctionCall(
-        rewardTrackerArr[i].abi,
-        "notifyRewardAmount",
-        [rewardToken.address, rewardAllocation]
-      );
-
-      const tx = {
-        to: address,
-        data: data,
-      };
-      await sendTxn(
-        wallet.sendTransaction(tx),
-        `aerodromeBribes.notifyRewardAmount`
+        wallet.sendTransaction({ to: address, data }),
+        `${name}.notifyRewardAmount`
       );
     } else {
       const rewardDistributor = await contractAt("RewardDistributor", address);
-      const rewardAllocationWithFreestyle =
-        allocation === 10
-          ? rewardAllocation.add("0") // set this (single staking)
-          : rewardAllocation.add("0"); // set this (blt/mlt)
-      const rewardsPerInterval =
-        network === "base" || network === "mode"
-          ? rewardAllocationWithFreestyle.div(7 * 24 * 60 * 60)
-          : rewardAllocation.div(7 * 24 * 60 * 60);
-      (network === "base" || network === "mode") &&
-        console.log(
-          "allocations",
-          allocation,
-          ethers.utils.formatEther(rewardAllocation),
-          ethers.utils.formatEther(rewardAllocationWithFreestyle)
-        );
-      console.log("rewardsPerInterval", rewardsPerInterval.toString());
+      const rewardsPerInterval = totalAllocation.div(7 * 24 * 60 * 60);
+      console.log(
+        "Rewards per interval:",
+        ethers.utils.formatEther(rewardsPerInterval)
+      );
 
       await sendTxn(
-        rewardToken.transfer(rewardDistributor.address, rewardAllocation, {
+        rewardToken.transfer(rewardDistributor.address, totalAllocation, {
           gasLimit: 500000,
         }),
         `rewardToken.transfer ${name}`
       );
+
       await updateTokensPerInterval(
         rewardDistributor,
         rewardsPerInterval,
@@ -403,7 +663,121 @@ async function main() {
       );
     }
   }
-  console.log("Rewards updated!");
+}
+
+async function main() {
+  const {
+    chainId,
+    provider,
+    rewardToken,
+    rewardTrackerArr,
+    swapTokenArr,
+    govToken,
+    usdcToken,
+  } = await getValues();
+  const wallet = new ethers.Wallet(BASE_DEPLOY_KEY, provider);
+
+  logSectionHeader("Beginning Revenue Processing");
+  // Calculate initial balances for classic revenue
+  const classicTokenBalances = [];
+
+  for (const tokenAddress of swapTokenArr) {
+    const token = await contractAt("Token", tokenAddress);
+    const balance = await token.balanceOf(USER_ADDRESS);
+    const decimals = await token.decimals();
+    const symbol = await token.symbol();
+
+    if (balance.gt(0)) {
+      // Handle USDC separately to account for Freestyle revenue
+      if (tokenAddress.toLowerCase() === usdcToken.address.toLowerCase()) {
+        const classicAmount = balance.sub(
+          additionalRevenueSources.freestyleUSDC
+        );
+
+        if (classicAmount.gt(0)) {
+          classicTokenBalances.push({
+            tokenAddress,
+            amount: classicAmount.toString(),
+          });
+          logBalance(`Classic ${symbol}`, classicAmount, decimals, symbol);
+        }
+      }
+      // Handle all other tokens normally
+      else {
+        classicTokenBalances.push({
+          tokenAddress,
+          amount: balance.toString(),
+        });
+        logBalance(`Classic ${symbol}`, balance, decimals, symbol);
+      }
+    }
+  }
+
+  // Process classic revenue first
+  const classicRewardBalance = await processClassicRevenue(
+    classicTokenBalances,
+    rewardToken,
+    wallet,
+    provider,
+    chainId,
+    additionalRevenueSources.basedMediaXETH
+  );
+
+  // Process Freestyle revenue (USDC)
+  const freestyleResults = await processFreestyleRevenue(
+    {
+      tokenAddress: usdcToken.address,
+      amount: additionalRevenueSources.freestyleUSDC,
+    },
+    FREESTYLE_ALLOCATIONS,
+    rewardToken,
+    govToken,
+    wallet,
+    provider,
+    chainId,
+    classicRewardBalance
+  );
+
+  // Process Based MediaX revenue (wETH)
+  const basedMediaXResults = await processBasedMediaXRevenue(
+    {
+      tokenAddress: rewardToken.address,
+      amount: additionalRevenueSources.basedMediaXETH,
+    },
+    BASED_MEDIAX_ALLOCATIONS,
+    govToken,
+    wallet,
+    provider,
+    chainId
+  );
+
+  // Burn accumulated BMX if any was purchased
+  if (freestyleResults?.hasBurnedBMX || basedMediaXResults?.hasBurnedBMX) {
+    await burnAccumulatedBMX(govToken);
+  }
+
+  // Calculate total allocations from additional revenue sources only
+  const totalSingleStaking = ethers.BigNumber.from(0)
+    .add(freestyleResults?.singleStaking || 0)
+    .add(basedMediaXResults?.singleStaking || 0);
+
+  const totalBltMlt = ethers.BigNumber.from(0)
+    .add(freestyleResults?.bltMlt || 0)
+    .add(basedMediaXResults?.bltMlt || 0);
+
+  logFinalSummary(freestyleResults, basedMediaXResults, classicRewardBalance);
+
+  // Distribute rewards using only classic revenue balance
+  await distributeRewards(
+    rewardTrackerArr,
+    rewardToken,
+    classicRewardBalance,
+    totalSingleStaking,
+    totalBltMlt,
+    wallet
+  );
+
+  console.log("\nReward distribution completed successfully!");
 }
 
 main()
