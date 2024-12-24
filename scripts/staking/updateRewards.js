@@ -27,15 +27,15 @@ const API_ENDPOINTS = {
   assemble: "https://api.odos.xyz/sor/assemble",
 };
 const FREESTYLE_ALLOCATIONS = {
-  singleStaking: 20, // swap to weth
+  singleStaking: 25, // swap to weth
   bltMlt: 30, // swap to weth
-  bribes: 40,
+  bribes: 35,
   burnBmx: 10, // swap to BMX
 };
 const BASED_MEDIAX_ALLOCATIONS = {
-  singleStaking: 50,
+  singleStaking: 55,
   bltMlt: 20,
-  bribes: 25,
+  bribes: 20,
   burnBmx: 5, // swap to BMX
 };
 
@@ -288,7 +288,7 @@ async function getBaseValues() {
     {
       name: "feeGmxDistributor",
       address: "0x0259083181Ae54730f4FBB1C174a53E21BCE5266",
-      allocation: 10,
+      allocation: 15,
     },
     {
       name: "feeGlpDistributor",
@@ -340,7 +340,7 @@ async function getModeValues() {
     {
       name: "feeGmxDistributor",
       address: "0x26e6C47682FfC1824d7aC5512752FC671dA5e607",
-      allocation: 10,
+      allocation: 15,
     },
     {
       name: "feeGlpDistributor",
@@ -438,13 +438,13 @@ async function processFreestyleRevenue(
   classicRewardBalance
 ) {
   logSectionHeader("Processing Freestyle Revenue");
-  if (freestyleUSDC.amount === "0") {
+  if (freestyleUSDC.amount === ethers.BigNumber.from("0") || chainId === 250) {
     console.log("No Freestyle revenue to process");
     return null;
   }
 
   console.log(
-    `Total amount: ${freestyleUSDC.amount}, ${ethers.utils.formatUnits(
+    `Total amount: ${freestyleUSDC.amount.toString()}, ${ethers.utils.formatUnits(
       freestyleUSDC.amount,
       6
     )} USDC`
@@ -479,7 +479,7 @@ async function processFreestyleRevenue(
     [
       {
         tokenAddress: freestyleUSDC.tokenAddress,
-        amount: amounts.singleStaking,
+        amount: amounts.singleStaking.toString(),
       },
     ],
     rewardToken.address,
@@ -493,7 +493,7 @@ async function processFreestyleRevenue(
 
   // Process BLT/MLT
   const bltMltQuote = await requestQuote(
-    [{ tokenAddress: freestyleUSDC.tokenAddress, amount: amounts.bltMlt }],
+    [{ tokenAddress: freestyleUSDC.tokenAddress, amount: amounts.bltMlt.toString() }],
     rewardToken.address,
     chainId
   );
@@ -507,7 +507,7 @@ async function processFreestyleRevenue(
   // Process BMX burning
   console.log("Buying BMX from Freestyle revenue...");
   const burnQuote = await requestQuote(
-    [{ tokenAddress: freestyleUSDC.tokenAddress, amount: amounts.burnBmx }],
+    [{ tokenAddress: freestyleUSDC.tokenAddress, amount: amounts.burnBmx.toString() }],
     govToken.address,
     chainId
   );
@@ -531,7 +531,7 @@ async function processBasedMediaXRevenue(
   chainId
 ) {
   logSectionHeader("Processing Based MediaX Revenue");
-  if (basedMediaXETH.amount === "0") {
+  if (basedMediaXETH.amount === "0" || chainId === 250) {
     console.log("No Based MediaX revenue to process");
     return null;
   }
@@ -617,7 +617,7 @@ async function distributeRewards(
   for (const { name, address, allocation, abi } of rewardTrackerArr) {
     const baseAllocation = rewardTokenBalance.mul(allocation).div(100);
     const additionalAmount =
-      allocation === 10
+      allocation === 10 // adjust based on chain
         ? totalSingleStaking
         : allocation === 60
         ? totalBltMlt
@@ -643,6 +643,10 @@ async function distributeRewards(
       );
     } else {
       const rewardDistributor = await contractAt("RewardDistributor", address);
+      // const finalAmount =
+      //   allocation === 15
+      //     ? totalAllocation.add("328125000000000000")
+      //     : totalAllocation;
       const rewardsPerInterval = totalAllocation.div(7 * 24 * 60 * 60);
       console.log(
         "Rewards per interval:",
@@ -727,7 +731,7 @@ async function main() {
   const freestyleResults = await processFreestyleRevenue(
     {
       tokenAddress: usdcToken.address,
-      amount: additionalRevenueSources.freestyleUSDC,
+      amount: ethers.BigNumber.from(additionalRevenueSources.freestyleUSDC),
     },
     FREESTYLE_ALLOCATIONS,
     rewardToken,
