@@ -438,7 +438,7 @@ async function processFreestyleRevenue(
   classicRewardBalance
 ) {
   logSectionHeader("Processing Freestyle Revenue");
-  if (freestyleUSDC.amount === ethers.BigNumber.from("0") || chainId === 250) {
+  if (freestyleUSDC.amount.isZero() || chainId === 250) {
     console.log("No Freestyle revenue to process");
     return null;
   }
@@ -543,12 +543,12 @@ async function processBasedMediaXRevenue(
   );
 
   const amounts = {
-    singleStaking: basedMediaXETH.amount
+    singleStaking: ethers.BigNumber.from(basedMediaXETH.amount)
       .mul(allocations.singleStaking)
       .div(100),
-    bltMlt: basedMediaXETH.amount.mul(allocations.bltMlt).div(100),
-    bribes: basedMediaXETH.amount.mul(allocations.bribes).div(100),
-    burnBmx: basedMediaXETH.amount.mul(allocations.burnBmx).div(100),
+    bltMlt: ethers.BigNumber.from(basedMediaXETH.amount).mul(allocations.bltMlt).div(100),
+    bribes: ethers.BigNumber.from(basedMediaXETH.amount).mul(allocations.bribes).div(100),
+    burnBmx: ethers.BigNumber.from(basedMediaXETH.amount).mul(allocations.burnBmx).div(100),
   };
 
   // Log allocations
@@ -571,7 +571,7 @@ async function processBasedMediaXRevenue(
   // Process BMX burning
   console.log("Buying BMX from Based MediaX revenue...");
   const burnQuote = await requestQuote(
-    [{ tokenAddress: basedMediaXETH.tokenAddress, amount: amounts.burnBmx }],
+    [{ tokenAddress: basedMediaXETH.tokenAddress, amount: amounts.burnBmx.toString() }],
     govToken.address,
     chainId
   );
@@ -647,7 +647,7 @@ async function distributeRewards(
       //   allocation === 15
       //     ? totalAllocation.add("328125000000000000")
       //     : totalAllocation;
-      const rewardsPerInterval = totalAllocation.div(7 * 24 * 60 * 60);
+      const rewardsPerInterval = totalAllocation.div(7 * 24 * 60 * 60); // set to finalAmount if base
       console.log(
         "Rewards per interval:",
         ethers.utils.formatEther(rewardsPerInterval)
