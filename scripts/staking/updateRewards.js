@@ -493,7 +493,12 @@ async function processFreestyleRevenue(
 
   // Process BLT/MLT
   const bltMltQuote = await requestQuote(
-    [{ tokenAddress: freestyleUSDC.tokenAddress, amount: amounts.bltMlt.toString() }],
+    [
+      {
+        tokenAddress: freestyleUSDC.tokenAddress,
+        amount: amounts.bltMlt.toString(),
+      },
+    ],
     rewardToken.address,
     chainId
   );
@@ -507,7 +512,12 @@ async function processFreestyleRevenue(
   // Process BMX burning
   console.log("Buying BMX from Freestyle revenue...");
   const burnQuote = await requestQuote(
-    [{ tokenAddress: freestyleUSDC.tokenAddress, amount: amounts.burnBmx.toString() }],
+    [
+      {
+        tokenAddress: freestyleUSDC.tokenAddress,
+        amount: amounts.burnBmx.toString(),
+      },
+    ],
     govToken.address,
     chainId
   );
@@ -546,9 +556,15 @@ async function processBasedMediaXRevenue(
     singleStaking: ethers.BigNumber.from(basedMediaXETH.amount)
       .mul(allocations.singleStaking)
       .div(100),
-    bltMlt: ethers.BigNumber.from(basedMediaXETH.amount).mul(allocations.bltMlt).div(100),
-    bribes: ethers.BigNumber.from(basedMediaXETH.amount).mul(allocations.bribes).div(100),
-    burnBmx: ethers.BigNumber.from(basedMediaXETH.amount).mul(allocations.burnBmx).div(100),
+    bltMlt: ethers.BigNumber.from(basedMediaXETH.amount)
+      .mul(allocations.bltMlt)
+      .div(100),
+    bribes: ethers.BigNumber.from(basedMediaXETH.amount)
+      .mul(allocations.bribes)
+      .div(100),
+    burnBmx: ethers.BigNumber.from(basedMediaXETH.amount)
+      .mul(allocations.burnBmx)
+      .div(100),
   };
 
   // Log allocations
@@ -571,7 +587,12 @@ async function processBasedMediaXRevenue(
   // Process BMX burning
   console.log("Buying BMX from Based MediaX revenue...");
   const burnQuote = await requestQuote(
-    [{ tokenAddress: basedMediaXETH.tokenAddress, amount: amounts.burnBmx.toString() }],
+    [
+      {
+        tokenAddress: basedMediaXETH.tokenAddress,
+        amount: amounts.burnBmx.toString(),
+      },
+    ],
     govToken.address,
     chainId
   );
@@ -617,7 +638,7 @@ async function distributeRewards(
   for (const { name, address, allocation, abi } of rewardTrackerArr) {
     const baseAllocation = rewardTokenBalance.mul(allocation).div(100);
     const additionalAmount =
-      allocation === 10 // adjust based on chain
+      (network === "fantom" && allocation === 10) || allocation === 15
         ? totalSingleStaking
         : allocation === 60
         ? totalBltMlt
@@ -643,11 +664,10 @@ async function distributeRewards(
       );
     } else {
       const rewardDistributor = await contractAt("RewardDistributor", address);
-      // const finalAmount =
-      //   allocation === 15
-      //     ? totalAllocation.add("328125000000000000")
-      //     : totalAllocation;
-      const rewardsPerInterval = totalAllocation.div(7 * 24 * 60 * 60); // set to finalAmount if base
+      const rewardsPerInterval =
+        network === "base"
+          ? totalAllocation.add("328125000000000000").div(7 * 24 * 60 * 60)
+          : totalAllocation.div(7 * 24 * 60 * 60);
       console.log(
         "Rewards per interval:",
         ethers.utils.formatEther(rewardsPerInterval)
