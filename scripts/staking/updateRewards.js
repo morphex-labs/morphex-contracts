@@ -552,19 +552,12 @@ async function processBasedMediaXRevenue(
     )} ETH`
   );
 
+  const ethAmount = ethers.BigNumber.from(basedMediaXETH.amount);
   const amounts = {
-    singleStaking: ethers.BigNumber.from(basedMediaXETH.amount)
-      .mul(allocations.singleStaking)
-      .div(100),
-    bltMlt: ethers.BigNumber.from(basedMediaXETH.amount)
-      .mul(allocations.bltMlt)
-      .div(100),
-    bribes: ethers.BigNumber.from(basedMediaXETH.amount)
-      .mul(allocations.bribes)
-      .div(100),
-    burnBmx: ethers.BigNumber.from(basedMediaXETH.amount)
-      .mul(allocations.burnBmx)
-      .div(100),
+    singleStaking: ethAmount.mul(allocations.singleStaking).div(100),
+    bltMlt: ethAmount.mul(allocations.bltMlt).div(100),
+    bribes: ethAmount.mul(allocations.bribes).div(100),
+    burnBmx: ethAmount.mul(allocations.burnBmx).div(100),
   };
 
   // Log allocations
@@ -670,7 +663,11 @@ async function distributeRewards(
           : totalAllocation.div(7 * 24 * 60 * 60);
       console.log(
         "Rewards per interval:",
-        ethers.utils.formatEther(rewardsPerInterval)
+        `${ethers.utils.formatEther(rewardsPerInterval)} ${
+          network === "base"
+            ? ethers.utils.formatEther(totalAllocation.div(7 * 24 * 60 * 60))
+            : ""
+        }`
       );
 
       await sendTxn(
