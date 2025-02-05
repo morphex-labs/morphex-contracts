@@ -14,7 +14,7 @@ const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
 // Configuration
-const network = "fantom"; // set to network you want to update on
+const network = "mode"; // set to network you want to update on
 const additionalRevenueSources = {
   freestyleUSDC: "0", // set this, 6 decimals
   basedMediaXETH: "0", // set this, 18 decimals
@@ -95,14 +95,28 @@ async function logFinalSummary(
   console.log("\n🏆 Classic Revenue:");
   logBalance("Total Classic ETH", classicRewardBalance);
 
-  console.log("\n🎯 Additional Revenue Sources:");
-  if (freestyleResults?.bribes) {
+  console.log("\n🏆 Freestyle Revenue:");
+  if (freestyleResults) {
+    console.log("\nFreestyle Single-Staking:");
+    logBalance("Amount", freestyleResults.singleStaking, 18, "ETH");
+    console.log("\nFreestyle BLT/MLT:");
+    logBalance("Amount", freestyleResults.bltMlt, 18, "ETH");
     console.log("\nFreestyle Bribes:");
     logBalance("Amount", freestyleResults.bribes.amount, 6, "USDC");
+  } else {
+    console.log("Nothing.");
   }
-  if (basedMediaXResults?.bribes) {
+
+  console.log("\n🏆 Based MediaX Revenue:");
+  if (basedMediaXResults) {
+    console.log("\nBased MediaX Single-Staking:");
+    logBalance("Amount", basedMediaXResults.singleStaking, 18, "ETH");
+    console.log("\nBased MediaX BLT/MLT:");
+    logBalance("Amount", basedMediaXResults.bltMlt, 18, "ETH");
     console.log("\nBased MediaX Bribes:");
     logBalance("Amount", basedMediaXResults.bribes.amount, 18, "ETH");
+  } else {
+    console.log("Nothing.");
   }
 }
 
@@ -631,7 +645,7 @@ async function distributeRewards(
   for (const { name, address, allocation, abi } of rewardTrackerArr) {
     const baseAllocation = rewardTokenBalance.mul(allocation).div(100);
     const additionalAmount =
-      (network === "fantom" && allocation === 10) || allocation === 15
+      allocation === 15
         ? totalSingleStaking
         : allocation === 60
         ? totalBltMlt
