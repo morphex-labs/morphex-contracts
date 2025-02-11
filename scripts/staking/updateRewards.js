@@ -27,15 +27,15 @@ const API_ENDPOINTS = {
   assemble: "https://api.odos.xyz/sor/assemble",
 };
 const FREESTYLE_ALLOCATIONS = {
-  singleStaking: 25, // swap to weth
-  bltMlt: 30, // swap to weth
-  bribes: 35,
+  singleStaking: 30, // swap to weth
+  bltMlt: 35, // swap to weth
+  bribes: 25,
   burnBmx: 10, // swap to BMX
 };
 const BASED_MEDIAX_ALLOCATIONS = {
-  singleStaking: 55,
-  bltMlt: 20,
-  bribes: 20,
+  singleStaking: 60,
+  bltMlt: 25,
+  bribes: 10,
   burnBmx: 5, // swap to BMX
 };
 
@@ -302,12 +302,12 @@ async function getBaseValues() {
     {
       name: "feeGmxDistributor",
       address: "0x0259083181Ae54730f4FBB1C174a53E21BCE5266",
-      allocation: 15,
+      allocation: 20,
     },
     {
       name: "feeGlpDistributor",
       address: "0x06c35893Ba9bc454e12c36F4117BC99f75e34346",
-      allocation: 60,
+      allocation: 65,
     },
     // {
     //   name: "aerodromeBribes", // BMX-wBLT
@@ -354,12 +354,12 @@ async function getModeValues() {
     {
       name: "feeGmxDistributor",
       address: "0x26e6C47682FfC1824d7aC5512752FC671dA5e607",
-      allocation: 15,
+      allocation: 20,
     },
     {
       name: "feeGlpDistributor",
       address: "0x366152Fc0FC4680e0A05ce9739a4210228C72BA3",
-      allocation: 60,
+      allocation: 65,
     },
     // {
     //   name: "aerodromeBribes", // BMX-wMLT
