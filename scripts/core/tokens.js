@@ -357,7 +357,7 @@ module.exports = {
       decimals: 18,
       priceFeed: "0x4EC5970fC728C5f65ba413992CD5fF6FD70fcfF0",
       priceDecimals: 8,
-      fastPricePrecision: 1000,
+      fastPricePrecision: 100000000,
       maxCumulativeDeltaDiff: 0.1 * 10 * 1000 * 1000, // 10%
       isStrictStable: false,
       tokenWeight: 6000,

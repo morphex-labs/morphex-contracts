@@ -1,26 +1,26 @@
 const { deployContract, contractAt, sendTxn, writeTmpAddresses } = require("../shared/helpers")
 
 async function main() {
-  const stakingTokenAddress = "0x22aF33FE49fD1Fa80c7149773dDe5890D3c76F3b";
+  const stakingTokenAddress = "0x767A739D1A152639e9Ea1D8c1BD55FDC5B217D7f";
   const rewardTokenAddress = "0x4200000000000000000000000000000000000006" // wETH
-  const bonusToken = await deployContract("MintableBaseToken", ["Bonus BNKR", "bnBNKR", 0]);
+  const bonusToken = await deployContract("MintableBaseToken", ["Bonus VEIL", "bnVEIL", 0]);
   // const bonusToken = await contractAt("MintableBaseToken", "0xEf187825c6CdA0570B717a8E6fDa734812EC0b09");
 
-  const stakedGmxTracker = await deployContract("RewardTracker", ["Staked BNKR", "sBNKR"])
+  const stakedGmxTracker = await deployContract("RewardTracker", ["Staked VEIL", "sVEIL"])
   // const stakedGmxTracker = await contractAt("RewardTracker", "0xa4157E273D88ff16B3d8Df68894e1fd809DbC007");
   const stakedGmxDistributor = await deployContract("RewardDistributorV2", [stakingTokenAddress, stakedGmxTracker.address])
   // const stakedGmxDistributor = await contractAt("RewardDistributor", "0x05D97A8a5eF11010a6A5f89B3D4628ce43092614");
   await sendTxn(stakedGmxTracker.initialize([stakingTokenAddress], stakedGmxDistributor.address), "stakedGmxTracker.initialize")
   await sendTxn(stakedGmxDistributor.updateLastDistributionTime(), "stakedGmxDistributor.updateLastDistributionTime")
 
-  const bonusGmxTracker = await deployContract("RewardTracker", ["Staked + Bonus BNKR", "sbBNKR"])
+  const bonusGmxTracker = await deployContract("RewardTracker", ["Staked + Bonus VEIL", "sbVEIL"])
   // const bonusGmxTracker = await contractAt("RewardTracker", "0xa2242d0A8b0b5c1A487AbFC03Cd9FEf6262BAdCA");
   const bonusGmxDistributor = await deployContract("BonusDistributor", [bonusToken.address, bonusGmxTracker.address])
   // const bonusGmxDistributor = await contractAt("BonusDistributor", "0x06c35893Ba9bc454e12c36F4117BC99f75e34346");
   await sendTxn(bonusGmxTracker.initialize([stakedGmxTracker.address], bonusGmxDistributor.address), "bonusGmxTracker.initialize")
   await sendTxn(bonusGmxDistributor.updateLastDistributionTime(), "bonusGmxDistributor.updateLastDistributionTime")
 
-  const feeGmxTracker = await deployContract("RewardTracker", ["Staked + Bonus + Fee BNKR", "sbfBNKR"])
+  const feeGmxTracker = await deployContract("RewardTracker", ["Staked + Bonus + Fee VEIL", "sbfVEIL"])
   // const feeGmxTracker = await contractAt("RewardTracker", "0x2D5875ab0eFB999c1f49C798acb9eFbd1cfBF63c");
   const feeGmxDistributor = await deployContract("RewardDistributorV2", [rewardTokenAddress, feeGmxTracker.address])
   // const feeGmxDistributor = await contractAt("RewardDistributor", "0x1d556F411370E5F1850A51EB66960798e6F5eDeC");

@@ -16,7 +16,7 @@ const fetch = (...args) =>
 // Configuration
 const network = "mode"; // set to network you want to update on
 const additionalRevenueSources = {
-  freestyleUSDC: "0", // set this, 6 decimals
+  freestyleUSDC: "126080000", // set this, 6 decimals
   basedMediaXETH: "0", // set this, 18 decimals
 };
 const USER_ADDRESS = "0xB1dD2Fdb023cB54b7cc2a0f5D9e8d47a9F7723ce";
