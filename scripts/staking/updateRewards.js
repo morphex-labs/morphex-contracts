@@ -18,6 +18,11 @@ const network = "mode"; // set to network you want to update on
 const additionalRevenueSources = {
   freestyleUSDC: "0", // set this, 6 decimals
   basedMediaXETH: "0", // set this, 18 decimals
+  // following chain configs are to track revenue bridged from other chains to base
+  mode: {
+    lpIncentivesETH: "0", // total amount of ETH from classic/freestyle for LP incentives, 18 decimals
+    stakingIncentivesETH: "0", // total amount of ETH from classic/freestyle for staking incentives, 18 decimals
+  },
 };
 const USER_ADDRESS = "0xB1dD2Fdb023cB54b7cc2a0f5D9e8d47a9F7723ce";
 
@@ -28,36 +33,23 @@ const API_ENDPOINTS = {
 };
 const FREESTYLE_ALLOCATIONS = {
   singleStaking: 30, // swap to weth
-  bltMlt: 35, // swap to weth
-  bribes: 25,
+  bltMlt: 40, // swap to weth
+  lpIncentives: 20, // swap to weth
   burnBmx: 10, // swap to BMX
 };
 const BASED_MEDIAX_ALLOCATIONS = {
   singleStaking: 60,
   bltMlt: 25,
-  bribes: 10,
+  lpIncentives: 10,
   burnBmx: 5, // swap to BMX
 };
 
 // Contract ABIs
-const VELOCIMETER_ABI = [
-  {
-    inputs: [
-      { internalType: "address", name: "token", type: "address" },
-      { internalType: "uint256", name: "amount", type: "uint256" },
-    ],
-    name: "notifyRewardAmount",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-];
-
-const AERODROME_ABI = [
+const LP_REWARDS_ABI = [
   {
     inputs: [
       { internalType: "address", name: "_rewardsToken", type: "address" },
-      { internalType: "uint256", name: "reward", type: "uint256" },
+      { internalType: "uint256", name: "_rewardAmount", type: "uint256" },
     ],
     name: "notifyRewardAmount",
     outputs: [],
@@ -102,7 +94,7 @@ async function logFinalSummary(
     console.log("\nFreestyle BLT/MLT:");
     logBalance("Amount", freestyleResults.bltMlt, 18, "ETH");
     console.log("\nFreestyle Bribes:");
-    logBalance("Amount", freestyleResults.bribes.amount, 6, "USDC");
+    logBalance("Amount", freestyleResults.lpIncentives.amount, 18, "ETH");
   } else {
     console.log("Nothing.");
   }
@@ -114,9 +106,26 @@ async function logFinalSummary(
     console.log("\nBased MediaX BLT/MLT:");
     logBalance("Amount", basedMediaXResults.bltMlt, 18, "ETH");
     console.log("\nBased MediaX Bribes:");
-    logBalance("Amount", basedMediaXResults.bribes.amount, 18, "ETH");
+    logBalance("Amount", basedMediaXResults.lpIncentives.amount, 18, "ETH");
   } else {
     console.log("Nothing.");
+  }
+
+  if (network === "base") {
+    console.log("\n🏆 Revenue bridged from other chains:");
+    console.log("\nMode:");
+    logBalance(
+      "Single-staking",
+      additionalRevenueSources.mode.stakingIncentivesETH,
+      18,
+      "ETH"
+    );
+    logBalance(
+      "LP incentives",
+      additionalRevenueSources.mode.lpIncentivesETH,
+      18,
+      "ETH"
+    );
   }
 }
 
@@ -212,63 +221,6 @@ async function assembleAndExecuteTransaction(quote, wallet, provider) {
   return receipt;
 }
 
-async function getFantomValues() {
-  const chainId = 250;
-  const provider = new ethers.providers.JsonRpcProvider(FTM_URL);
-  const rewardToken = await contractAt(
-    "Token",
-    "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83"
-  );
-  const govToken = await contractAt(
-    "Token",
-    "0x66eEd5FF1701E6ed8470DC391F05e27B1d0657eb"
-  );
-  const usdcToken = await contractAt(
-    "Token",
-    "0x2F733095B80A04b38b0D10cC884524a3d09b836a"
-  );
-
-  const swapTokenArr = [
-    "0x695921034f0387eAc4e11620EE91b1b15A6A09fE", // lzWETH
-    "0xfe7eDa5F2c56160d406869A8aA4B2F365d544C7B", // axlWETH
-    "0xf1648C50d2863f780c57849D812b4B7686031A3D", // lzWBTC
-    "0x448d59B4302aB5d2dadf9611bED9457491926c8e", // axlWBTC
-    "0x28a92dde19D9989F39A49905d7C9C2FAc7799bDf", // lzUSDC
-    "0x1B6382DBDEa11d97f24495C9A90b7c88469134a4", // axlUSDC
-    "0xcc1b99dDAc1a33c201a742A1851662E87BC7f22C", // lzUSDT
-    "0xd226392C23fb3476274ED6759D4a478db3197d82", // axlUSDT
-    "0x2F733095B80A04b38b0D10cC884524a3d09b836a", // USDC.e
-  ];
-  const rewardTrackerArr = [
-    {
-      name: "feeGmxDistributor",
-      address: "0x1d556F411370E5F1850A51EB66960798e6F5eDeC",
-      allocation: 10,
-    },
-    {
-      name: "feeGlpDistributor",
-      address: "0xF8182960A4C23e3db610E031C5cb0C9D01D2299f",
-      allocation: 60,
-    },
-    {
-      name: "velocimeterGauge",
-      address: "0x172bbbE7B3575865a0B7D51e044b1bCb75f9780E",
-      allocation: 30,
-      abi: VELOCIMETER_ABI,
-    },
-  ];
-
-  return {
-    chainId,
-    provider,
-    rewardToken,
-    rewardTrackerArr,
-    swapTokenArr,
-    govToken,
-    usdcToken,
-  };
-}
-
 async function getBaseValues() {
   const chainId = 8453;
   const provider = new ethers.providers.JsonRpcProvider(BASE_URL);
@@ -304,14 +256,14 @@ async function getBaseValues() {
     {
       name: "feeGlpDistributor",
       address: "0x06c35893Ba9bc454e12c36F4117BC99f75e34346",
-      allocation: 65,
+      allocation: 70,
     },
-    // {
-    //   name: "aerodromeBribes", // BMX-wBLT
-    //   address: "0xE1e4637738e575F90d02B3fA18b55373Dc510522",
-    //   allocation: 30,
-    //   abi: aerodromeAbi,
-    // },
+    {
+      name: "vaultRewards", // BMX-wBLT
+      address: "0xE0792Fe7478C8e488898234C7bF76DF54Aa75eBc",
+      allocation: 10,
+      abi: LP_REWARDS_ABI,
+    },
   ];
 
   return {
@@ -349,21 +301,20 @@ async function getModeValues() {
   ];
   const rewardTrackerArr = [
     {
-      name: "feeGmxDistributor",
-      address: "0x26e6C47682FfC1824d7aC5512752FC671dA5e607",
+      name: "bridgedStakingIncentives", // bridge to base
+      address: "",
       allocation: 20,
     },
     {
       name: "feeGlpDistributor",
       address: "0x366152Fc0FC4680e0A05ce9739a4210228C72BA3",
-      allocation: 65,
+      allocation: 70,
     },
-    // {
-    //   name: "aerodromeBribes", // BMX-wMLT
-    //   address: "",
-    //   allocation: 30,
-    //   abi: aerodromeAbi,
-    // },
+    {
+      name: "bridgedLpIncentives", // bridge to base
+      address: "",
+      allocation: 10,
+    },
   ];
 
   return {
@@ -381,9 +332,6 @@ function getValues() {
   if (network === "base") {
     return getBaseValues();
   }
-  if (network === "fantom") {
-    return getFantomValues();
-  }
   if (network === "mode") {
     return getModeValues();
   }
@@ -398,13 +346,17 @@ async function processClassicRevenue(
   wallet,
   provider,
   chainId,
-  basedMediaXETH
+  basedMediaXETH,
+  bridgedRevenue
 ) {
   logSectionHeader("Processing Classic Revenue");
   if (tokens.length === 0) {
     console.log("No classic revenue tokens to process");
     const balanceRaw = await rewardToken.balanceOf(USER_ADDRESS);
-    const balance = balanceRaw.sub(basedMediaXETH);
+    const balance = balanceRaw
+      .sub(basedMediaXETH)
+      .sub(bridgedRevenue.stakingIncentivesETH)
+      .sub(bridgedRevenue.lpIncentivesETH);
     logBalance("Classic Revenue Final Balance", balance);
     return balance;
   }
@@ -433,7 +385,10 @@ async function processClassicRevenue(
   }
 
   const finalBalanceWithBasedMediaX = await rewardToken.balanceOf(USER_ADDRESS);
-  const finalBalance = finalBalanceWithBasedMediaX.sub(basedMediaXETH);
+  const finalBalance = finalBalanceWithBasedMediaX
+    .sub(basedMediaXETH)
+    .sub(bridgedRevenue.stakingIncentivesETH)
+    .sub(bridgedRevenue.lpIncentivesETH);
   logBalance("Classic Revenue Final Balance", finalBalance);
   return finalBalance;
 }
@@ -446,10 +401,11 @@ async function processFreestyleRevenue(
   wallet,
   provider,
   chainId,
-  classicRewardBalance
+  classicRewardBalance,
+  bridgedRevenue
 ) {
   logSectionHeader("Processing Freestyle Revenue");
-  if (freestyleUSDC.amount.isZero() || chainId === 250) {
+  if (freestyleUSDC.amount.isZero()) {
     console.log("No Freestyle revenue to process");
     return null;
   }
@@ -464,7 +420,7 @@ async function processFreestyleRevenue(
   const amounts = {
     singleStaking: freestyleUSDC.amount.mul(allocations.singleStaking).div(100),
     bltMlt: freestyleUSDC.amount.mul(allocations.bltMlt).div(100),
-    bribes: freestyleUSDC.amount.mul(allocations.bribes).div(100),
+    lpIncentives: freestyleUSDC.amount.mul(allocations.lpIncentives).div(100),
     burnBmx: freestyleUSDC.amount.mul(allocations.burnBmx).div(100),
   };
 
@@ -478,12 +434,14 @@ async function processFreestyleRevenue(
   const result = {
     singleStaking: ethers.BigNumber.from(0),
     bltMlt: ethers.BigNumber.from(0),
-    bribes: {
-      tokenAddress: freestyleUSDC.tokenAddress,
-      amount: amounts.bribes,
-    },
+    lpIncentives: ethers.BigNumber.from(0),
     hasBurnedBMX: false,
   };
+
+  const balanceToDeduct = classicRewardBalance
+    .add(additionalRevenueSources.basedMediaXETH)
+    .add(bridgedRevenue.stakingIncentivesETH)
+    .add(bridgedRevenue.lpIncentivesETH);
 
   // Process single staking
   const singleQuote = await requestQuote(
@@ -498,9 +456,7 @@ async function processFreestyleRevenue(
   );
   await assembleAndExecuteTransaction(singleQuote, wallet, provider);
   const singleStakingBalance = await rewardToken.balanceOf(USER_ADDRESS);
-  result.singleStaking = singleStakingBalance
-    .sub(classicRewardBalance)
-    .sub(additionalRevenueSources.basedMediaXETH);
+  result.singleStaking = singleStakingBalance.sub(balanceToDeduct);
 
   // Process BLT/MLT
   const bltMltQuote = await requestQuote(
@@ -515,10 +471,25 @@ async function processFreestyleRevenue(
   );
   await assembleAndExecuteTransaction(bltMltQuote, wallet, provider);
   const bltMltBalance = await rewardToken.balanceOf(USER_ADDRESS);
-  result.bltMlt = bltMltBalance
-    .sub(classicRewardBalance)
-    .sub(additionalRevenueSources.basedMediaXETH)
-    .sub(result.singleStaking);
+  result.bltMlt = bltMltBalance.sub(balanceToDeduct).sub(result.singleStaking);
+
+  // Process LP incentives
+  const lpIncentivesQuote = await requestQuote(
+    [
+      {
+        tokenAddress: freestyleUSDC.tokenAddress,
+        amount: amounts.lpIncentives.toString(),
+      },
+    ],
+    rewardToken.address,
+    chainId
+  );
+  await assembleAndExecuteTransaction(lpIncentivesQuote, wallet, provider);
+  const lpIncentivesBalance = await rewardToken.balanceOf(USER_ADDRESS);
+  result.lpIncentives = lpIncentivesBalance
+    .sub(balanceToDeduct)
+    .sub(result.singleStaking)
+    .sub(result.bltMlt);
 
   // Process BMX burning
   console.log("Buying BMX from Freestyle revenue...");
@@ -552,7 +523,7 @@ async function processBasedMediaXRevenue(
   chainId
 ) {
   logSectionHeader("Processing Based MediaX Revenue");
-  if (basedMediaXETH.amount === "0" || chainId === 250) {
+  if (basedMediaXETH.amount === "0") {
     console.log("No Based MediaX revenue to process");
     return null;
   }
@@ -567,7 +538,7 @@ async function processBasedMediaXRevenue(
   const amounts = {
     singleStaking: ethAmount.mul(allocations.singleStaking).div(100),
     bltMlt: ethAmount.mul(allocations.bltMlt).div(100),
-    bribes: ethAmount.mul(allocations.bribes).div(100),
+    lpIncentives: ethAmount.mul(allocations.lpIncentives).div(100),
     burnBmx: ethAmount.mul(allocations.burnBmx).div(100),
   };
 
@@ -581,10 +552,7 @@ async function processBasedMediaXRevenue(
   const result = {
     singleStaking: amounts.singleStaking,
     bltMlt: amounts.bltMlt,
-    bribes: {
-      tokenAddress: basedMediaXETH.tokenAddress,
-      amount: amounts.bribes,
-    },
+    lpIncentives: amounts.lpIncentives,
     hasBurnedBMX: false,
   };
 
@@ -636,17 +604,19 @@ async function distributeRewards(
   rewardTokenBalance,
   totalSingleStaking,
   totalBltMlt,
+  totalLpIncentives,
   wallet
 ) {
   console.log("\nDistributing rewards...");
+  let totalBridgeAmount = ethers.BigNumber.from(0);
   for (const { name, address, allocation, abi } of rewardTrackerArr) {
     const baseAllocation = rewardTokenBalance.mul(allocation).div(100);
     const additionalAmount =
-      allocation === 15
+      allocation === 20
         ? totalSingleStaking
-        : allocation === 60
+        : allocation === 70
         ? totalBltMlt
-        : ethers.BigNumber.from(0);
+        : totalLpIncentives;
 
     const totalAllocation = baseAllocation.add(additionalAmount);
     console.log(
@@ -656,7 +626,7 @@ async function distributeRewards(
       `\nTotal: ${ethers.utils.formatEther(totalAllocation)} ETH`
     );
 
-    if (name === "velocimeterGauge" || name === "aerodromeBribes") {
+    if (name === "vaultRewards") {
       const data = await encodeFunctionCall(abi, "notifyRewardAmount", [
         rewardToken.address,
         totalAllocation,
@@ -666,10 +636,10 @@ async function distributeRewards(
         wallet.sendTransaction({ to: address, data }),
         `${name}.notifyRewardAmount`
       );
-    } else {
+    } else if (name === "feeGlpDistributor" || name === "feeGmxDistributor") {
       const rewardDistributor = await contractAt("RewardDistributor", address);
       const rewardsPerInterval =
-        network === "base"
+        network === "base" && name === "feeGmxDistributor"
           ? totalAllocation.add("328125000000000000").div(7 * 24 * 60 * 60)
           : totalAllocation.div(7 * 24 * 60 * 60);
       console.log(
@@ -693,8 +663,20 @@ async function distributeRewards(
         rewardsPerInterval,
         "rewardDistributor"
       );
+    } else {
+      console.log(
+        `\n${name} ${ethers.utils.formatEther(
+          totalAllocation
+        )} ETH to bridge to Base.`
+      );
+      totalBridgeAmount = totalBridgeAmount.add(totalAllocation);
     }
   }
+  console.log(
+    `\nTotal amount to bridge to Base: ${ethers.utils.formatEther(
+      totalBridgeAmount
+    )} ETH`
+  );
 }
 
 async function main() {
@@ -710,8 +692,16 @@ async function main() {
   const wallet = new ethers.Wallet(BASE_DEPLOY_KEY, provider);
 
   logSectionHeader("Beginning Revenue Processing");
-  // Calculate initial balances for classic revenue
+  // Calculate initial balances for classic revenue and bridged revenue
   const classicTokenBalances = [];
+  const bridgedRevenue = {
+    stakingIncentivesETH: ethers.BigNumber.from(
+      additionalRevenueSources.mode.stakingIncentivesETH
+    ),
+    lpIncentivesETH: ethers.BigNumber.from(
+      additionalRevenueSources.mode.lpIncentivesETH
+    ),
+  };
 
   for (const tokenAddress of swapTokenArr) {
     const token = await contractAt("Token", tokenAddress);
@@ -752,7 +742,8 @@ async function main() {
     wallet,
     provider,
     chainId,
-    additionalRevenueSources.basedMediaXETH
+    additionalRevenueSources.basedMediaXETH,
+    bridgedRevenue
   );
 
   // Process Freestyle revenue (USDC)
@@ -767,7 +758,8 @@ async function main() {
     wallet,
     provider,
     chainId,
-    classicRewardBalance
+    classicRewardBalance,
+    bridgedRevenue
   );
 
   // Process Based MediaX revenue (wETH)
@@ -789,14 +781,27 @@ async function main() {
   }
 
   // Calculate total allocations from additional revenue sources only
-  const totalSingleStaking = ethers.BigNumber.from(0)
-    .add(freestyleResults?.singleStaking || 0)
-    .add(basedMediaXResults?.singleStaking || 0);
-
   const totalBltMlt = ethers.BigNumber.from(0)
     .add(freestyleResults?.bltMlt || 0)
     .add(basedMediaXResults?.bltMlt || 0);
 
+  let totalSingleStaking = ethers.BigNumber.from(0)
+    .add(freestyleResults?.singleStaking || 0)
+    .add(basedMediaXResults?.singleStaking || 0);
+
+  let totalLpIncentives = ethers.BigNumber.from(0)
+    .add(freestyleResults?.lpIncentives || 0)
+    .add(basedMediaXResults?.lpIncentives || 0);
+
+  // If it's Base, add potential ETH bridged from other chains
+  if (network === "base") {
+    totalSingleStaking = totalSingleStaking.add(
+      ethers.BigNumber.from(additionalRevenueSources.mode.stakingIncentivesETH)
+    );
+    totalLpIncentives = totalLpIncentives.add(
+      ethers.BigNumber.from(additionalRevenueSources.mode.lpIncentivesETH)
+    );
+  }
   logFinalSummary(freestyleResults, basedMediaXResults, classicRewardBalance);
 
   // Distribute rewards using only classic revenue balance
@@ -806,6 +811,7 @@ async function main() {
     classicRewardBalance,
     totalSingleStaking,
     totalBltMlt,
+    totalLpIncentives,
     wallet
   );
 
