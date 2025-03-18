@@ -14,7 +14,7 @@ const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
 // Configuration
-const network = "mode"; // set to network you want to update on
+const network = "base"; // set to network you want to update on
 const additionalRevenueSources = {
   freestyleUSDC: "0", // set this, 6 decimals
   basedMediaXETH: "0", // set this, 18 decimals
@@ -94,7 +94,7 @@ async function logFinalSummary(
     console.log("\nFreestyle BLT/MLT:");
     logBalance("Amount", freestyleResults.bltMlt, 18, "ETH");
     console.log("\nFreestyle Bribes:");
-    logBalance("Amount", freestyleResults.lpIncentives.amount, 18, "ETH");
+    logBalance("Amount", freestyleResults.lpIncentives, 18, "ETH");
   } else {
     console.log("Nothing.");
   }
@@ -106,7 +106,7 @@ async function logFinalSummary(
     console.log("\nBased MediaX BLT/MLT:");
     logBalance("Amount", basedMediaXResults.bltMlt, 18, "ETH");
     console.log("\nBased MediaX Bribes:");
-    logBalance("Amount", basedMediaXResults.lpIncentives.amount, 18, "ETH");
+    logBalance("Amount", basedMediaXResults.lpIncentives, 18, "ETH");
   } else {
     console.log("Nothing.");
   }
@@ -116,13 +116,13 @@ async function logFinalSummary(
     console.log("\nMode:");
     logBalance(
       "Single-staking",
-      additionalRevenueSources.mode.stakingIncentivesETH,
+      ethers.BigNumber.from(additionalRevenueSources.mode.stakingIncentivesETH),
       18,
       "ETH"
     );
     logBalance(
       "LP incentives",
-      additionalRevenueSources.mode.lpIncentivesETH,
+      ethers.BigNumber.from(additionalRevenueSources.mode.lpIncentivesETH),
       18,
       "ETH"
     );
