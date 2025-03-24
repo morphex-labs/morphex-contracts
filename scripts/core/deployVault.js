@@ -7,7 +7,7 @@ const network = (process.env.HARDHAT_NETWORK || 'mainnet');
 // const tokens = require('./tokens')[network];
 
 async function main() {
-  const nativeTokenAddress = "0x4200000000000000000000000000000000000006"; // weth
+  const nativeTokenAddress = "0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38"; // wS
 
   const vault = await deployContract("Vault", [])
   // const vault = await contractAt("Vault", "0x245cD6d33578de9aF75a3C0c636c726b1A8cbdAa")
@@ -50,13 +50,14 @@ async function main() {
   await sendTxn(vault.setFundingRate(60 * 60, 100, 100), "vault.setFundingRate")
 
   await sendTxn(vault.setInManagerMode(true), "vault.setInManagerMode")
+  await sendTxn(vault.setInPrivateLiquidationMode(true), "vault.setInPrivateLiquidationMode")
   await sendTxn(vault.setManager(glpManager.address, true), "vault.setManager")
 
   await sendTxn(vault.setFees(
-    50, // _taxBasisPoints
+    60, // _taxBasisPoints
     5, // _stableTaxBasisPoints
-    20, // _mintBurnFeeBasisPoints
-    20, // _swapFeeBasisPoints
+    25, // _mintBurnFeeBasisPoints
+    32, // _swapFeeBasisPoints
     1, // _stableSwapFeeBasisPoints
     10, // _marginFeeBasisPoints
     toUsd(5), // _liquidationFeeUsd

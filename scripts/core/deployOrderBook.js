@@ -10,11 +10,11 @@ async function main() {
   const orderBook = await deployContract("OrderBook", []);
 
   await sendTxn(orderBook.initialize(
-    "0xAa40201575140862E9aE4F00515245670582e6e0", // router
-    "0xff745bdB76AfCBa9d3ACdCd71664D4250Ef1ae49", // vault
-    "0x4200000000000000000000000000000000000006", // weth
-    "0x77F480fdB7100d096c2de1876C1f4960Fa488246", // usdg
-    "200000000000000", // 0.0002 ETH
+    "0x0a2653a193595d91678830512DE2733727953169", // router
+    "0x9cC4E8e60a2c9a67Ac7D20f54607f98EfBA38AcF", // vault
+    "0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38", // wS
+    "0x25431F78c9B7be0F285301A6ACF334Cdb838C4D6", // usdg
+    "100000000000000000", // 0.1 S
     expandDecimals(10, 30) // min purchase token amount usd
   ), "orderBook.initialize");
 

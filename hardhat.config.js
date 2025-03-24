@@ -35,6 +35,9 @@ const {
 
   MODE_URL,
   MODE_DEPLOY_KEY,
+
+  SONIC_URL,
+  SONIC_DEPLOY_KEY
 } = require("./env.json")
 
 // This is a sample Hardhat task. To learn how to create your own go to
@@ -54,7 +57,7 @@ task("accounts", "Prints the list of accounts", async () => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  defaultNetwork: "base",
+  defaultNetwork: "sonic",
   networks: {
     localhost: {
       timeout: 120000
@@ -126,6 +129,12 @@ module.exports = {
       gasPrice: 100000000,
       chainId: 34443,
       accounts: [MODE_DEPLOY_KEY]
+    },
+    sonic: {
+      url: SONIC_URL,
+      gasMultiplier: 1.5,
+      chainId: 146,
+      accounts: [SONIC_DEPLOY_KEY]
     }
   },
   etherscan: {

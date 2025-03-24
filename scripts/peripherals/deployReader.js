@@ -1,14 +1,8 @@
-const { deployContract, contractAt, writeTmpAddresses, sendTxn } = require("../shared/helpers")
-
-const network = (process.env.HARDHAT_NETWORK || 'mainnet');
+const { deployContract, writeTmpAddresses, sendTxn } = require("../shared/helpers")
 
 async function main() {
   const reader = await deployContract("Reader", [], "Reader")
   await sendTxn(reader.setConfig(true), "Reader.setConfig")
-
-  // if (network === "avax") {
-  //   await sendTxn(reader.setConfig(true), "Reader.setConfig")
-  // }
 
   writeTmpAddresses({
     reader: reader.address

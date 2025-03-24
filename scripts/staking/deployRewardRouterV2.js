@@ -1,18 +1,14 @@
-const { deployContract, contractAt, sendTxn, writeTmpAddresses } = require("../shared/helpers")
+const { deployContract, contractAt, sendTxn } = require("../shared/helpers")
 
 // const network = (process.env.HARDHAT_NETWORK || 'mainnet');
 // const tokens = require('../core/tokens')[network];
-const nativeTokenAddress = "0x4200000000000000000000000000000000000006"
+const nativeTokenAddress = "0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38" // wS
 
 async function main() {
-  // const { nativeToken } = tokens
+  const glpManager = await contractAt("GlpManager", "0xC608188e753b1e9558731724b7F7Cdde40c3b174")
+  const glp = await contractAt("GLP", "0x9E462d5603Bb983b74e941Ebd5CE9Ea76f3a9e1e")
 
-  // const vestingDuration = 365 * 24 * 60 * 60
-
-  const glpManager = await contractAt("GlpManager", "0xf9Fc0B2859f9B6d33fD1Cea5B0A9f1D56C258178")
-  const glp = await contractAt("GLP", "0x952AdBB385296Dcf86a668f7eaa02DF7eb684439")
-
-  const gmx = await contractAt("BMX", "0x66eEd5FF1701E6ed8470DC391F05e27B1d0657eb");
+  const gmx = await contractAt("BMX", "0xC28f1D82874ccFebFE6afDAB3c685D5E709067E5");
   // const esGmx = await contractAt("EsGMX", "0xe0f606e6730bE531EeAf42348dE43C2feeD43505");
   const bnGmx = await deployContract("MintableBaseToken", ["Bonus BMX", "bnBMX", 0]);
   // const bnGmx = await contractAt("MintableBaseToken", "0xEf187825c6CdA0570B717a8E6fDa734812EC0b09");
@@ -40,14 +36,14 @@ async function main() {
   await sendTxn(feeGmxTracker.initialize([bonusGmxTracker.address, bnGmx.address], feeGmxDistributor.address), "feeGmxTracker.initialize")
   await sendTxn(feeGmxDistributor.updateLastDistributionTime(), "feeGmxDistributor.updateLastDistributionTime")
 
-  const feeGlpTracker = await deployContract("RewardTracker", ["Fee MLT", "fMLT"])
+  const feeGlpTracker = await deployContract("RewardTracker", ["Fee SLT", "fSLT"])
   // const feeGlpTracker = await contractAt("RewardTracker", "0x1Fc9aB3b7bEE66fC29167AB205777537898ff235");
   const feeGlpDistributor = await deployContract("RewardDistributorV2", [nativeTokenAddress, feeGlpTracker.address])
   // const feeGlpDistributor = await contractAt("RewardDistributor", "0x19D9fF60c3f4D064df7f625E669f7626365820F6");
   await sendTxn(feeGlpTracker.initialize([glp.address], feeGlpDistributor.address), "feeGlpTracker.initialize")
   await sendTxn(feeGlpDistributor.updateLastDistributionTime(), "feeGlpDistributor.updateLastDistributionTime")
 
-  const stakedGlpTracker = await deployContract("RewardTracker", ["Fee + Staked MLT", "fsMLT"])
+  const stakedGlpTracker = await deployContract("RewardTracker", ["Fee + Staked SLT", "fsSLT"])
   // const stakedGlpTracker = await contractAt("RewardTracker", "0x4e0e48b787E308049d0CA6bfAA84D5c61c5a4A1e");
   const stakedGlpDistributor = await deployContract("RewardDistributorV2", [gmx.address, stakedGlpTracker.address])
   // const stakedGlpDistributor = await contractAt("RewardDistributor", "0x99f8f0628003a52843c2C3b33A0e49E85d9a89e5");
@@ -94,7 +90,6 @@ async function main() {
 
   await sendTxn(rewardRouter.initialize(
     nativeTokenAddress,
-    gmx.address,
     gmx.address,
     bnGmx.address,
     glp.address,
