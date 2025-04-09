@@ -2,7 +2,7 @@ const { getFrameSigner, deployContract, contractAt, sendTxn, readTmpAddresses, c
 const { bigNumberify, expandDecimals } = require("../../test/shared/utilities")
 const { toChainlinkPrice } = require("../../test/shared/chainlink")
 
-const network = 'base' // set network here
+const network = 'sonic' // set network here
 const tokens = require('./tokens')[network];
 
 async function getFantomValues() {
@@ -53,6 +53,18 @@ async function getModeValues() {
   return { positionContracts, tokenArr }
 }
 
+async function getSonicValues() {
+  const positionContracts = [
+    "0x77F480fdB7100d096c2de1876C1f4960Fa488246", // PositionRouter
+    "0x620253Be916A915fEE00Fab30840A04A2389C886" // PositionManager
+  ]
+
+  const { s, weth, usdc } = tokens
+  const tokenArr = [s, weth, usdc]
+
+  return { positionContracts, tokenArr }
+}
+
 async function getValues() {
   if (network === "fantom") {
     return getFantomValues()
@@ -68,6 +80,10 @@ async function getValues() {
 
   if (network === "mode") {
     return getModeValues()
+  }
+
+  if (network === "sonic") {
+    return getSonicValues()
   }
 }
 
