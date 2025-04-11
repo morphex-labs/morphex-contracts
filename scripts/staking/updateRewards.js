@@ -7,8 +7,8 @@ const { ethers } = require("hardhat");
 const {
   BASE_DEPLOY_KEY,
   BASE_URL,
-  FTM_URL,
   MODE_URL,
+  SONIC_URL,
 } = require("../../env.json");
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
@@ -16,12 +16,16 @@ const fetch = (...args) =>
 // Configuration
 const network = "base"; // set to network you want to update on
 const additionalRevenueSources = {
-  freestyleUSDC: "0", // set this, 6 decimals
+  freestyleUSDC: "199950000", // set this, 6 decimals
   basedMediaXETH: "0", // set this, 18 decimals
   // following chain configs are to track revenue bridged from other chains to base
   mode: {
-    lpIncentivesETH: "0", // total amount of ETH from classic/freestyle for LP incentives, 18 decimals
-    stakingIncentivesETH: "0", // total amount of ETH from classic/freestyle for staking incentives, 18 decimals
+    lpIncentivesETH: "74872214028046002", // total amount of ETH from classic/freestyle for LP incentives, 18 decimals
+    stakingIncentivesETH: "149744428056090007", // total amount of ETH from classic/freestyle for staking incentives, 18 decimals
+  },
+  sonic: {
+    lpIncentivesETH: "41145179061021997",
+    stakingIncentivesETH: "82219498280535994",
   },
 };
 const USER_ADDRESS = "0xB1dD2Fdb023cB54b7cc2a0f5D9e8d47a9F7723ce";
@@ -85,16 +89,34 @@ async function logFinalSummary(
   logSectionHeader("Final Distribution Summary");
 
   console.log("\n🏆 Classic Revenue:");
-  logBalance("Total Classic ETH", classicRewardBalance);
+  logBalance(
+    `Total Classic ${network === "sonic" ? "wS" : "ETH"}`,
+    classicRewardBalance
+  );
 
   console.log("\n🏆 Freestyle Revenue:");
   if (freestyleResults) {
     console.log("\nFreestyle Single-Staking:");
-    logBalance("Amount", freestyleResults.singleStaking, 18, "ETH");
-    console.log("\nFreestyle BLT/MLT:");
-    logBalance("Amount", freestyleResults.bltMlt, 18, "ETH");
-    console.log("\nFreestyle Bribes:");
-    logBalance("Amount", freestyleResults.lpIncentives, 18, "ETH");
+    logBalance(
+      "Amount",
+      freestyleResults.singleStaking,
+      18,
+      network === "sonic" ? "wS" : "ETH"
+    );
+    console.log("\nFreestyle BLT/MLT/SLT:");
+    logBalance(
+      "Amount",
+      freestyleResults.bltMlt,
+      18,
+      network === "sonic" ? "wS" : "ETH"
+    );
+    console.log("\nFreestyle LP rewards:");
+    logBalance(
+      "Amount",
+      freestyleResults.lpIncentives,
+      18,
+      network === "sonic" ? "wS" : "ETH"
+    );
   } else {
     console.log("Nothing.");
   }
@@ -103,9 +125,9 @@ async function logFinalSummary(
   if (basedMediaXResults) {
     console.log("\nBased MediaX Single-Staking:");
     logBalance("Amount", basedMediaXResults.singleStaking, 18, "ETH");
-    console.log("\nBased MediaX BLT/MLT:");
+    console.log("\nBased MediaX BLT:");
     logBalance("Amount", basedMediaXResults.bltMlt, 18, "ETH");
-    console.log("\nBased MediaX Bribes:");
+    console.log("\nBased MediaX LP rewards:");
     logBalance("Amount", basedMediaXResults.lpIncentives, 18, "ETH");
   } else {
     console.log("Nothing.");
@@ -123,6 +145,21 @@ async function logFinalSummary(
     logBalance(
       "LP incentives",
       ethers.BigNumber.from(additionalRevenueSources.mode.lpIncentivesETH),
+      18,
+      "ETH"
+    );
+    console.log("\nMode:");
+    logBalance(
+      "Single-staking",
+      ethers.BigNumber.from(
+        additionalRevenueSources.sonic.stakingIncentivesETH
+      ),
+      18,
+      "ETH"
+    );
+    logBalance(
+      "LP incentives",
+      ethers.BigNumber.from(additionalRevenueSources.sonic.lpIncentivesETH),
       18,
       "ETH"
     );
@@ -328,12 +365,64 @@ async function getModeValues() {
   };
 }
 
+async function getSonicValues() {
+  const chainId = 146;
+  const provider = new ethers.providers.JsonRpcProvider(SONIC_URL);
+  const rewardToken = await contractAt(
+    "Token",
+    "0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38"
+  );
+  const govToken = await contractAt(
+    "Token",
+    "0xC28f1D82874ccFebFE6afDAB3c685D5E709067E5"
+  );
+  const usdcToken = await contractAt(
+    "Token",
+    "0x29219dd400f2Bf60E5a23d13Be72B486D4038894"
+  );
+
+  const swapTokenArr = [
+    "0x50c42dEAcD8Fc9773493ED674b675bE577f2634b", // wETH
+    "0x29219dd400f2Bf60E5a23d13Be72B486D4038894", // USDC.e
+  ];
+  const rewardTrackerArr = [
+    {
+      name: "bridgedStakingIncentives", // bridge to base
+      address: "",
+      allocation: 20,
+    },
+    {
+      name: "feeGlpDistributor",
+      address: "0x86c48E2FFEaCee704B7B7840127BF2f325F075cf",
+      allocation: 70,
+    },
+    {
+      name: "bridgedLpIncentives", // bridge to base
+      address: "",
+      allocation: 10,
+    },
+  ];
+
+  return {
+    chainId,
+    provider,
+    rewardToken,
+    rewardTrackerArr,
+    swapTokenArr,
+    govToken,
+    usdcToken,
+  };
+}
+
 function getValues() {
   if (network === "base") {
     return getBaseValues();
   }
   if (network === "mode") {
     return getModeValues();
+  }
+  if (network === "sonic") {
+    return getSonicValues();
   }
 
   throw new Error("Invalid network");
@@ -621,9 +710,15 @@ async function distributeRewards(
     const totalAllocation = baseAllocation.add(additionalAmount);
     console.log(
       `\n${name} distribution:`,
-      `\nBase allocation: ${ethers.utils.formatEther(baseAllocation)} ETH`,
-      `\nAdditional amount: ${ethers.utils.formatEther(additionalAmount)} ETH`,
-      `\nTotal: ${ethers.utils.formatEther(totalAllocation)} ETH`
+      `\nBase allocation: ${ethers.utils.formatEther(baseAllocation)} ${
+        network === "sonic" ? "wS" : "ETH"
+      }`,
+      `\nAdditional amount: ${ethers.utils.formatEther(additionalAmount)} ${
+        network === "sonic" ? "wS" : "ETH"
+      }`,
+      `\nTotal: ${ethers.utils.formatEther(totalAllocation)} ${
+        network === "sonic" ? "wS" : "ETH"
+      }`
     );
 
     if (name === "vaultRewards") {
@@ -638,10 +733,7 @@ async function distributeRewards(
       );
     } else if (name === "feeGlpDistributor" || name === "feeGmxDistributor") {
       const rewardDistributor = await contractAt("RewardDistributor", address);
-      const rewardsPerInterval =
-        network === "base" && name === "feeGmxDistributor"
-          ? totalAllocation.add("328125000000000000").div(7 * 24 * 60 * 60)
-          : totalAllocation.div(7 * 24 * 60 * 60);
+      const rewardsPerInterval = totalAllocation.div(7 * 24 * 60 * 60);
       console.log(
         "Rewards per interval:",
         `${ethers.utils.formatEther(rewardsPerInterval)} ${
@@ -665,9 +757,9 @@ async function distributeRewards(
       );
     } else {
       console.log(
-        `\n${name} ${ethers.utils.formatEther(
-          totalAllocation
-        )} ETH to bridge to Base.`
+        `\n${name} ${ethers.utils.formatEther(totalAllocation)} ${
+          network === "sonic" ? "wS" : "ETH"
+        } to bridge to Base.`
       );
       totalBridgeAmount = totalBridgeAmount.add(totalAllocation);
     }
@@ -675,7 +767,7 @@ async function distributeRewards(
   console.log(
     `\nTotal amount to bridge to Base: ${ethers.utils.formatEther(
       totalBridgeAmount
-    )} ETH`
+    )} ${network === "sonic" ? "wS" : "ETH"}`
   );
 }
 
@@ -697,9 +789,13 @@ async function main() {
   const bridgedRevenue = {
     stakingIncentivesETH: ethers.BigNumber.from(
       additionalRevenueSources.mode.stakingIncentivesETH
+    ).add(
+      ethers.BigNumber.from(additionalRevenueSources.sonic.stakingIncentivesETH)
     ),
     lpIncentivesETH: ethers.BigNumber.from(
       additionalRevenueSources.mode.lpIncentivesETH
+    ).add(
+      ethers.BigNumber.from(additionalRevenueSources.sonic.lpIncentivesETH)
     ),
   };
 
@@ -795,12 +891,22 @@ async function main() {
 
   // If it's Base, add potential ETH bridged from other chains
   if (network === "base") {
-    totalSingleStaking = totalSingleStaking.add(
-      ethers.BigNumber.from(additionalRevenueSources.mode.stakingIncentivesETH)
-    );
-    totalLpIncentives = totalLpIncentives.add(
-      ethers.BigNumber.from(additionalRevenueSources.mode.lpIncentivesETH)
-    );
+    totalSingleStaking = totalSingleStaking
+      .add(
+        ethers.BigNumber.from(
+          additionalRevenueSources.mode.stakingIncentivesETH
+        )
+      )
+      .add(
+        ethers.BigNumber.from(
+          additionalRevenueSources.sonic.stakingIncentivesETH
+        )
+      );
+    totalLpIncentives = totalLpIncentives
+      .add(ethers.BigNumber.from(additionalRevenueSources.mode.lpIncentivesETH))
+      .add(
+        ethers.BigNumber.from(additionalRevenueSources.sonic.lpIncentivesETH)
+      );
   }
   logFinalSummary(freestyleResults, basedMediaXResults, classicRewardBalance);
 
