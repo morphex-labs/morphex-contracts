@@ -16,16 +16,16 @@ const fetch = (...args) =>
 // Configuration
 const network = "base"; // set to network you want to update on
 const additionalRevenueSources = {
-  freestyleUSDC: "199950000", // set this, 6 decimals
+  freestyleUSDC: "20140000", // set this, 6 decimals
   basedMediaXETH: "0", // set this, 18 decimals
   // following chain configs are to track revenue bridged from other chains to base
   mode: {
-    lpIncentivesETH: "74872214028046002", // total amount of ETH from classic/freestyle for LP incentives, 18 decimals
-    stakingIncentivesETH: "149744428056090007", // total amount of ETH from classic/freestyle for staking incentives, 18 decimals
+    lpIncentivesETH: "69131120107017031", // total amount of ETH from classic/freestyle for LP incentives, 18 decimals
+    stakingIncentivesETH: "138262240214034063", // total amount of ETH from classic/freestyle for staking incentives, 18 decimals
   },
   sonic: {
-    lpIncentivesETH: "41145179061021997",
-    stakingIncentivesETH: "82219498280535994",
+    lpIncentivesETH: "131416520924669999",
+    stakingIncentivesETH: "263291741483330011",
   },
 };
 const USER_ADDRESS = "0xB1dD2Fdb023cB54b7cc2a0f5D9e8d47a9F7723ce";
@@ -757,7 +757,7 @@ async function distributeRewards(
       );
     } else {
       console.log(
-        `\n${name} ${ethers.utils.formatEther(totalAllocation)} ${
+        `\n${name} ${ethers.utils.formatEther(totalAllocation)} ${totalAllocation} ${
           network === "sonic" ? "wS" : "ETH"
         } to bridge to Base.`
       );
@@ -767,7 +767,7 @@ async function distributeRewards(
   console.log(
     `\nTotal amount to bridge to Base: ${ethers.utils.formatEther(
       totalBridgeAmount
-    )} ${network === "sonic" ? "wS" : "ETH"}`
+    )} ${totalBridgeAmount} ${network === "sonic" ? "wS" : "ETH"}`
   );
 }
 
