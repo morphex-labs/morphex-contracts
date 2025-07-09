@@ -11,76 +11,6 @@ const { toChainlinkPrice } = require("../../test/shared/chainlink");
 const chain = "sonic"; // set to chain you want to work with
 const tokens = require("./tokens")[chain];
 
-async function getFtmValues() {
-  const vault = await contractAt(
-    "Vault",
-    "0x245cD6d33578de9aF75a3C0c636c726b1A8cbdAa"
-  );
-  const timelock = await contractAt("Timelock", await vault.gov());
-  const reader = await contractAt(
-    "Reader",
-    "0xcA47b9b612a152ece991F31d8D3547D73BaF2Ecc"
-  );
-
-  const {
-    ftm,
-    axleth,
-    lzeth,
-    axlbtc,
-    lzbtc,
-    axlusdc,
-    lzusdc,
-    usdc,
-    axlusdt,
-    lzusdt,
-  } = tokens;
-  const tokenArr = [
-    ftm,
-    axleth,
-    lzeth,
-    axlbtc,
-    lzbtc,
-    axlusdc,
-    lzusdc,
-    usdc,
-    axlusdt,
-    lzusdt,
-  ];
-
-  const vaultTokenInfo = await reader.getVaultTokenInfoV2(
-    vault.address,
-    ftm.address,
-    1,
-    tokenArr.map((t) => t.address)
-  );
-
-  return { vault, timelock, reader, tokenArr, vaultTokenInfo };
-}
-
-async function getBscValues() {
-  const vault = await contractAt(
-    "Vault",
-    "0x46940Dc651bFe3F2CC3E04cf9dC5579B50Cf0765"
-  );
-  const timelock = await contractAt("Timelock", await vault.gov());
-  const reader = await contractAt(
-    "Reader",
-    "0x49A97680938B4F1f73816d1B70C3Ab801FAd124B"
-  );
-
-  const { bnb, eth, btc, xrp, ada, cake, usdt, usdc } = tokens;
-  const tokenArr = [bnb, eth, btc, xrp, ada, cake, usdt, usdc];
-
-  const vaultTokenInfo = await reader.getVaultTokenInfoV2(
-    vault.address,
-    bnb.address,
-    1,
-    tokenArr.map((t) => t.address)
-  );
-
-  return { vault, timelock, reader, tokenArr, vaultTokenInfo };
-}
-
 async function getBaseValues() {
   const vault = await contractAt(
     "Vault",
@@ -92,8 +22,8 @@ async function getBaseValues() {
     "0x92C97631450E804848781C0764907Ec4FC6fFd29"
   );
 
-  const { eth, cbbtc, aero, well, usdc, usdcCircle } = tokens;
-  const tokenArr = [eth, cbbtc, aero, well, usdc, usdcCircle];
+  const { eth, cbbtc, aero, well, usdc, usdcCircle, eurc } = tokens;
+  const tokenArr = [eth, cbbtc, aero, well, usdc, usdcCircle, eurc];
 
   const vaultTokenInfo = await reader.getVaultTokenInfoV2(
     vault.address,
