@@ -760,8 +760,8 @@ contract OrderBook is ReentrancyGuard, IOrderBook {
 
         IRouter(router).pluginIncreasePosition(order.account, order.collateralToken, order.indexToken, order.sizeDelta, order.isLong);
 
-        // pay executor
-        _transferOutETH(order.executionFee, _feeReceiver);
+        // pay executor, weth only to prevent cross-contract reentrancy
+        IERC20(weth).safeTransfer(_feeReceiver, order.executionFee);
 
         emit ExecuteIncreaseOrder(
             order.account,
@@ -870,14 +870,11 @@ contract OrderBook is ReentrancyGuard, IOrderBook {
         );
 
         // transfer released collateral to user
-        if (order.collateralToken == weth) {
-            _transferOutETH(amountOut, payable(order.account));
-        } else {
-            IERC20(order.collateralToken).safeTransfer(order.account, amountOut);
-        }
+        // ERC20 only to prevent cross-contract reentrancy as PositionManager enables leverage during execution
+        IERC20(order.collateralToken).safeTransfer(order.account, amountOut);
 
-        // pay executor
-        _transferOutETH(order.executionFee, _feeReceiver);
+        // pay executor, weth only to prevent cross-contract reentrancy
+        IERC20(weth).safeTransfer(_feeReceiver, order.executionFee);
 
         emit ExecuteDecreaseOrder(
             order.account,
