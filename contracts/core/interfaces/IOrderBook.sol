@@ -39,6 +39,6 @@ interface IOrderBook {
     );
 
     function executeSwapOrder(address, uint256, address payable) external;
-    function executeDecreaseOrder(address, uint256, address payable) external;
-    function executeIncreaseOrder(address, uint256, address payable) external;
+    function executeDecreaseOrder(address, uint256, address) external;
+    function executeIncreaseOrder(address, uint256, address) external;
 }
