@@ -731,7 +731,7 @@ contract OrderBook is ReentrancyGuard, IOrderBook {
         );
     }
 
-    function executeIncreaseOrder(address _address, uint256 _orderIndex, address payable _feeReceiver) override external nonReentrant {
+    function executeIncreaseOrder(address _address, uint256 _orderIndex, address _feeReceiver) override external nonReentrant {
         IncreaseOrder memory order = increaseOrders[_address][_orderIndex];
         require(order.account != address(0), "OrderBook: non-existent order");
 
@@ -760,8 +760,8 @@ contract OrderBook is ReentrancyGuard, IOrderBook {
 
         IRouter(router).pluginIncreasePosition(order.account, order.collateralToken, order.indexToken, order.sizeDelta, order.isLong);
 
-        // pay executor
-        _transferOutETH(order.executionFee, _feeReceiver);
+        // pay executor, weth only to prevent cross-contract reentrancy
+        IERC20(weth).safeTransfer(_feeReceiver, order.executionFee);
 
         emit ExecuteIncreaseOrder(
             order.account,
@@ -843,7 +843,7 @@ contract OrderBook is ReentrancyGuard, IOrderBook {
         );
     }
 
-    function executeDecreaseOrder(address _address, uint256 _orderIndex, address payable _feeReceiver) override external nonReentrant {
+    function executeDecreaseOrder(address _address, uint256 _orderIndex, address _feeReceiver) override external nonReentrant {
         DecreaseOrder memory order = decreaseOrders[_address][_orderIndex];
         require(order.account != address(0), "OrderBook: non-existent order");
 
@@ -870,14 +870,11 @@ contract OrderBook is ReentrancyGuard, IOrderBook {
         );
 
         // transfer released collateral to user
-        if (order.collateralToken == weth) {
-            _transferOutETH(amountOut, payable(order.account));
-        } else {
-            IERC20(order.collateralToken).safeTransfer(order.account, amountOut);
-        }
+        // ERC20 only to prevent cross-contract reentrancy as PositionManager enables leverage during execution
+        IERC20(order.collateralToken).safeTransfer(order.account, amountOut);
 
-        // pay executor
-        _transferOutETH(order.executionFee, _feeReceiver);
+        // pay executor, weth only to prevent cross-contract reentrancy
+        IERC20(weth).safeTransfer(_feeReceiver, order.executionFee);
 
         emit ExecuteDecreaseOrder(
             order.account,
