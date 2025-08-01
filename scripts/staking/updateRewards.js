@@ -16,16 +16,16 @@ const fetch = (...args) =>
 // Configuration
 const network = "base"; // set to network you want to update on
 const additionalRevenueSources = {
-  freestyleUSDC: "0", // set this, 6 decimals
+  freestyleUSDC: "558150000", // set this, 6 decimals
   basedMediaXETH: "0", // set this, 18 decimals
   // following chain configs are to track revenue bridged from other chains to base
   mode: {
-    lpIncentivesETH: "1928385204196094", // total amount of ETH from classic/freestyle for LP incentives, 18 decimals
-    stakingIncentivesETH: "3856770408392188", // total amount of ETH from classic/freestyle for staking incentives, 18 decimals
+    lpIncentivesETH: "1508526276028177", // total amount of ETH from classic/freestyle for LP incentives, 18 decimals
+    stakingIncentivesETH: "30170525520563540", // total amount of ETH from classic/freestyle for staking incentives, 18 decimals
   },
   sonic: {
-    lpIncentivesETH: "38395523084876002",
-    stakingIncentivesETH: "76722503151010999",
+    lpIncentivesETH: "37410838646628885",
+    stakingIncentivesETH: "74815519290594805",
   },
 };
 const USER_ADDRESS = "0xB1dD2Fdb023cB54b7cc2a0f5D9e8d47a9F7723ce";

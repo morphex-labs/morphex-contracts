@@ -2,7 +2,7 @@ const { getFrameSigner, deployContract, contractAt, sendTxn, readTmpAddresses, c
 const { bigNumberify, expandDecimals } = require("../../test/shared/utilities")
 const { toChainlinkPrice } = require("../../test/shared/chainlink")
 
-const network = 'sonic' // set network here
+const network = 'base' // set network here
 const tokens = require('./tokens')[network];
 
 async function getFantomValues() {
@@ -32,7 +32,7 @@ async function getBscValues() {
 async function getBaseValues() {
   const positionContracts = [
     "0x927F9c03d1Ac6e2630d31E614F226b5Ed028d443", // PositionRouter
-    "0x2ace8F6Cc1ce4813Bd2D3AcE550ac95810855C40" // PositionManager
+    "0xFcC1f41210D9E8119F3Db7dbb077695Fc6791125" // PositionManager
   ]
 
   const { eth, cbbtc, aero, well } = tokens
@@ -56,11 +56,11 @@ async function getModeValues() {
 async function getSonicValues() {
   const positionContracts = [
     "0x77F480fdB7100d096c2de1876C1f4960Fa488246", // PositionRouter
-    "0x620253Be916A915fEE00Fab30840A04A2389C886" // PositionManager
+    "0x8f7845115976938e32da429d266b07D954a993D8" // PositionManager
   ]
 
-  const { s, weth, usdc } = tokens
-  const tokenArr = [s, weth, usdc]
+  const { s, weth } = tokens
+  const tokenArr = [s, weth]
 
   return { positionContracts, tokenArr }
 }

@@ -8,7 +8,7 @@ const {
 const { bigNumberify, expandDecimals } = require("../../test/shared/utilities");
 const { toChainlinkPrice } = require("../../test/shared/chainlink");
 
-const chain = "sonic"; // set to chain you want to work with
+const chain = "base"; // set to chain you want to work with
 const tokens = require("./tokens")[chain];
 
 async function getBaseValues() {

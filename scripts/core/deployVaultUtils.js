@@ -7,11 +7,10 @@ const network = (process.env.HARDHAT_NETWORK || 'mainnet');
 const tokens = require('./tokens')[network];
 
 async function main() {
-  const signer = await getFrameSigner()
-  const vault = await contractAt("Vault", "0x9ab2De34A33fB459b538c43f251eB825645e8595")
-  const timelock = await contractAt("Timelock", await vault.gov(), signer)
+  const vault = await contractAt("Vault", "0x9cC4E8e60a2c9a67Ac7D20f54607f98EfBA38AcF")
+  // const timelock = await contractAt("Timelock", await vault.gov())
   const vaultUtils = await deployContract("VaultUtils", [vault.address])
-  await sendTxn(timelock.setVaultUtils(vault.address, vaultUtils.address), "timelock.setVaultUtils")
+  // await sendTxn(timelock.setVaultUtils(vault.address, vaultUtils.address), "timelock.setVaultUtils")
 }
 
 main()

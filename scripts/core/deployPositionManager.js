@@ -1,15 +1,15 @@
 const { deployContract, contractAt , sendTxn } = require("../shared/helpers")
 
-const nativeTokenAddress = "0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38"; // wS
+const nativeTokenAddress = "0x4200000000000000000000000000000000000006"; // wETH
 const depositFee = 30 // 0.3%
 
 async function main() {
-  const vault = await contractAt("Vault", "0x9cC4E8e60a2c9a67Ac7D20f54607f98EfBA38AcF")
+  const vault = await contractAt("Vault", "0xec8d8D4b215727f3476FF0ab41c406FA99b4272C")
   // const timelock = await contractAt("Timelock", await vault.gov(), signer)
   const router = await contractAt("Router", await vault.router())
-  const shortsTracker = await contractAt("ShortsTracker", "0xE974A88385935CB8846482F3Ab01b6c0f70fa5f3")
+  const shortsTracker = await contractAt("ShortsTracker", "0x37E62664C7B78e1e05CA47AA80924D9a6280F420")
   const weth = await contractAt("WETH", nativeTokenAddress)
-  const orderBook = await contractAt("OrderBook", "0x7e3F5E2D89f6C83988301989fa3fc3a4ea3612A6")
+  const orderBook = await contractAt("OrderBook", "0xb8372b8c8FbB4E72938D9e1cDD66b135e43faA2A")
   // const referralStorage = await contractAt("ReferralStorage", "0x32034bF6693Cf8c4F970962740609BF7A43ff350")
 
   const positionManagerAddress = undefined
@@ -56,17 +56,17 @@ async function main() {
   }
 
   // if (!(await timelock.isHandler(positionManager.address))) {
-  //   await sendTxn(timelock.setContractHandler(positionManager.address, true), "timelock.setContractHandler(positionManager)")
+  //   await sendTxn(timelock.setContractHandler(positionManager.address, true), "timelock.setContractHandler(positionManager)") /// MSIG
   // }
   // if (!(await vault.isLiquidator(positionManager.address))) {
-  //   await sendTxn(timelock.setLiquidator(vault.address, positionManager.address, true), "timelock.setLiquidator(vault, positionManager, true)")
+  //   await sendTxn(timelock.setLiquidator(vault.address, positionManager.address, true), "timelock.setLiquidator(vault, positionManager, true)") /// MSIG
   // }
   if (!(await shortsTracker.isHandler(positionManager.address))) {
     await sendTxn(shortsTracker.setHandler(positionManager.address, true), "shortsTracker.setContractHandler(positionManager.address, true)")
   }
-  if (!(await router.plugins(positionManager.address))) {
-    await sendTxn(router.addPlugin(positionManager.address), "router.addPlugin(positionManager)")
-  }
+  // if (!(await router.plugins(positionManager.address))) {
+  //   await sendTxn(router.addPlugin(positionManager.address), "router.addPlugin(positionManager)")  /// MSIG
+  // }
 
   for (let i = 0; i < partnerContracts.length; i++) {
     const partnerContract = partnerContracts[i]
