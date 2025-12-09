@@ -4,28 +4,18 @@ const {
   updateTokensPerInterval,
 } = require("../shared/helpers");
 const { ethers } = require("hardhat");
-const {
-  BASE_DEPLOY_KEY,
-  BASE_URL,
-  MODE_URL,
-  SONIC_URL,
-} = require("../../env.json");
+const { BASE_DEPLOY_KEY, BASE_URL, SONIC_URL } = require("../../env.json");
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
 // Configuration
 const network = "base"; // set to network you want to update on
 const additionalRevenueSources = {
-  freestyleUSDC: "558150000", // set this, 6 decimals
+  freestyleUSDC: "0", // set this, 6 decimals
   basedMediaXETH: "0", // set this, 18 decimals
   // following chain configs are to track revenue bridged from other chains to base
-  mode: {
-    lpIncentivesETH: "1508526276028177", // total amount of ETH from classic/freestyle for LP incentives, 18 decimals
-    stakingIncentivesETH: "30170525520563540", // total amount of ETH from classic/freestyle for staking incentives, 18 decimals
-  },
   sonic: {
-    lpIncentivesETH: "37410838646628885",
-    stakingIncentivesETH: "74815519290594805",
+    stakingIncentivesETH: "26406530759883000",
   },
 };
 const USER_ADDRESS = "0xB1dD2Fdb023cB54b7cc2a0f5D9e8d47a9F7723ce";
@@ -36,42 +26,19 @@ const API_ENDPOINTS = {
   assemble: "https://api.odos.xyz/sor/assemble",
 };
 const FREESTYLE_ALLOCATIONS = {
-  singleStaking: 30, // swap to weth
+  singleStaking: 60, // swap to weth
   bltMlt: 40, // swap to weth
-  lpIncentives: 20, // swap to weth
-  burnBmx: 10, // swap to BMX
 };
 const BASED_MEDIAX_ALLOCATIONS = {
   singleStaking: 60,
-  bltMlt: 25,
-  lpIncentives: 10,
-  burnBmx: 5, // swap to BMX
+  bltMlt: 40,
 };
-
-// Contract ABIs
-const LP_REWARDS_ABI = [
-  {
-    inputs: [
-      { internalType: "address", name: "_rewardsToken", type: "address" },
-      { internalType: "uint256", name: "_rewardAmount", type: "uint256" },
-    ],
-    name: "notifyRewardAmount",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-];
 
 // Helper Functions
 function logSectionHeader(title) {
   console.log("\n" + "=".repeat(50));
   console.log(`${title}`);
   console.log("=".repeat(50));
-}
-function logTransactionHash(type, hash) {
-  console.log("\n📝 Transaction Hash:");
-  console.log(`${type}:`);
-  console.log(`${hash}`);
 }
 function logBalance(label, amount, decimals = 18, symbol = "ETH") {
   console.log(
@@ -103,17 +70,10 @@ async function logFinalSummary(
       18,
       network === "sonic" ? "wS" : "ETH"
     );
-    console.log("\nFreestyle BLT/MLT/SLT:");
+    console.log("\nFreestyle BLT/SLT:");
     logBalance(
       "Amount",
       freestyleResults.bltMlt,
-      18,
-      network === "sonic" ? "wS" : "ETH"
-    );
-    console.log("\nFreestyle LP rewards:");
-    logBalance(
-      "Amount",
-      freestyleResults.lpIncentives,
       18,
       network === "sonic" ? "wS" : "ETH"
     );
@@ -127,28 +87,13 @@ async function logFinalSummary(
     logBalance("Amount", basedMediaXResults.singleStaking, 18, "ETH");
     console.log("\nBased MediaX BLT:");
     logBalance("Amount", basedMediaXResults.bltMlt, 18, "ETH");
-    console.log("\nBased MediaX LP rewards:");
-    logBalance("Amount", basedMediaXResults.lpIncentives, 18, "ETH");
   } else {
     console.log("Nothing.");
   }
 
   if (network === "base") {
     console.log("\n🏆 Revenue bridged from other chains:");
-    console.log("\nMode:");
-    logBalance(
-      "Single-staking",
-      ethers.BigNumber.from(additionalRevenueSources.mode.stakingIncentivesETH),
-      18,
-      "ETH"
-    );
-    logBalance(
-      "LP incentives",
-      ethers.BigNumber.from(additionalRevenueSources.mode.lpIncentivesETH),
-      18,
-      "ETH"
-    );
-    console.log("\nMode:");
+    console.log("Sonic:");
     logBalance(
       "Single-staking",
       ethers.BigNumber.from(
@@ -157,18 +102,7 @@ async function logFinalSummary(
       18,
       "ETH"
     );
-    logBalance(
-      "LP incentives",
-      ethers.BigNumber.from(additionalRevenueSources.sonic.lpIncentivesETH),
-      18,
-      "ETH"
-    );
   }
-}
-
-async function encodeFunctionCall(abi, functionName, params) {
-  const iface = new ethers.utils.Interface(abi);
-  return iface.encodeFunctionData(functionName, params);
 }
 
 async function createQuoteRequest(chainId, toTokenAddress, inputTokens) {
@@ -278,9 +212,6 @@ async function getBaseValues() {
     "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA", // USDbC
     "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", // USDC
     "0x940181a94A35A4569E4529A3CDfB74e38FD98631", // AERO
-    "0x50c5725949a6f0c72e6c4a641f24049a917db0cb", // DAI
-    "0x2Da56AcB9Ea78330f947bD57C54119Debda7AF71", // MOG
-    "0x60a3e35cc302bfa44cb288bc5a4f316fdb1adb42", // EURC
     "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf", // cbBTC
     "0xA88594D404727625A9437C3f886C7643872296AE", // WELL
   ];
@@ -293,64 +224,7 @@ async function getBaseValues() {
     {
       name: "feeGlpDistributor",
       address: "0x06c35893Ba9bc454e12c36F4117BC99f75e34346",
-      allocation: 70,
-    },
-    {
-      name: "vaultRewards", // BMX-wBLT
-      address: "0xE0792Fe7478C8e488898234C7bF76DF54Aa75eBc",
-      allocation: 10,
-      abi: LP_REWARDS_ABI,
-    },
-  ];
-
-  return {
-    chainId,
-    provider,
-    rewardToken,
-    rewardTrackerArr,
-    swapTokenArr,
-    govToken,
-    usdcToken,
-  };
-}
-
-async function getModeValues() {
-  const chainId = 34443;
-  const provider = new ethers.providers.JsonRpcProvider(MODE_URL);
-  const rewardToken = await contractAt(
-    "Token",
-    "0x4200000000000000000000000000000000000006"
-  );
-  const govToken = await contractAt(
-    "Token",
-    "0x66eEd5FF1701E6ed8470DC391F05e27B1d0657eb"
-  );
-  const usdcToken = await contractAt(
-    "Token",
-    "0xd988097fb8612cc24eeC14542bC03424c656005f"
-  );
-
-  const swapTokenArr = [
-    "0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A", // weETH
-    "0xcDd475325D6F564d27247D1DddBb0DAc6fA0a5CF", // wBTC
-    "0xDfc7C877a950e49D2610114102175A06C2e3167a", // MODE
-    "0xd988097fb8612cc24eeC14542bC03424c656005f", // USDC
-  ];
-  const rewardTrackerArr = [
-    {
-      name: "bridgedStakingIncentives", // bridge to base
-      address: "",
-      allocation: 20,
-    },
-    {
-      name: "feeGlpDistributor",
-      address: "0x366152Fc0FC4680e0A05ce9739a4210228C72BA3",
-      allocation: 70,
-    },
-    {
-      name: "bridgedLpIncentives", // bridge to base
-      address: "",
-      allocation: 10,
+      allocation: 80,
     },
   ];
 
@@ -394,12 +268,7 @@ async function getSonicValues() {
     {
       name: "feeGlpDistributor",
       address: "0x86c48E2FFEaCee704B7B7840127BF2f325F075cf",
-      allocation: 70,
-    },
-    {
-      name: "bridgedLpIncentives", // bridge to base
-      address: "",
-      allocation: 10,
+      allocation: 80,
     },
   ];
 
@@ -417,9 +286,6 @@ async function getSonicValues() {
 function getValues() {
   if (network === "base") {
     return getBaseValues();
-  }
-  if (network === "mode") {
-    return getModeValues();
   }
   if (network === "sonic") {
     return getSonicValues();
@@ -444,8 +310,7 @@ async function processClassicRevenue(
     const balanceRaw = await rewardToken.balanceOf(USER_ADDRESS);
     const balance = balanceRaw
       .sub(basedMediaXETH)
-      .sub(bridgedRevenue.stakingIncentivesETH)
-      .sub(bridgedRevenue.lpIncentivesETH);
+      .sub(bridgedRevenue.stakingIncentivesETH);
     logBalance("Classic Revenue Final Balance", balance);
     return balance;
   }
@@ -476,8 +341,7 @@ async function processClassicRevenue(
   const finalBalanceWithBasedMediaX = await rewardToken.balanceOf(USER_ADDRESS);
   const finalBalance = finalBalanceWithBasedMediaX
     .sub(basedMediaXETH)
-    .sub(bridgedRevenue.stakingIncentivesETH)
-    .sub(bridgedRevenue.lpIncentivesETH);
+    .sub(bridgedRevenue.stakingIncentivesETH);
   logBalance("Classic Revenue Final Balance", finalBalance);
   return finalBalance;
 }
@@ -486,7 +350,6 @@ async function processFreestyleRevenue(
   freestyleUSDC,
   allocations,
   rewardToken,
-  govToken,
   wallet,
   provider,
   chainId,
@@ -509,8 +372,6 @@ async function processFreestyleRevenue(
   const amounts = {
     singleStaking: freestyleUSDC.amount.mul(allocations.singleStaking).div(100),
     bltMlt: freestyleUSDC.amount.mul(allocations.bltMlt).div(100),
-    lpIncentives: freestyleUSDC.amount.mul(allocations.lpIncentives).div(100),
-    burnBmx: freestyleUSDC.amount.mul(allocations.burnBmx).div(100),
   };
 
   // Log allocations
@@ -523,14 +384,11 @@ async function processFreestyleRevenue(
   const result = {
     singleStaking: ethers.BigNumber.from(0),
     bltMlt: ethers.BigNumber.from(0),
-    lpIncentives: ethers.BigNumber.from(0),
-    hasBurnedBMX: false,
   };
 
   const balanceToDeduct = classicRewardBalance
     .add(additionalRevenueSources.basedMediaXETH)
-    .add(bridgedRevenue.stakingIncentivesETH)
-    .add(bridgedRevenue.lpIncentivesETH);
+    .add(bridgedRevenue.stakingIncentivesETH);
 
   // Process single staking
   const singleQuote = await requestQuote(
@@ -562,55 +420,10 @@ async function processFreestyleRevenue(
   const bltMltBalance = await rewardToken.balanceOf(USER_ADDRESS);
   result.bltMlt = bltMltBalance.sub(balanceToDeduct).sub(result.singleStaking);
 
-  // Process LP incentives
-  const lpIncentivesQuote = await requestQuote(
-    [
-      {
-        tokenAddress: freestyleUSDC.tokenAddress,
-        amount: amounts.lpIncentives.toString(),
-      },
-    ],
-    rewardToken.address,
-    chainId
-  );
-  await assembleAndExecuteTransaction(lpIncentivesQuote, wallet, provider);
-  const lpIncentivesBalance = await rewardToken.balanceOf(USER_ADDRESS);
-  result.lpIncentives = lpIncentivesBalance
-    .sub(balanceToDeduct)
-    .sub(result.singleStaking)
-    .sub(result.bltMlt);
-
-  // Process BMX burning
-  console.log("Buying BMX from Freestyle revenue...");
-  const burnQuote = await requestQuote(
-    [
-      {
-        tokenAddress: freestyleUSDC.tokenAddress,
-        amount: amounts.burnBmx.toString(),
-      },
-    ],
-    govToken.address,
-    chainId
-  );
-  const burnTx = await assembleAndExecuteTransaction(
-    burnQuote,
-    wallet,
-    provider
-  );
-  logTransactionHash("Freestyle BMX Purchase", burnTx.transactionHash);
-  result.hasBurnedBMX = true;
-
   return result;
 }
 
-async function processBasedMediaXRevenue(
-  basedMediaXETH,
-  allocations,
-  govToken,
-  wallet,
-  provider,
-  chainId
-) {
+async function processBasedMediaXRevenue(basedMediaXETH, allocations) {
   logSectionHeader("Processing Based MediaX Revenue");
   if (basedMediaXETH.amount === "0") {
     console.log("No Based MediaX revenue to process");
@@ -627,8 +440,6 @@ async function processBasedMediaXRevenue(
   const amounts = {
     singleStaking: ethAmount.mul(allocations.singleStaking).div(100),
     bltMlt: ethAmount.mul(allocations.bltMlt).div(100),
-    lpIncentives: ethAmount.mul(allocations.lpIncentives).div(100),
-    burnBmx: ethAmount.mul(allocations.burnBmx).div(100),
   };
 
   // Log allocations
@@ -641,50 +452,9 @@ async function processBasedMediaXRevenue(
   const result = {
     singleStaking: amounts.singleStaking,
     bltMlt: amounts.bltMlt,
-    lpIncentives: amounts.lpIncentives,
-    hasBurnedBMX: false,
   };
 
-  // Process BMX burning
-  console.log("Buying BMX from Based MediaX revenue...");
-  const burnQuote = await requestQuote(
-    [
-      {
-        tokenAddress: basedMediaXETH.tokenAddress,
-        amount: amounts.burnBmx.toString(),
-      },
-    ],
-    govToken.address,
-    chainId
-  );
-  const burnTx = await assembleAndExecuteTransaction(
-    burnQuote,
-    wallet,
-    provider
-  );
-  logTransactionHash("Based MediaX BMX Purchase", burnTx.transactionHash);
-  result.hasBurnedBMX = true;
-
   return result;
-}
-
-async function burnAccumulatedBMX(govToken) {
-  logSectionHeader("Burning Accumulated BMX");
-  const burnAmount = await govToken.balanceOf(USER_ADDRESS);
-  if (burnAmount?.gt(0)) {
-    logBalance("BMX to burn", burnAmount, 18, "BMX");
-    const tx = await sendTxn(
-      govToken.transfer(
-        "0x000000000000000000000000000000000000dEaD",
-        burnAmount,
-        {
-          gasLimit: 500000,
-        }
-      ),
-      `Burning BMX`
-    );
-    logTransactionHash("BMX Burned", tx.hash);
-  }
 }
 
 async function distributeRewards(
@@ -692,20 +462,14 @@ async function distributeRewards(
   rewardToken,
   rewardTokenBalance,
   totalSingleStaking,
-  totalBltMlt,
-  totalLpIncentives,
-  wallet
+  totalBltMlt
 ) {
   console.log("\nDistributing rewards...");
   let totalBridgeAmount = ethers.BigNumber.from(0);
-  for (const { name, address, allocation, abi } of rewardTrackerArr) {
+  for (const { name, address, allocation } of rewardTrackerArr) {
     const baseAllocation = rewardTokenBalance.mul(allocation).div(100);
     const additionalAmount =
-      allocation === 20
-        ? totalSingleStaking
-        : allocation === 70
-        ? totalBltMlt
-        : totalLpIncentives;
+      allocation === 20 ? totalSingleStaking : totalBltMlt;
 
     const totalAllocation = baseAllocation.add(additionalAmount);
     console.log(
@@ -721,17 +485,7 @@ async function distributeRewards(
       }`
     );
 
-    if (name === "vaultRewards") {
-      const data = await encodeFunctionCall(abi, "notifyRewardAmount", [
-        rewardToken.address,
-        totalAllocation,
-      ]);
-
-      await sendTxn(
-        wallet.sendTransaction({ to: address, data }),
-        `${name}.notifyRewardAmount`
-      );
-    } else if (name === "feeGlpDistributor" || name === "feeGmxDistributor") {
+    if (name === "feeGlpDistributor") {
       const rewardDistributor = await contractAt("RewardDistributor", address);
       const rewardsPerInterval = totalAllocation.div(7 * 24 * 60 * 60);
       console.log(
@@ -743,21 +497,23 @@ async function distributeRewards(
         }`
       );
 
+      await updateTokensPerInterval(
+        rewardDistributor,
+        rewardsPerInterval,
+        "rewardDistributor"
+      );
+
       await sendTxn(
         rewardToken.transfer(rewardDistributor.address, totalAllocation, {
           gasLimit: 500000,
         }),
         `rewardToken.transfer ${name}`
       );
-
-      await updateTokensPerInterval(
-        rewardDistributor,
-        rewardsPerInterval,
-        "rewardDistributor"
-      );
     } else {
       console.log(
-        `\n${name} ${ethers.utils.formatEther(totalAllocation)} ${totalAllocation} ${
+        `\n${name} ${ethers.utils.formatEther(
+          totalAllocation
+        )} ${totalAllocation} ${
           network === "sonic" ? "wS" : "ETH"
         } to bridge to Base.`
       );
@@ -778,7 +534,6 @@ async function main() {
     rewardToken,
     rewardTrackerArr,
     swapTokenArr,
-    govToken,
     usdcToken,
   } = await getValues();
   const wallet = new ethers.Wallet(BASE_DEPLOY_KEY, provider);
@@ -788,14 +543,7 @@ async function main() {
   const classicTokenBalances = [];
   const bridgedRevenue = {
     stakingIncentivesETH: ethers.BigNumber.from(
-      additionalRevenueSources.mode.stakingIncentivesETH
-    ).add(
-      ethers.BigNumber.from(additionalRevenueSources.sonic.stakingIncentivesETH)
-    ),
-    lpIncentivesETH: ethers.BigNumber.from(
-      additionalRevenueSources.mode.lpIncentivesETH
-    ).add(
-      ethers.BigNumber.from(additionalRevenueSources.sonic.lpIncentivesETH)
+      additionalRevenueSources.sonic.stakingIncentivesETH
     ),
   };
 
@@ -850,7 +598,6 @@ async function main() {
     },
     FREESTYLE_ALLOCATIONS,
     rewardToken,
-    govToken,
     wallet,
     provider,
     chainId,
@@ -864,17 +611,8 @@ async function main() {
       tokenAddress: rewardToken.address,
       amount: additionalRevenueSources.basedMediaXETH,
     },
-    BASED_MEDIAX_ALLOCATIONS,
-    govToken,
-    wallet,
-    provider,
-    chainId
+    BASED_MEDIAX_ALLOCATIONS
   );
-
-  // Burn accumulated BMX if any was purchased
-  if (freestyleResults?.hasBurnedBMX || basedMediaXResults?.hasBurnedBMX) {
-    await burnAccumulatedBMX(govToken);
-  }
 
   // Calculate total allocations from additional revenue sources only
   const totalBltMlt = ethers.BigNumber.from(0)
@@ -885,28 +623,11 @@ async function main() {
     .add(freestyleResults?.singleStaking || 0)
     .add(basedMediaXResults?.singleStaking || 0);
 
-  let totalLpIncentives = ethers.BigNumber.from(0)
-    .add(freestyleResults?.lpIncentives || 0)
-    .add(basedMediaXResults?.lpIncentives || 0);
-
   // If it's Base, add potential ETH bridged from other chains
   if (network === "base") {
-    totalSingleStaking = totalSingleStaking
-      .add(
-        ethers.BigNumber.from(
-          additionalRevenueSources.mode.stakingIncentivesETH
-        )
-      )
-      .add(
-        ethers.BigNumber.from(
-          additionalRevenueSources.sonic.stakingIncentivesETH
-        )
-      );
-    totalLpIncentives = totalLpIncentives
-      .add(ethers.BigNumber.from(additionalRevenueSources.mode.lpIncentivesETH))
-      .add(
-        ethers.BigNumber.from(additionalRevenueSources.sonic.lpIncentivesETH)
-      );
+    totalSingleStaking = totalSingleStaking.add(
+      ethers.BigNumber.from(additionalRevenueSources.sonic.stakingIncentivesETH)
+    );
   }
   logFinalSummary(freestyleResults, basedMediaXResults, classicRewardBalance);
 
@@ -916,9 +637,7 @@ async function main() {
     rewardToken,
     classicRewardBalance,
     totalSingleStaking,
-    totalBltMlt,
-    totalLpIncentives,
-    wallet
+    totalBltMlt
   );
 
   console.log("\nReward distribution completed successfully!");
